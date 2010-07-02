@@ -36,9 +36,6 @@ package sweatless.media.sound{
 		private var lastCuePoint : String;
 
 		public function SoundTrack(){
-			cuePoints = new Dictionary(true);
-			channel =  new SoundChannel();
-			timer = new Timer(1000);
 		}
 		
 		public function get isMute():Boolean{
@@ -67,6 +64,10 @@ package sweatless.media.sound{
 
 		public function set track(p_sound:Sound):void{
 			sound = p_sound;
+
+			cuePoints = new Dictionary(true);
+			channel =  new SoundChannel();
+			timer = new Timer(1000);
 		}
 		
 		public function get track():Sound{
@@ -282,8 +283,8 @@ package sweatless.media.sound{
             pan = value;
         }        
 
-		public function addMousePan(p_obj:DisplayObject):void{
-			object = p_obj;
+		public function addMousePan(p_target:DisplayObject):void{
+			object = p_target;
 			object.stage.addEventListener(MouseEvent.MOUSE_MOVE, move);
 		}
 		
@@ -291,26 +292,23 @@ package sweatless.media.sound{
         	if(!object) return;
 			
 			object.stage.removeEventListener(MouseEvent.MOUSE_MOVE, move);
-            volume = 1;
-            pan = 1;
+
+			volume = 1;
+            pan = 0;
         }
         
         public function destroy():void{
-			try {
-				sound.close();
-			}catch (err:Error) {
-				
-			}
-			
         	stop();
-			
-			clearAllCuePoints();
 			
 			timer.removeEventListener(TimerEvent.TIMER, dispatchCuePoints);
 			timer.reset();
 			
+			clearAllCuePoints();
+
 			cuePoints = null;
 			timer = null;
+			
+			removeMousePan();
 			
         	channel = null;
 			sound = null;

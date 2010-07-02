@@ -1,32 +1,46 @@
 package sweatless.media.video{
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.events.NetStatusEvent;
 	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.utils.Dictionary;
 	
 	public class VideoTrack extends Sprite{
-		public static const TYPE_BITMAP:String = "bitmap";
-		public static const TYPE_VIDEO:String = "video";
-		public static const COMPLETE:String = "complete";
-		public static const START:String = "start";
+		
+		public static const TYPE_BITMAP : String = "bitmap";
+		public static const TYPE_VIDEO : String = "video";
+		
+		public static const COMPLETE : String = "complete";
+		public static const START : String = "start";
 
+		private var _width : Number;
+		private var _height : Number;
+
+		private var _deblocking : int = 3;
+		private var _smoothing : Boolean;
+		
 		private var _playing : Boolean;
 		private var _looping : Boolean;
 		private var _mute : Boolean;
 
-		private var netstream : NetStream;
+		private var stream : NetStream;
 		private var video : Video;
-		private var channel : SoundChannel;
 		
 		private var currentVolume : Number = 1;
 		private var currentPan : Number = 0;
 		
 		private var count : uint;
+
+		private var object : DisplayObject;
 		
 		public function VideoTrack(){
-
+			video = new Video();
+			addChild(video);
 		}
 		
 		public function get isMute():Boolean{
@@ -53,71 +67,64 @@ package sweatless.media.video{
 			_playing = value;
 		}
 		
+		public function get deblocking():int{
+			return _deblocking;
+		}
+		
+		public function set deblocking(value:int):void{
+			_deblocking = video.deblocking = value;
+		}
+		
+		public function get smoothing():Boolean{
+			return _smoothing;
+		}
+		
+		public function set smoothing(value:Boolean):void{
+			_smoothing = video.smoothing = value;
+		}
+		
 		public function set track(p_netstream:NetStream):void{
-			netstream = p_netstream;
+			stream = p_netstream;
+			
+			video.attachNetStream(stream);
 		}
 		
 		public function get track():NetStream{
-			return netstream;
+			return stream;
 		}
 		
-		public function play():void{
+		public function play(p_loops:uint=0):void{
 			isPlaying = true;
 			
-			if(p_loops>0){
-				count = p_loops;
-				
-				looping(null);
-			}else{
-				channel = sound.play(p_time);
-			};
+			stream.addEventListener(NetStatusEvent.NET_STATUS, streamStatus);
 			
+			p_loops>0 ? count = p_loops : null;
+
+			stream.seek(0);
+			stream.resume();
+
 			volume = currentVolume;
 		}
 		
-		private function looping(evt:Event):void{
-			if(count>0){
-				isLooping = true;
-				
-				channel = sound.play();
-				channel.addEventListener(Event.SOUND_COMPLETE, looping);
-				volume = currentVolume;
-				
-				count--;
-			}else{
-				channel.removeEventListener(Event.SOUND_COMPLETE, looping);
-				isLooping = false;
-				stop();	
-			}
-		}
-		
 		public function stop():void{
-			if(!sound) return;
 			isPlaying = false;
 			
-			timer.removeEventListener(TimerEvent.TIMER, dispatchCuePoints);
-			timer.stop();
-			timer.reset();
-			
-			channel.stop();
+			stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+			stream.seek(0);
+			stream.pause();
 		}
 		
 		public function pause():void {
-			if(!sound) return;
-			
-			position = channel.position;
-			
 			if(!isPlaying) {
-				timer.addEventListener(TimerEvent.TIMER, dispatchCuePoints);
-				timer.start();
+
+				stream.addEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+				stream.resume();
 				
-				channel = sound.play(position);
 				isPlaying = true;
 			}else {
-				timer.removeEventListener(TimerEvent.TIMER, dispatchCuePoints);
-				timer.reset();
+				stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+				stream.pause();
 				
-				channel.stop();
 				isPlaying = false;
 			}
 			
@@ -128,7 +135,7 @@ package sweatless.media.video{
 			var transform : SoundTransform = new SoundTransform(currentVolume, p_pan);
 			
 			transform.pan = p_pan;
-			channel.soundTransform = transform;
+			stream.soundTransform = transform;
 			currentPan = transform.pan;            
 		}
 		
@@ -140,7 +147,7 @@ package sweatless.media.video{
 			var transform : SoundTransform = new SoundTransform(p_volume, currentPan);
 			
 			transform.volume = p_volume;
-			channel.soundTransform = transform;
+			stream.soundTransform = transform;
 			currentVolume = transform.volume;            
 		}
 		
@@ -157,7 +164,7 @@ package sweatless.media.video{
 				transform = new SoundTransform(0, currentPan);
 				
 				transform.volume = 0;
-				channel.soundTransform = transform;
+				stream.soundTransform = transform;
 				
 				currentVolume = transform.volume;
 			}else{
@@ -166,8 +173,86 @@ package sweatless.media.video{
 				transform = new SoundTransform(currentVolume, currentPan);
 				
 				transform.volume = currentVolume;
-				channel.soundTransform = transform;
+				stream.soundTransform = transform;
 			}
+		}
+		
+		private function streamStatus(evt:NetStatusEvent):void{
+			if(evt.info.code == "NetStream.Play.Stop"){
+				if(count>0){
+					isLooping = true;
+					
+					count--;
+
+					play(count);
+					
+					volume = currentVolume;
+				}else{
+					isLooping = false;
+					
+					stop();	
+					
+					stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+					
+					dispatchEvent(new Event(COMPLETE));
+				}
+
+			}else if(evt.info.code == "NetStream.Seek.Notify"){
+				//stream.resume();
+			}
+		}
+
+		private function move(evt:MouseEvent):void{
+			if(!object && !stream) return;
+			
+			var value : Number = 0;
+			
+			if (evt.stageX>(object.width/2)) {
+				value = (evt.stageX/(object.width/2))-1;
+			} else if (evt.stageX<(object.width/2)){
+				value = (evt.stageX-(object.width/2))/(object.width/2);
+			}
+			
+			if(value>1) value = 0;
+			
+			volume = 1-(evt.stageY/object.width);
+			pan = value;
+		}        
+		
+		public function addMousePan(p_target:DisplayObject):void{
+			object = p_target;
+			object.stage.addEventListener(MouseEvent.MOUSE_MOVE, move);
+		}
+		
+		public function removeMousePan():void {
+			if(!object) return;
+			
+			object.stage.removeEventListener(MouseEvent.MOUSE_MOVE, move);
+			
+			volume = 1;
+			pan = 0;
+		}
+
+		override public function set width(p_value:Number):void{
+			_width = video.width = int(p_value);
+		}
+		
+		override public function set height(p_value:Number):void{
+			_height = video.height = int(p_value);
+		}
+		
+		override public function get width():Number{
+			return _width;
+		}
+		
+		override public function get height():Number{
+			return _height;
+		}
+		
+		public function destroy():void{
+			stop();
+			
+			removeMousePan();
 		}
 		
 	}
