@@ -1,7 +1,9 @@
 /**
- *	Original class by Gringo
- *  Thanks to patota team and Pedro Moraes!
+ *	Original class by Gringo (http://www.gringo.nu)
+ *  Thanks to patota team and Pedro Moraes (http://pedromoraes.net/)!
+ * 	
  */
+
 package sweatless.layout{
 	import flash.display.DisplayObject;
 	import flash.display.Stage;

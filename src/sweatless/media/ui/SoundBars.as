@@ -1,4 +1,4 @@
-package sweatless.media.sound{
+package sweatless.media.ui{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.media.SoundMixer;
@@ -6,7 +6,7 @@ package sweatless.media.sound{
 	
 	import sweatless.graphics.CommonRectangle;
 	
-	public class SpectrumBar extends Sprite{
+	public class SoundBars extends Sprite{
 		
 		private var bytes : ByteArray;
 		
@@ -15,7 +15,7 @@ package sweatless.media.sound{
 		private var offset : Number;
 		private var amplitude : Number;
 		
-		public function SpectrumBar(){
+		public function SoundBars(){
 		}
 		
 		public function create(p_amount:uint, p_width:Number, p_amplitude:Number=30):void{
