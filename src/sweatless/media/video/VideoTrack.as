@@ -96,7 +96,7 @@ package sweatless.media.video{
 		public function play(p_loops:uint=0):void{
 			isPlaying = true;
 			
-			stream.addEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+			stream.addEventListener(NetStatusEvent.NET_STATUS, status);
 			
 			p_loops>0 ? count = p_loops : null;
 
@@ -109,20 +109,19 @@ package sweatless.media.video{
 		public function stop():void{
 			isPlaying = false;
 			
-			stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+			stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 			stream.seek(0);
 			stream.pause();
 		}
 		
 		public function pause():void {
 			if(!isPlaying) {
-
-				stream.addEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+				stream.addEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.resume();
 				
 				isPlaying = true;
 			}else {
-				stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+				stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.pause();
 				
 				isPlaying = false;
@@ -177,12 +176,12 @@ package sweatless.media.video{
 			}
 		}
 		
-		private function streamStatus(evt:NetStatusEvent):void{
+		private function status(evt:NetStatusEvent):void{
 			if(evt.info.code == "NetStream.Play.Stop"){
 				if(count>0){
-					isLooping = true;
-					
 					count--;
+
+					isLooping = true;
 
 					play(count);
 					
@@ -192,7 +191,7 @@ package sweatless.media.video{
 					
 					stop();	
 					
-					stream.removeEventListener(NetStatusEvent.NET_STATUS, streamStatus);
+					stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 					
 					dispatchEvent(new Event(COMPLETE));
 				}
