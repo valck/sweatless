@@ -1,23 +1,23 @@
 package sweatless.media.video{
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
-	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.utils.Dictionary;
 	
+	import sweatless.events.CustomEvent;
+	
 	public class VideoTrack extends Sprite{
 		
-		public static const TYPE_BITMAP : String = "bitmap";
-		public static const TYPE_VIDEO : String = "video";
-		
+		public static const CUEPOINT : String = "cuepoint";
 		public static const COMPLETE : String = "complete";
-		public static const START : String = "start";
 
+		private var _duration : Number;
 		private var _width : Number;
 		private var _height : Number;
 
@@ -28,6 +28,8 @@ package sweatless.media.video{
 		private var _looping : Boolean;
 		private var _mute : Boolean;
 
+		private var properties : Dictionary;
+		
 		private var stream : NetStream;
 		private var video : Video;
 		
@@ -42,7 +44,7 @@ package sweatless.media.video{
 			video = new Video();
 			addChild(video);
 		}
-		
+
 		public function get isMute():Boolean{
 			return _mute;
 		}
@@ -85,12 +87,35 @@ package sweatless.media.video{
 		
 		public function set track(p_netstream:NetStream):void{
 			stream = p_netstream;
-			
 			video.attachNetStream(stream);
 		}
 		
 		public function get track():NetStream{
 			return stream;
+		}
+		
+		public function set seek(p_offset:Number):void{
+			stream.pause();
+			stream.seek(p_offset);
+			stream.resume();
+		}
+		
+		public function get seek():Number{
+			return stream.time;
+		}
+		
+		public function get duration():Number{
+			return properties ? properties["duration"] : NaN;
+		}
+		
+		public function set metadata(p_object:*):void{
+			properties = new Dictionary();
+			
+			for(var prop:String in p_object) {
+				properties[String(prop)] = String(p_object[prop]);
+			}
+			
+			stream.client.onCuePoint = onCuePoint;
 		}
 		
 		public function play(p_loops:uint=0):void{
@@ -179,25 +204,17 @@ package sweatless.media.video{
 		private function status(evt:NetStatusEvent):void{
 			if(evt.info.code == "NetStream.Play.Stop"){
 				if(count>0){
-					count--;
-
 					isLooping = true;
-
+					count--;
 					play(count);
-					
-					volume = currentVolume;
 				}else{
 					isLooping = false;
-					
 					stop();	
-					
 					stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
-					
 					dispatchEvent(new Event(COMPLETE));
 				}
-
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
-				//stream.resume();
+
 			}
 		}
 
@@ -231,6 +248,12 @@ package sweatless.media.video{
 			volume = 1;
 			pan = 0;
 		}
+		
+		private function onCuePoint(p_object:Object):void {
+			//trace(p_object.name + "\t" + p_object.time);
+			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
+		}
+
 
 		override public function set width(p_value:Number):void{
 			_width = video.width = int(p_value);
@@ -241,11 +264,11 @@ package sweatless.media.video{
 		}
 		
 		override public function get width():Number{
-			return _width;
+			return properties ? properties["width"] : _width;
 		}
 		
 		override public function get height():Number{
-			return _height;
+			return properties ? properties["height"] : _height;
 		}
 		
 		public function destroy():void{
