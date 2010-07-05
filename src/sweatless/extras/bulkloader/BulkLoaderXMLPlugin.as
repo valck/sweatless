@@ -1,5 +1,7 @@
 package sweatless.extras.bulkloader{
     import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
+    
+    import sweatless.utils.StringUtils;
 
     dynamic public class BulkLoaderXMLPlugin extends LazyBulkLoader {
 
@@ -17,7 +19,7 @@ package sweatless.extras.bulkloader{
 			xml..asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
 			
     		for each (var asset:XML in xml..asset) {
-    			add(String(asset.@url), {id:String(asset.@id)});
+    			add(String(asset.@url), {id:String(asset.@id), pauseAtStart:asset.@paused ? true : false});
     		}
     	}
     }

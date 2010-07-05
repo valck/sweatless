@@ -24,6 +24,7 @@ package sweatless.media.video{
 		private var _deblocking : int = 3;
 		private var _smoothing : Boolean;
 		
+		private var _rewind : Boolean;
 		private var _playing : Boolean;
 		private var _looping : Boolean;
 		private var _mute : Boolean;
@@ -43,6 +44,14 @@ package sweatless.media.video{
 		public function VideoTrack(){
 			video = new Video();
 			addChild(video);
+		}
+
+		public function get autoRewind():Boolean{
+			return _rewind;
+		}
+
+		public function set autoRewind(value:Boolean):void{
+			_rewind = value;
 		}
 
 		public function get isMute():Boolean{
@@ -90,10 +99,6 @@ package sweatless.media.video{
 			video.attachNetStream(stream);
 		}
 		
-		public function get track():NetStream{
-			return stream;
-		}
-		
 		public function set seek(p_offset:Number):void{
 			stream.pause();
 			stream.seek(p_offset);
@@ -118,11 +123,12 @@ package sweatless.media.video{
 			stream.client.onCuePoint = onCuePoint;
 		}
 		
-		public function play(p_loops:uint=0):void{
+		public function play(p_loops:uint=0, p_auto_rewind:Boolean=false):void{
 			isPlaying = true;
 			
 			stream.addEventListener(NetStatusEvent.NET_STATUS, status);
-			
+
+			_rewind = p_auto_rewind;
 			p_loops>0 ? count = p_loops : null;
 
 			stream.seek(0);
@@ -209,11 +215,12 @@ package sweatless.media.video{
 					play(count);
 				}else if(count==0){
 					isLooping = false;
-					stop();	
+					stop();
 					stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 				}
 				
-				!isPlaying ? dispatchEvent(new Event(COMPLETE)) : null;
+				!isPlaying ? dispatchEvent(new Event(VideoTrack.COMPLETE)) : null;
+				!isPlaying && _rewind ? stream.seek(0) : null;
 				
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
 
