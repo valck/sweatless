@@ -207,15 +207,18 @@ package sweatless.media.video{
 					isLooping = true;
 					count--;
 					play(count);
-				}else{
+				}else if(count==0){
 					isLooping = false;
 					stop();	
 					stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
-					dispatchEvent(new Event(COMPLETE));
 				}
+				
+				!isPlaying ? dispatchEvent(new Event(COMPLETE)) : null;
+				
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
 
 			}
+
 		}
 
 		private function move(evt:MouseEvent):void{
