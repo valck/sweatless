@@ -19,7 +19,7 @@ package sweatless.extras.bulkloader{
 			xml..asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
 			
     		for each (var asset:XML in xml..asset) {
-    			add(String(asset.@url), {id:String(asset.@id), pauseAtStart:asset.@paused ? true : false});
+    			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
     		}
     	}
     }
