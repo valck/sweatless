@@ -254,7 +254,6 @@ package sweatless.media.video{
 			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
 		}
 
-
 		override public function set width(p_value:Number):void{
 			_width = video.width = int(p_value);
 		}
