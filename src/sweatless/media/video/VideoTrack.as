@@ -123,12 +123,11 @@ package sweatless.media.video{
 			stream.client.onCuePoint = onCuePoint;
 		}
 		
-		public function play(p_loops:uint=0, p_auto_rewind:Boolean=false):void{
+		public function play(p_loops:uint=0):void{
 			isPlaying = true;
 			
 			stream.addEventListener(NetStatusEvent.NET_STATUS, status);
 
-			_rewind = p_auto_rewind;
 			p_loops>0 ? count = p_loops : null;
 
 			stream.seek(0);
@@ -147,15 +146,13 @@ package sweatless.media.video{
 		
 		public function pause():void {
 			if(!isPlaying) {
+				isPlaying = true;
 				stream.addEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.resume();
-				
-				isPlaying = true;
 			}else {
+				isPlaying = false;
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.pause();
-				
-				isPlaying = false;
 			}
 			
 			volume = currentVolume;
@@ -213,19 +210,16 @@ package sweatless.media.video{
 					isLooping = true;
 					count--;
 					play(count);
-				}else if(count==0){
+				}else{
+					isPlaying = false;
 					isLooping = false;
-					stop();
 					stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
+					_rewind ? stop() : null;
 				}
-				
 				!isPlaying ? dispatchEvent(new Event(VideoTrack.COMPLETE)) : null;
-				!isPlaying && _rewind ? stream.seek(0) : null;
-				
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
 
 			}
-
 		}
 
 		private function move(evt:MouseEvent):void{
