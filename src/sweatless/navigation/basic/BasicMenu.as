@@ -75,5 +75,8 @@ package sweatless.navigation.basic{
 			if(stage) parent.removeChild(this);
 		}
 		
+		public static function toString():String{
+			return "BasicMenu";
+		}
 	}
 }

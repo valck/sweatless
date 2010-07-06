@@ -100,9 +100,7 @@ package sweatless.media.video{
 		}
 		
 		public function set seek(p_offset:Number):void{
-			stream.pause();
 			stream.seek(p_offset);
-			stream.resume();
 		}
 		
 		public function get seek():Number{
@@ -218,7 +216,7 @@ package sweatless.media.video{
 				}
 				!isPlaying ? dispatchEvent(new Event(VideoTrack.COMPLETE)) : null;
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
-
+				
 			}
 		}
 
@@ -276,7 +274,8 @@ package sweatless.media.video{
 		
 		public function destroy():void{
 			stop();
-			
+			stream.close();
+			video.clear();
 			removeMousePan();
 		}
 		

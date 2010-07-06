@@ -1,6 +1,6 @@
 /**
- *	Original class by Gringo (http://www.gringo.nu)
- *  Thanks to patota team and Pedro Moraes (http://pedromoraes.net/)!
+ *	Original class by Gringo team (http://www.gringo.nu/) and Pedro Moraes (http://pedromoraes.net/)
+ *  Thanks a lot guys!
  * 	
  */
 

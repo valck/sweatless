@@ -68,10 +68,6 @@ package sweatless.navigation{
 			Layers.add("debug");
 		}
 		
-		public function progress(evt:BulkProgressEvent):void{
-			trace("progress:", evt.percentLoaded);
-		}
-		
 		private function removeLoadListeners(evt:Event):void{
 			loader.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
@@ -80,6 +76,10 @@ package sweatless.navigation{
 			Navigation.init();
 			
 			build();
+		}
+		
+		protected function progress(evt:BulkProgressEvent):void{
+			throw new Error("Please, override this method.");
 		}
 		
 		protected function build():void{
