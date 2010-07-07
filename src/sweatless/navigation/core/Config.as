@@ -1,12 +1,17 @@
 package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
+	import sweatless.layout.Layers;
+	import sweatless.navigation.basics.BasicLoading;
+	import sweatless.ui.LoaderBar;
+	
 	public final class Config{
 		
 		private static var file : XML;
 		private static var actualArea : String;
 		private static var initialized : Boolean;
 		private static var parameters : Dictionary = new Dictionary();
+		private static var loadings : Dictionary = new Dictionary();
 		
 		public static function get started():Boolean{
 			return initialized;
@@ -104,7 +109,16 @@ package sweatless.navigation.core{
 			
 			return dependencies;
 		}
-		
+
+		public static function getLoading(p_id:String):BasicLoading{
+			return loadings[p_id];
+		}
+
+		public static function addLoading(p_loading:Class, p_id:String):void{
+			!Layers.exists("loading") ? Layers.add("loading") : null;
+			loadings[p_id] = Layers.get("loading").addChild(new p_loading());
+		}
+
 		public static function hasDeeplink(p_deeplink:String):Boolean{
 			for(var key : String in getAllDeeplinks()){
 				if(p_deeplink == getAllDeeplinks()[key]) return true;

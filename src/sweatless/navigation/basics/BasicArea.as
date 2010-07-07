@@ -1,4 +1,4 @@
-package sweatless.navigation.basic{
+package sweatless.navigation.basics{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	

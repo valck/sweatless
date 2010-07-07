@@ -2,7 +2,7 @@ package sweatless.ui{
 	import flash.events.Event;
 	
 	import sweatless.graphics.CommonRectangle;
-	import sweatless.navigation.basic.BasicLoading;
+	import sweatless.navigation.basics.BasicLoading;
 
 	public class LoaderBar extends BasicLoading{
 		
@@ -38,11 +38,11 @@ package sweatless.ui{
 			alpha = 0;
 		}
 		
-		override public function show(evt:Event):void{
+		override public function show():void{
 			alpha = 1;
 		}
 		
-		override public function hide(evt:Event):void{
+		override public function hide():void{
 			alpha = 0;
 		}
 		

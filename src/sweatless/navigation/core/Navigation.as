@@ -18,7 +18,7 @@ package sweatless.navigation.core{
 	import sweatless.events.Broadcaster;
 	import sweatless.layout.Align;
 	import sweatless.layout.Layers;
-	import sweatless.navigation.basic.BasicArea;
+	import sweatless.navigation.basics.BasicArea;
 	import sweatless.utils.StringUtils;
 	
 	public final class Navigation{
@@ -33,6 +33,8 @@ package sweatless.navigation.core{
 			if(Config.started) throw new Error("Navigation already initialized.");
 			
 			broadcaster = Broadcaster.getInstance();
+			
+			Layers.add("navigation");
 
 			for(var i:uint=0; i<Config.areas.length(); i++){
 				var area : String = Config.areas[i].@id;
@@ -45,7 +47,7 @@ package sweatless.navigation.core{
 			}
 
 			if(ExternalInterface.available && Config.areas..@deeplink.length() > 0){
-				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, extchange);
+				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, change);
 			}else{
 				if(Config.firstArea){
 					Config.currentAreaID = Config.firstArea;
@@ -153,6 +155,17 @@ package sweatless.navigation.core{
 
 			}
 		}
+
+		
+		public static function addLoading():void{
+			//Config.addLoading(LoaderBar, "sweatless");
+			//Config.getLoading("sweatless").show();
+		}
+		
+		public static function progress(evt:BulkProgressEvent):void{
+			//Config.getLoading("sweatless").progress = evt.percentLoaded;
+		}
+		
 		
 		private static function setDeeplink():void{
 			SWFAddress.setTitle(Config.getAreaAdditionals(Config.currentAreaID, "@title"));
@@ -161,7 +174,7 @@ package sweatless.navigation.core{
 			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
 		}
 
-		private static function extchange(evt:SWFAddressEvent):void{
+		private static function change(evt:SWFAddressEvent):void{
 			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getValue());
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Config.currentAreaID)));
 		}

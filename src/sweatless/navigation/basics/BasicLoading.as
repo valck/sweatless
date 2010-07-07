@@ -1,4 +1,4 @@
-package sweatless.navigation.basic{
+package sweatless.navigation.basics{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -7,10 +7,19 @@ package sweatless.navigation.basic{
 		public static const COMPLETE : String = "complete";
 		
 		private var _progress : Number=0;
+		private var _created : Boolean;
 		
 		public function BasicLoading(){
 		}
 		
+		public function get created():Boolean{
+			return _created;
+		}
+
+		public function set created(value:Boolean):void{
+			_created = value;
+		}
+
 		public function create(evt:Event):void{
 			throw new Error("Please, override this method.");
 		}
@@ -24,11 +33,11 @@ package sweatless.navigation.basic{
 			p_progress >= 1 ? dispatchEvent(new Event(BasicLoading.COMPLETE)) : null;
 		}
 
-		public function show(evt:Event):void{
+		public function show():void{
 			throw new Error("Please, override this method.");
 		}
 		
-		public function hide(evt:Event):void{
+		public function hide():void{
 			throw new Error("Please, override this method.");
 		}
 		

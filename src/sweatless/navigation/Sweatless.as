@@ -12,6 +12,7 @@ package sweatless.navigation{
 	import sweatless.layout.Layers;
 	import sweatless.navigation.core.Config;
 	import sweatless.navigation.core.Navigation;
+	import sweatless.ui.LoaderBar;
 
 	public class Sweatless extends Sprite{
 
@@ -23,8 +24,6 @@ package sweatless.navigation{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.showDefaultContextMenu = false;
 			stage.stageFocusRect = false;
-
-			var sig : Signature = new Signature(this);
 			
 			tabEnabled = false;
 			
@@ -40,6 +39,8 @@ package sweatless.navigation{
 		}
 		
 		private function loadConfig():void{
+			var sig : Signature = new Signature(this);
+
 			loader = new BulkLoaderXMLPlugin(String(Config.getFlashVars("CONFIG")), "sweatless");
 			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
@@ -53,6 +54,7 @@ package sweatless.navigation{
 			Config.source = loader.source;
 			
 			addLayers();
+			addLoading();
 		}
 		
 		private function addLayers():void{
@@ -62,10 +64,6 @@ package sweatless.navigation{
 				Layers.add(Config.layers[i]["@id"]);
 				Config.layers[i]["@depth"] ? Layers.swapDepth(Config.layers[i]["@id"], Config.layers[i]["@depth"]) : null;
 			};
-			
-			Layers.add("navigation");
-			Layers.add("loading");
-			Layers.add("debug");
 		}
 		
 		private function removeLoadListeners(evt:Event):void{
@@ -78,12 +76,17 @@ package sweatless.navigation{
 			build();
 		}
 		
-		protected function progress(evt:BulkProgressEvent):void{
-			throw new Error("Please, override this method.");
+		public function addLoading():void{
+			Config.addLoading(LoaderBar, "sweatless");
+			Config.getLoading("sweatless").show();
 		}
 		
-		protected function build():void{
-			throw new Error("Please, override this method.");
+		public function progress(evt:BulkProgressEvent):void{
+			Config.getLoading("sweatless").progress = evt.percentLoaded;
+		}
+		
+		public function build():void{
+			Config.getLoading("sweatless").hide();
 		}
 	}
 }
@@ -118,15 +121,15 @@ internal class Signature extends EventDispatcher{
 		
 		var item1:ContextMenuItem = new ContextMenuItem("View FullScreen" );
 		item1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
-		menu.customItems.push( item1 );
+		menu.customItems.push(item1);
 		
 		var item2:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
 		item2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
-		menu.customItems.push( item2 );
+		menu.customItems.push(item2);
 		
 		var item3:ContextMenuItem = new ContextMenuItem("Built with Sweatless Framework", true);
 		item3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
-		menu.customItems.push( item3 );
+		menu.customItems.push(item3);
 		
 		menu.customItems[0].enabled = true;
 		menu.customItems[1].enabled = false;
