@@ -29,7 +29,7 @@ package sweatless.media.sound{
 		private var currentPan : Number = 0;
 		
         private var count : uint;
-        private var position : Number;
+        private var _position : Number;
         private var object : DisplayObject;
 		
 		private var cuePoints : Dictionary;
@@ -73,6 +73,28 @@ package sweatless.media.sound{
 		public function get track():Sound{
 			return sound;
 		}
+		
+		public function get position():Number{
+			if(!channel) return NaN;
+			return channel.position;
+		}
+		
+		public function get bytesLoaded():Number{
+			if(!sound) return NaN;
+			return sound.bytesLoaded;
+		}
+		
+		public function get bytesTotal():Number{
+			if(!sound) return NaN;
+			return sound.bytesTotal;
+		}
+		
+		public function get length():Number{
+			if(!sound) return NaN;
+			if(sound.bytesLoaded >= sound.bytesTotal) return sound.length;
+			return sound.length/sound.bytesLoaded *sound.bytesTotal;
+		}
+		
 		
 		public function addCuePoint(p_id:String, p_time:String):void {
 			if(hasCuePoint(p_id)) throw new Error("The cuepoint "+ p_id +" already exists.");
@@ -201,13 +223,13 @@ package sweatless.media.sound{
 		public function pause():void {
 			if(!sound) return;
 			
-			position = channel.position;
+			_position = channel.position;
 			
 			if(!isPlaying) {
 				timer.addEventListener(TimerEvent.TIMER, dispatchCuePoints);
 				timer.start();
 				
-                channel = sound.play(position);
+                channel = sound.play(_position);
                 isPlaying = true;
             }else {
 				timer.removeEventListener(TimerEvent.TIMER, dispatchCuePoints);
@@ -219,6 +241,24 @@ package sweatless.media.sound{
 			
 			volume = currentVolume;
         }
+		
+		public function seek(time:Number):void{
+			if(!sound || !channel) return;
+			if(time > length) return;
+			
+			if(isPlaying) {
+				
+				channel.stop();
+				channel = sound.play(time);
+				
+			}else {
+				
+				_position = time;
+				
+			}
+			
+			volume = currentVolume;
+		}
         
  		public function set pan(p_pan:Number):void {
             var transform : SoundTransform = new SoundTransform(currentVolume, p_pan);
