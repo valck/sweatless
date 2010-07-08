@@ -11,6 +11,7 @@ package sweatless.navigation.basics{
 		
 		private var _type : String;
 		private var _area : String;
+		private var _order : uint;
 		private var _label : String;
 		private var _external : Boolean;
 
@@ -21,6 +22,7 @@ package sweatless.navigation.basics{
 			addEventListener(Event.ADDED_TO_STAGE, check);
 		}
 		
+
 		private function check(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, check);
 			
@@ -51,6 +53,14 @@ package sweatless.navigation.basics{
 		
 		public function set type(p_type:String):void{
 			_type = p_type;
+		}
+		
+		public function get order():uint{
+			return _order;
+		}
+
+		public function set order(p_value:uint):void{
+			_order = p_value;
 		}
 		
 		public function get external():Boolean{
@@ -111,14 +121,14 @@ package sweatless.navigation.basics{
 			
 			if(stage) parent.removeChild(this);
 		}
-		
-		public static function toString():String{
-			return "BasicMenuButton";
-		}				
 
 		override public function get name():String{
 			return area;
 		}
+		
+		public static function toString():String{
+			return "BasicMenuButton";
+		}				
 	}
 }
 

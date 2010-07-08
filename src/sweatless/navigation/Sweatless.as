@@ -77,16 +77,12 @@ package sweatless.navigation{
 		}
 		
 		public function addLoading():void{
-			Config.addLoading(LoaderBar, "sweatless");
-			Config.getLoading("sweatless").show();
 		}
 		
 		public function progress(evt:BulkProgressEvent):void{
-			Config.getLoading("sweatless").progress = evt.percentLoaded;
 		}
 		
 		public function build():void{
-			Config.getLoading("sweatless").hide();
 		}
 	}
 }
@@ -111,10 +107,10 @@ internal class Signature extends EventDispatcher{
 	public function Signature(p_scope : InteractiveObject){
 		scope = p_scope;
 		
-		addCustomMenu();
+		add();
 	}
 	
-	private function addCustomMenu():void {
+	private function add():void {
 		scope.stage.addEventListener(Event.FULLSCREEN, fullScreenToggle);
 		
 		menu.hideBuiltInItems();

@@ -7,17 +7,8 @@ package sweatless.navigation.basics{
 		public static const COMPLETE : String = "complete";
 		
 		private var _progress : Number=0;
-		private var _created : Boolean;
 		
 		public function BasicLoading(){
-		}
-		
-		public function get created():Boolean{
-			return _created;
-		}
-
-		public function set created(value:Boolean):void{
-			_created = value;
 		}
 
 		public function create(evt:Event):void{
