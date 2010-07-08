@@ -3,7 +3,6 @@ package sweatless.navigation.core{
 	
 	import sweatless.layout.Layers;
 	import sweatless.navigation.basics.BasicLoading;
-	import sweatless.ui.LoaderBar;
 	
 	public final class Config{
 		
@@ -157,8 +156,6 @@ package sweatless.navigation.core{
 			var all : Boolean = p_type == "*" ? true : false;
 			var buttons : Dictionary = new Dictionary();
 			
-			//trace(attributes[String(source..button[a].@*[b].name())], source..button[a].@*[b])
-			
 			for(var a:uint=0; a<uint(all ? source..button.length() : source..buttons.(@type==p_type).button.length()); a++){
 				var attributes : Object = new Object();
 				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..buttons.(@type==p_type).button[a].@*.length()); b++){
@@ -167,10 +164,6 @@ package sweatless.navigation.core{
 			
 				all ? buttons[String(source..button[a].@area)] = attributes : buttons[String(source..buttons.(@type==p_type)..button[a].@area)] = attributes;
 			}
-			
-			/*for(var i:uint=0; i<uint(all ? source..button.length() : source..buttons.(@type==p_type).button.length()); i++){
-				all ? String(source..button[i].@external) ? buttons[String(source..button[i].@external)] = String(source..button[i].@label) : buttons[String(source..button[i].@area)] = String(source..button[i].@label) : String(source..buttons.(@type==p_type)..button[i].@external) ? buttons[String(source..buttons.(@type==p_type)..button[i].@external)] = String(source..buttons.(@type==p_type)..button[i].@label) : buttons[String(source..buttons.(@type==p_type)..button[i].@area)] = String(source..buttons.(@type==p_type)..button[i].@label);
-			}*/
 			
 			return buttons;
 		}

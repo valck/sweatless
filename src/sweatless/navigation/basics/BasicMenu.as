@@ -26,7 +26,6 @@ package sweatless.navigation.basics{
 			
 			for(var area : String in Config.getMenu(p_type)){
 				buttons.push({area:Config.getMenu(p_type)[area].area != undefined ? Config.getMenu(p_type)[area].area : Config.getMenu(p_type)[area].external, label:Config.getMenu(p_type)[area].label, order:Config.getMenu(p_type)[area].order, external:ValidateUtils.isUrl(Config.getMenu(p_type)[area].external)});
-				//buttons.push({area:area, label:Config.getMenu(type)[area], external:ValidateUtils.isUrl(area)});
 			}
 		}
 

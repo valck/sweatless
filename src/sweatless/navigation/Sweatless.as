@@ -12,7 +12,6 @@ package sweatless.navigation{
 	import sweatless.layout.Layers;
 	import sweatless.navigation.core.Config;
 	import sweatless.navigation.core.Navigation;
-	import sweatless.ui.LoaderBar;
 
 	public class Sweatless extends Sprite{
 
