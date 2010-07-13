@@ -1,12 +1,15 @@
 package sweatless.display{
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.geom.Point;
 
 	public class CustomSprite extends Sprite{
-		private var newPoint : Point;
-		private var debugPoint : Shape;
 
+		private var _debug : Boolean;
+		private var anchors : Point;
+		private var temp : Point;
+		
 		public static const NONE : int = 0;
 		public static const TOP : int = 1;
 		public static const MIDDLE : int = 2;
@@ -16,10 +19,19 @@ package sweatless.display{
 		public static const RIGHT : int = 32;
 
 		public function CustomSprite() {
-			newPoint = new Point(0, 0);
+			addEventListener(Event.ADDED_TO_STAGE, created);
+		}
+		
+		private function created(evt:Event):void{
+			removeEventListener(Event.ADDED_TO_STAGE, created);
+
+			anchors = new Point();
+			temp = new Point(super.x, super.y);
+			
+			update();
 		}
 
-		public function registrationPoint(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
+		public function registration(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
 			var p_x : Number = 0;
 			var p_y : Number = 0;
 			
@@ -53,83 +65,95 @@ package sweatless.display{
 					break;
 			}
 			
-			newPoint = new Point(p_x, p_y);
+			anchors = new Point(p_x, p_y);
+			update();
 		}
 		
-		public function get _x():Number{
-			return originalPoint.x;
+		override public function get x():Number{
+			return temp.x;
 		}
 
-		public function set _x(p_value:Number):void {
-			x += p_value - originalPoint.x;
+		override public function set x(p_value:Number):void{
+			temp.x = p_value;
+			update();
 		}
 
-		public function get _y():Number {
-			return originalPoint.y;
+		override public function get y():Number{
+			return temp.y;
 		}
 		
-		public function set _y(p_value:Number):void {
-			y += p_value - originalPoint.y;
+		override public function set y(p_value:Number):void{
+			temp.y = p_value;
+			update();
 		}
 
-		public function get _scaleX():Number {
-			return scaleX;
+		override public function set scaleX(p_value:Number):void{
+			super.scaleX = p_value;
+			update();
 		}
 
-		public function set _scaleX(p_value:Number):void {
-			setProperty("scaleX", p_value);
+		override public function set scaleY(p_value:Number):void{
+			super.scaleY = p_value;
+			update();
 		}
 
-		public function get _scaleY():Number {
-			return scaleY;
+		override public function set rotation(p_value:Number):void{
+			super.rotation = p_value;
+			update();
 		}
 
-		public function set _scaleY(p_value:Number):void {
-			setProperty("scaleY", p_value);
+		override public function get mouseX():Number{
+			return Math.round(super.mouseX - anchors.x);
 		}
 
-		public function get _rotation():Number {
-			return rotation;
+		override public function get mouseY():Number{
+			return Math.round(super.mouseY - anchors.y);
 		}
-
-		public function set _rotation(p_value:Number):void {
-			setProperty("rotation", p_value);
+		
+		public function get anchorX():Number{
+			return anchors.x;
 		}
-
-		public function get _mouseX():Number {
-			return Math.round(mouseX - newPoint.x);
+		
+		public function set anchorX(p_value:Number):void{
+			anchors.x = p_value;
+			update();
 		}
-
-		public function get _mouseY():Number {
-			return Math.round(mouseY - newPoint.y);
+		
+		public function get anchorY():Number{
+			return anchors.y;
+		}
+		
+		public function set anchorY(p_value:Number):void{
+			anchors.y = p_value;
+			update();
 		}
 		
 		public function set debug(p_value:Boolean):void{
-			if(debugPoint){
-				debugPoint.graphics.clear();
-				removeChild(debugPoint);
-				debugPoint = null;
-			}
-			
-			if(p_value){
-				debugPoint = new Shape();
-				addChild(debugPoint);
-				
-				debugPoint.graphics.clear();
-				debugPoint.graphics.lineStyle(.1, 0x000000);
-				debugPoint.graphics.drawEllipse(newPoint.x-2, newPoint.y-2, 4, 4);
-				debugPoint.graphics.endFill();
-			}
+			_debug = p_value;
+			update();
 		}
 		
-		private function setProperty(p_prop:String, p_value:Number):void{
-			var a:Point = originalPoint;
-			this[p_prop] = p_value;
-
-			var b:Point = originalPoint;
-
-			x -= b.x - a.x;
-			y -= b.y - a.y;
+		private function update():void{
+			var oldPoint:Point = new Point(0, 0);
+			var newPoint:Point = new Point(anchors.x, anchors.y);
+			
+			newPoint = parent.globalToLocal(localToGlobal(newPoint));
+			oldPoint = parent.globalToLocal(localToGlobal(oldPoint));
+			
+			super.x = temp.x - (newPoint.x - oldPoint.x);
+			super.y = temp.y - (newPoint.y - oldPoint.y);
+			
+			if(_debug){
+				var circle : Shape = getChildByName("debug") ? Shape(getChildByName("debug")) : new Shape();
+				
+				circle.name = "debug";
+				addChild(circle);
+				
+				circle.graphics.clear();
+				circle.graphics.lineStyle(.1, 0x000000);
+				circle.graphics.drawEllipse(anchors.x - 2, anchors.y - 2, 4, 4);
+				circle.graphics.endFill();
+			}
 		}
 		
 		private function match(p_value:int, ...p_options:Array):int{
@@ -140,10 +164,6 @@ package sweatless.display{
 			}
 			
 			return 0;
-		}
-		
-		private function get originalPoint():Point{
-			return parent.globalToLocal(localToGlobal(newPoint));
 		}
 	}
 }
