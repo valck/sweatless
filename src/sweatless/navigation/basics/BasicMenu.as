@@ -2,6 +2,7 @@ package sweatless.navigation.basics{
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	
 	import sweatless.events.Broadcaster;
@@ -23,9 +24,10 @@ package sweatless.navigation.basics{
 			broadcaster = Broadcaster.getInstance();
 			
 			buttons = new Array();
-			
-			for(var area : String in Config.getMenu(p_type)){
-				buttons.push({area:Config.getMenu(p_type)[area].area != undefined ? Config.getMenu(p_type)[area].area : Config.getMenu(p_type)[area].external, label:Config.getMenu(p_type)[area].label, order:Config.getMenu(p_type)[area].order, external:ValidateUtils.isUrl(Config.getMenu(p_type)[area].external)});
+			var menu:Dictionary = Config.getMenu(p_type);
+
+			for(var area : String in menu){
+				buttons.push({area:menu[area].area != undefined ? menu[area].area : menu[area].external, label:menu[area].label, order:menu[area].order, external:ValidateUtils.isUrl(menu[area].external)});
 			}
 		}
 
