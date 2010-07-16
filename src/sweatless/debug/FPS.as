@@ -11,16 +11,14 @@ package sweatless.debug{
 	import flash.utils.getTimer;
 
 	public class FPS extends Sprite{
-		private var cautionPercent : int;
-		private var dangerPercent : int;
+		private var _danger : int;
 		
 		private var label : TextField;
 		private var lastFrameTime : Number;
 		private var frames : Number = 0;
 		
-		public function FPS(p_danger_percent:int=70, p_caution_percent:int=40):void{
-			dangerPercent = p_danger_percent;
-			cautionPercent = p_caution_percent;
+		public function FPS(p_danger_percent:int=65):void{
+			_danger = p_danger_percent;
 
 			addEventListener(Event.ADDED_TO_STAGE, create);
 		}
@@ -64,34 +62,24 @@ package sweatless.debug{
 			stopDrag();
 		}		
 		
-		private function caution():int{
-			var result : int =  int(stage.frameRate*cautionPercent/100);
-			return result;
-		}
-		
-		private function danger():int{
-			var result : int =  int(stage.frameRate*dangerPercent/100);
+		private function get danger():int{
+			var result : int =  int(stage.frameRate*_danger/100);
 			return result;
 		}
 		
 		private function check(evt:Event):void{
-			frames ++;
-			var time:Number = getTimer();
+			frames++;
+			
+			var time : Number = getTimer();
+			
 			if (time - lastFrameTime >= 1000){
-				var lsMem:String = String(Number(System.totalMemory/1024/1024).toFixed(1))+"MB";
+				var memory : String = String(Number(System.totalMemory/1024/1024).toFixed(1)) + "MB";
+				var player : String = Capabilities.isDebugger ? "Debug Player :)" : "Single Player :(";
 				
-				var debugger : String = Capabilities.isDebugger == true ? "Debug Player :)" : "Single Player :(";
-				
-				label.htmlText = "<p>" + debugger + "\n" + Capabilities.version + "\n" + String(frames) + "FPS / " + lsMem + "</p>";
+				label.htmlText = "<p>" + player + "\n" + Capabilities.version + "\n" + String(frames) + "FPS / " + memory + "</p>";
 				
 				graphics.clear();
-				if(frames>caution()){
-					graphics.beginFill(0xCFFCE0);
-				}else if(frames<=caution() && frames>danger()){
-					graphics.beginFill(0xFAF1AF);
-				}else if(frames<=danger()){
-					graphics.beginFill(0xFFCCCC);
-				}
+				frames>danger ? graphics.beginFill(0xCFFCE0) : graphics.beginFill(0xFFCCCC);
 				graphics.drawRect(0, 0, width, height);
 				graphics.endFill();
 				

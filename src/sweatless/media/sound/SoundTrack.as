@@ -22,15 +22,15 @@ package sweatless.media.sound{
 		private var isPlayingFrom : Boolean;
 		private var timer : Timer;
         
-        private var sound : Sound;
+		private var sound : Sound;
 		private var channel : SoundChannel;
         
 		private var currentVolume : Number = 1;
 		private var currentPan : Number = 0;
 		
-        private var count : uint;
-        private var _position : Number;
-        private var object : DisplayObject;
+		private var count : uint;
+		private var _position : Number;
+		private var object : DisplayObject;
 		
 		private var cuePoints : Dictionary;
 		private var lastCuePoint : String;

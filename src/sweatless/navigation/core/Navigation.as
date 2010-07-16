@@ -62,7 +62,7 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, loaded);
 			
-			//Config.getLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
+			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
 			
 			ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 			
@@ -111,6 +111,7 @@ package sweatless.navigation.core{
 			
 			var swf : String = Config.getInArea(Config.currentAreaID, "@swf");
 			var assets : String = Config.getAreaAdditionals(Config.currentAreaID, "@assets");
+			var tracking : String = Config.getAreaAdditionals(Config.currentAreaID, "@tracking");
 			
 			var videos : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "video");
 			var audios : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "audio");
@@ -128,6 +129,7 @@ package sweatless.navigation.core{
 				for(id in audios) loader.add(audios[id], {id:id, context:audioContext});
 				for(id in others) loader.add(others[id], {id:id});
 				
+				tracking ? loader.add(tracking, {id:"tracking"}) : null;
 				assets ? loader.add(assets, {id:"assets"}) : null;
 				loader.add(swf, {id:"swf", priority:loader.itemsTotal});
 
@@ -137,10 +139,7 @@ package sweatless.navigation.core{
 				loader.sortItemsByPriority();
 				loader.start();
 				
-				if(Config.getLoading(Config.currentAreaID)){
-					//Config.getLoading(Config.currentAreaID).create(null);
-					//Config.getLoading(Config.currentAreaID).show();
-				}
+				Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).show() : null;
 			}
 		}
 		
@@ -165,7 +164,7 @@ package sweatless.navigation.core{
 
 		public static function progress(evt:BulkProgressEvent):void{
 			Layers.swapDepth("loading", "top");
-			Config.getLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).progress = evt.percentLoaded : null;
+			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).progress = evt.percentLoaded : null;
 		}
 		
 		

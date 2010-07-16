@@ -9,10 +9,11 @@ package sweatless.navigation.basics{
 		private var _progress : Number=0;
 		
 		public function BasicLoading(){
+			addEventListener(Event.ADDED_TO_STAGE, create);
 		}
 
 		public function create(evt:Event):void{
-			throw new Error("Please, override this method.");
+			removeEventListener(Event.ADDED_TO_STAGE, create);
 		}
 		
 		public function get progress():Number{

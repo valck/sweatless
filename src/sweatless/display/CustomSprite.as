@@ -4,10 +4,10 @@ package sweatless.display{
 	import flash.events.Event;
 	import flash.geom.Point;
 
-	public class CustomSprite extends Sprite{
-
+	dynamic public class CustomSprite extends Sprite{
+		
 		private var _debug : Boolean;
-		private var anchors : Point;
+		private var _anchors : Point;
 		private var temp : Point;
 		
 		public static const NONE : int = 0;
@@ -25,13 +25,13 @@ package sweatless.display{
 		private function created(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, created);
 
-			anchors = new Point();
+			_anchors = new Point();
 			temp = new Point(super.x, super.y);
 			
 			update();
 		}
 
-		public function registration(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
+		public function anchors(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
 			var p_x : Number = 0;
 			var p_y : Number = 0;
 			
@@ -65,7 +65,7 @@ package sweatless.display{
 					break;
 			}
 			
-			anchors = new Point(p_x, p_y);
+			_anchors = new Point(p_x, p_y);
 			update();
 		}
 		
@@ -103,28 +103,28 @@ package sweatless.display{
 		}
 
 		override public function get mouseX():Number{
-			return Math.round(super.mouseX - anchors.x);
+			return Math.round(super.mouseX - _anchors.x);
 		}
 
 		override public function get mouseY():Number{
-			return Math.round(super.mouseY - anchors.y);
+			return Math.round(super.mouseY - _anchors.y);
 		}
 		
 		public function get anchorX():Number{
-			return anchors.x;
+			return _anchors.x;
 		}
 		
 		public function set anchorX(p_value:Number):void{
-			anchors.x = p_value;
+			_anchors.x = p_value;
 			update();
 		}
 		
 		public function get anchorY():Number{
-			return anchors.y;
+			return _anchors.y;
 		}
 		
 		public function set anchorY(p_value:Number):void{
-			anchors.y = p_value;
+			_anchors.y = p_value;
 			update();
 		}
 		
@@ -135,7 +135,7 @@ package sweatless.display{
 		
 		private function update():void{
 			var oldPoint:Point = new Point(0, 0);
-			var newPoint:Point = new Point(anchors.x, anchors.y);
+			var newPoint:Point = new Point(_anchors.x, _anchors.y);
 			
 			newPoint = parent.globalToLocal(localToGlobal(newPoint));
 			oldPoint = parent.globalToLocal(localToGlobal(oldPoint));
@@ -151,7 +151,7 @@ package sweatless.display{
 				
 				circle.graphics.clear();
 				circle.graphics.lineStyle(.1, 0x000000);
-				circle.graphics.drawEllipse(anchors.x - 2, anchors.y - 2, 4, 4);
+				circle.graphics.drawEllipse(_anchors.x - 2, _anchors.y - 2, 4, 4);
 				circle.graphics.endFill();
 			}
 		}

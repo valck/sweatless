@@ -7,7 +7,7 @@ package sweatless.data{
  
         private var saved : SharedObject;
 
-        public function SO(p_name:String="sweatless_cookie") {
+        public function SO(p_name:String="cookie") {
             saved = SharedObject.getLocal(p_name);
             //trace("loaded value: " + saved.data.value);
         }
@@ -25,16 +25,16 @@ package sweatless.data{
 				
             }
  
-            if(flushStatus) {
-                switch (flushStatus) {
-                    case SharedObjectFlushStatus.PENDING:
-                        //trace("saved");
-                        saved.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
-                        break;
-                    case SharedObjectFlushStatus.FLUSHED:
-                        //trace("flushed");
-                        break;
-                }
+            if(!flushStatus) return;
+			
+            switch (flushStatus) {
+                case SharedObjectFlushStatus.PENDING:
+                    //trace("saved");
+                    saved.addEventListener(NetStatusEvent.NET_STATUS, onFlushStatus);
+                    break;
+                case SharedObjectFlushStatus.FLUSHED:
+                    //trace("flushed");
+                    break;
             }
         }
  

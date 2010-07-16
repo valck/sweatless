@@ -56,10 +56,6 @@ package sweatless.navigation.core{
 			return String(source..services.service.(@id==p_id).@url);
 		}
 		
-		public static function getTracking(p_id:String):String{
-			return String(source..trackings.tracking.(@id==p_id).@url);
-		}
-		
 		public static function get layers():XMLList{
 			return source..layer;
 		}
@@ -107,6 +103,10 @@ package sweatless.navigation.core{
 			}
 			
 			return dependencies;
+		}
+
+		public static function hasLoading(p_id:String):Boolean{
+			return loadings[p_id] ? true : false;
 		}
 
 		public static function getLoading(p_id:String):BasicLoading{
@@ -161,7 +161,7 @@ package sweatless.navigation.core{
 				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..buttons.(@type==p_type).button[a].@*.length()); b++){
 					all ? attributes[String(source..button[a].@*[b].name())] = source..button[a].@*[b] : attributes[String(source..buttons.(@type==p_type)..button[a].@*[b].name())] = source..buttons.(@type==p_type)..button[a].@*[b];
 				}
-			
+
 				all ? buttons[String(source..button[a].@area)] = attributes : buttons[String(source..buttons.(@type==p_type)..button[a].@area)] = attributes;
 			}
 			
