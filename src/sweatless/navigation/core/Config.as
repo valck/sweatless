@@ -167,7 +167,7 @@ package sweatless.navigation.core{
 			var deeplinks : Dictionary = new Dictionary();
 			
 			for(var i:uint=0; i<areas.length(); i++){
-				deeplinks[String(areas[i].@id)] = String("/" + getAreaAdditionals(String(areas[i].@id), "@deeplink"));
+				getAreaAdditionals(String(areas[i].@id), "@deeplink") ? deeplinks[String(areas[i].@id)] = String("/" + getAreaAdditionals(String(areas[i].@id), "@deeplink")) : null;
 			}
 			
 			return deeplinks;
