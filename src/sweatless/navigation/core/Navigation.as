@@ -75,6 +75,8 @@ package sweatless.navigation.core{
 			current.addEventListener(BasicArea.READY, show);
 			current.create();
 			
+			Config.tracking ? Config.setTracking(current, String(loader.getXML("tracking")..analytics.@account), StringUtils.toBoolean(loader.getXML("tracking")..analytics.@debug)) : null;
+			
 			align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
 			
 			last = current;
@@ -111,7 +113,7 @@ package sweatless.navigation.core{
 			
 			var swf : String = Config.getInArea(Config.currentAreaID, "@swf");
 			var assets : String = Config.getAreaAdditionals(Config.currentAreaID, "@assets");
-			var tracking : String = Config.getAreaAdditionals(Config.currentAreaID, "@tracking");
+			var tracking : String = Config.tracking;
 			
 			var videos : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "video");
 			var audios : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "audio");

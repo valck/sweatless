@@ -1,4 +1,8 @@
 package sweatless.navigation.core{
+	import com.google.analytics.AnalyticsTracker;
+	import com.google.analytics.GATracker;
+	
+	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
 	
 	import sweatless.layout.Layers;
@@ -9,6 +13,7 @@ package sweatless.navigation.core{
 		private static var file : XML;
 		private static var actualArea : String;
 		private static var initialized : Boolean;
+		private static var tracker : AnalyticsTracker;
 		private static var parameters : Dictionary = new Dictionary();
 		private static var loadings : Dictionary = new Dictionary();
 		
@@ -44,6 +49,10 @@ package sweatless.navigation.core{
 			return String(source..crossdomain.@file);
 		}
 		
+		public static function get tracking():String{
+			return String(source..tracking.@file);
+		}
+		
 		public static function getFlashVars(p_name:String):Object{
 			return parameters[p_name];
 		}
@@ -54,6 +63,18 @@ package sweatless.navigation.core{
 		
 		public static function getService(p_id:String):String{
 			return String(source..services.service.(@id==p_id).@url);
+		}
+		
+		public static function setTracking(p_scope:DisplayObject, p_account:String, p_debug:Boolean):void{
+			tracker = new GATracker(p_scope, p_account, "AS3", p_debug);
+		}
+		
+		public static function trackPage(p_url:String):void{
+			tracker.trackPageview(p_url);
+		}
+		
+		public static function trackEvent(p_category:String, p_action:String, p_label:String=null, p_value:Number=NaN):void{
+			tracker.trackEvent(p_category, p_action, p_label, p_value);
 		}
 		
 		public static function get layers():XMLList{

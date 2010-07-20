@@ -3,6 +3,8 @@ package sweatless.graphics{
 	import flash.display.Shape;
 	import flash.geom.Matrix;
 	
+	import sweatless.utils.NumberUtils;
+	
 	internal class CommonGraphic extends Shape{
 		private var matrix : Matrix = new Matrix();
 		
@@ -50,7 +52,7 @@ package sweatless.graphics{
 		}
 		
 		public function set gradientRotation(p_value:Number):void{
-			_gradientRotation = p_value;
+			_gradientRotation = NumberUtils.toRadians(p_value);
 			update();
 		}
 		

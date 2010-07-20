@@ -159,9 +159,7 @@ package sweatless.display{
 		private function match(p_value:int, ...p_options:Array):int{
 			var option : int;
 			
-			while (option = p_options.pop()){
-				if ((p_value & option)==option) return option;
-			}
+			while (option = p_options.pop()) if((p_value & option)==option) return option;
 			
 			return 0;
 		}
