@@ -65,7 +65,7 @@ package sweatless.navigation.core{
 			return String(source..services.service.(@id==p_id).@url);
 		}
 		
-		public static function setTracking(p_scope:DisplayObject, p_account:String, p_debug:Boolean):void{
+		public static function initTracking(p_scope:DisplayObject, p_account:String, p_debug:Boolean):void{
 			tracker = new GATracker(p_scope, p_account, "AS3", p_debug);
 		}
 		
