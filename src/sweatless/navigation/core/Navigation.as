@@ -75,7 +75,7 @@ package sweatless.navigation.core{
 			current.addEventListener(BasicArea.READY, show);
 			current.create();
 			
-			Config.tracking ? Config.setTracking(current, String(loader.getXML("tracking")..analytics.@account), StringUtils.toBoolean(loader.getXML("tracking")..analytics.@debug)) : null;
+			Config.tracking ? Config.initTracking(current, String(loader.getXML("tracking")..analytics.@account), StringUtils.toBoolean(loader.getXML("tracking")..analytics.@debug)) : null;
 			
 			align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
 			
