@@ -12,8 +12,9 @@ package sweatless.navigation.basics{
 		private var _type : String;
 		private var _area : String;
 		private var _order : uint;
-		private var _label : String;
-		private var _external : Boolean;
+		private var _label : String;    
+		private var _external : String;
+		private var _target : String;
 
 		private var clicked : Boolean;
 		private var broadcaster : Broadcaster;
@@ -63,12 +64,20 @@ package sweatless.navigation.basics{
 			_order = p_value;
 		}
 		
-		public function get external():Boolean{
+		public function get external():String{
 			return _external;
 		}
 		
-		public function set external(p_value:Boolean):void{
+		public function set external(p_value:String):void{
 			_external = p_value;
+		}
+
+		public function get target():String{
+			return _target;
+		}
+    	
+		public function set target(p_value:String):void{
+			_target = p_value;
 		}
 		
 		public function create():void{
@@ -113,7 +122,7 @@ package sweatless.navigation.basics{
 		}
 		
 		private function click(evt:MouseEvent):void{
-			external ? navigateToURL(new URLRequest(area), "_blank") : broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+area))) : null;
+			external ? navigateToURL(new URLRequest(external), target) : broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+area))) : null;
 		}
 		
 		public function destroy():void{
