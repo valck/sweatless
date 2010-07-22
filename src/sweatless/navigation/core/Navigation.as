@@ -172,13 +172,13 @@ package sweatless.navigation.core{
 		
 		private static function setDeeplink():void{
 			SWFAddress.setTitle(Config.getAreaAdditionals(Config.currentAreaID, "@title"));
-			SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink"));
+			Config.getCurrentDeeplinkArea(SWFAddress.getPath()) != Config.currentAreaID ? SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink")) : null;
 			
 			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
 		}
 
 		private static function change(evt:SWFAddressEvent):void{
-			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getValue());
+			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getPath());
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Config.currentAreaID)));
 		}
 		
