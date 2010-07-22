@@ -20,11 +20,11 @@ package sweatless.navigation.core{
 		public static function get started():Boolean{
 			return initialized;
 		}
-
+		
 		public static function set started(p_value:Boolean):void{
 			initialized = p_value;
 		}
-
+		
 		public static function set source(p_file:XML):void{
 			file = p_file;
 		}
@@ -32,7 +32,7 @@ package sweatless.navigation.core{
 		public static function get source():XML{
 			return file;
 		}
-
+		
 		public static function get currentAreaID():String{
 			return actualArea;
 		}
@@ -102,43 +102,43 @@ package sweatless.navigation.core{
 					for(i=0; i<areas.(@id==p_id).dependencies..image.length(); i++){
 						dependencies[String(areas.(@id==p_id).dependencies..image[i].@id)] = String(areas.(@id==p_id).dependencies..image[i].@url);
 					}
-				break;
+					break;
 				
 				case "video":
 					for(i=0; i<areas.(@id==p_id).dependencies..video.length(); i++){
 						dependencies[String(areas.(@id==p_id).dependencies..video[i].@id)] = String(areas.(@id==p_id).dependencies..video[i].@url);
 					}
-				break;
+					break;
 				
 				case "audio":
 					for(i=0; i<areas.(@id==p_id).dependencies..audio.length(); i++){
 						dependencies[String(areas.(@id==p_id).dependencies..audio[i].@id)] = String(areas.(@id==p_id).dependencies..audio[i].@url);
 					}
-				break;
+					break;
 				
 				case "other":
 					for(i=0; i<areas.(@id==p_id).dependencies..other.length(); i++){
 						dependencies[String(areas.(@id==p_id).dependencies..other[i].@id)] = String(areas.(@id==p_id).dependencies..other[i].@url);
 					}
-				break;
+					break;
 			}
 			
 			return dependencies;
 		}
-
+		
 		public static function hasLoading(p_id:String):Boolean{
 			return loadings[p_id] ? true : false;
 		}
-
+		
 		public static function getLoading(p_id:String):BasicLoading{
 			return loadings[p_id];
 		}
-
+		
 		public static function addLoading(p_loading:Class, p_id:String):void{
 			!Layers.exists("loading") ? Layers.add("loading") : null;
 			loadings[p_id] = Layers.get("loading").addChild(new p_loading());
 		}
-
+		
 		public static function hasDeeplink(p_deeplink:String):Boolean{
 			for(var key : String in getAllDeeplinks()){
 				if(p_deeplink == getAllDeeplinks()[key]) return true;
@@ -173,17 +173,17 @@ package sweatless.navigation.core{
 			return deeplinks;
 		}
 		
-		public static function getMenu(p_type:String="*"):Dictionary{
+		public static function getMenu(p_type:String="*"):Array{
 			var all : Boolean = p_type == "*" ? true : false;
-			var buttons : Dictionary = new Dictionary();
+			var buttons : Array = new Array();
 			
 			for(var a:uint=0; a<uint(all ? source..button.length() : source..buttons.(@type==p_type).button.length()); a++){
 				var attributes : Object = new Object();
 				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..buttons.(@type==p_type).button[a].@*.length()); b++){
 					all ? attributes[String(source..button[a].@*[b].name())] = source..button[a].@*[b] : attributes[String(source..buttons.(@type==p_type)..button[a].@*[b].name())] = source..buttons.(@type==p_type)..button[a].@*[b];
 				}
-
-				all ? buttons[String(source..button[a].@area)] = attributes : buttons[String(source..buttons.(@type==p_type)..button[a].@area)] = attributes;
+				
+				buttons.push(attributes);
 			}
 			
 			return buttons;

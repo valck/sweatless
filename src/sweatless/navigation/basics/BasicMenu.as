@@ -5,6 +5,8 @@ package sweatless.navigation.basics{
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	
+	import molina.comunication.Comunication;
+	
 	import sweatless.events.Broadcaster;
 	import sweatless.navigation.core.Config;
 	import sweatless.utils.ValidateUtils;
@@ -24,10 +26,10 @@ package sweatless.navigation.basics{
 			broadcaster = Broadcaster.getInstance();
 			
 			buttons = new Array();
-			var menu:Dictionary = Config.getMenu(p_type);
+			var menu:Array = Config.getMenu(p_type);
 
 			for(var area : String in menu){
-				buttons.push({area:menu[area].area != undefined ? menu[area].area : menu[area].external, label:menu[area].label, order:menu[area].order, external:ValidateUtils.isUrl(menu[area].external) ? menu[area].external : null, target:menu[area].target});
+				buttons.push({area:menu[area].area != undefined ? menu[area].area : menu[area].external, label:menu[area].label, order:menu[area].order, external: ValidateUtils.isUrl(menu[area].external) ? menu[area].external : null, target:menu[area].target});
 			}
 		}
 
@@ -35,7 +37,7 @@ package sweatless.navigation.basics{
 			throw new Error("Please, override this method.");	
 		}
 		
-		private function change(evt:*):void{
+		public function change(evt:*):void{
 			var changed : BasicMenuButton = getButton(Config.currentAreaID);
 			if(!changed) throw new Error("this button doesn't exists.");
 			if(selected) selected.enabled();
@@ -63,15 +65,13 @@ package sweatless.navigation.basics{
 				button.area = buttons[i].area;
 				button.type = type;
 				button.label = buttons[i].label;
-				button.order = buttons[i].order;       
+				button.order = buttons[i].order;
 				button.external = buttons[i].external;
 				button.target = buttons[i].target;
 				
 				broadcaster.hasEvent("show_"+buttons[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+buttons[i].area), change) : null;
 				
 				results.push(button);
-				
-				buttons.sortOn("order", Array.NUMERIC);
 			}
 			
 			return results;
