@@ -24,7 +24,7 @@ package sweatless.navigation.basics{
 			broadcaster = Broadcaster.getInstance();
 			
 			buttons = new Array();
-			var menu:Array = Config.getMenu(p_type);
+			var menu : Array = Config.getMenu(p_type);
 
 			for(var area : String in menu){
 				buttons.push({area:menu[area].area != undefined ? menu[area].area : menu[area].external, label:menu[area].label, order:menu[area].order, external: ValidateUtils.isUrl(menu[area].external) ? menu[area].external : null, target:menu[area].target});
@@ -70,6 +70,8 @@ package sweatless.navigation.basics{
 				broadcaster.hasEvent("show_"+buttons[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+buttons[i].area), change) : null;
 				
 				results.push(button);
+				
+				buttons.sortOn("order", Array.NUMERIC);
 			}
 			
 			return results;

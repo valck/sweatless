@@ -1,4 +1,6 @@
 package sweatless.navigation.core{
+	import br.com.stimuli.loading.BulkLoader;
+	
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 	
@@ -7,6 +9,7 @@ package sweatless.navigation.core{
 	
 	import sweatless.layout.Layers;
 	import sweatless.navigation.basics.BasicLoading;
+	import sweatless.utils.StringUtils;
 	
 	public final class Config{
 		
@@ -65,16 +68,12 @@ package sweatless.navigation.core{
 			return String(source..services.service.(@id==p_id).@url);
 		}
 		
-		public static function initTracking(p_scope:DisplayObject, p_account:String, p_debug:Boolean):void{
-			tracker = new GATracker(p_scope, p_account, "AS3", p_debug);
+		public static function addAnalytics(p_scope:DisplayObject):void{
+			tracker = new GATracker(p_scope, String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
 		}
 		
-		public static function trackPage(p_url:String):void{
-			tracker.trackPageview(p_url);
-		}
-		
-		public static function trackEvent(p_category:String, p_action:String, p_label:String=null, p_value:Number=NaN):void{
-			tracker.trackEvent(p_category, p_action, p_label, p_value);
+		public static function trackPage(p_id:String):void{
+			BulkLoader.getLoader("sweatless").hasItem("tracking") ? tracker.trackPageview(String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackpage.(@id==p_id).@tag)) : null;
 		}
 		
 		public static function get layers():XMLList{
@@ -157,7 +156,7 @@ package sweatless.navigation.core{
 		
 		public static function getCurrentDeeplinkArea(p_deeplink:String):String{
 			for(var key : String in getAllDeeplinks()){
-				if(p_deeplink == getAllDeeplinks()[key]){return key};
+				if(p_deeplink == getAllDeeplinks()[key]) return key;
 			}			
 			return null;
 		}

@@ -55,6 +55,8 @@ package sweatless.navigation.core{
 				}
 			}
 
+			Config.tracking ? Config.addAnalytics(Layers.get("navigation")) : null;
+
 			Config.started = true;
 		}
 
@@ -74,8 +76,6 @@ package sweatless.navigation.core{
 			
 			current.addEventListener(BasicArea.READY, show);
 			current.create();
-			
-			Config.tracking ? Config.initTracking(current, String(loader.getXML("tracking")..analytics.@account), StringUtils.toBoolean(loader.getXML("tracking")..analytics.@debug)) : null;
 			
 			align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
 			
@@ -164,11 +164,10 @@ package sweatless.navigation.core{
 			}
 		}
 
-		public static function progress(evt:BulkProgressEvent):void{
+		private static function progress(evt:BulkProgressEvent):void{
 			Layers.swapDepth("loading", "top");
 			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).progress = evt.percentLoaded : null;
 		}
-		
 		
 		private static function setDeeplink():void{
 			SWFAddress.setTitle(Config.getAreaAdditionals(Config.currentAreaID, "@title"));
