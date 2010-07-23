@@ -1,0 +1,13 @@
+.settings
+.actionScriptProperties
+.flexProperties
+.flexLibProperties
+.FlexUnitSettings
+.project
+.as3proj
+.as3_classpath
+.DS_Store
+*.yaml
+*.tmproj
+*.as3proj
+obj/*
