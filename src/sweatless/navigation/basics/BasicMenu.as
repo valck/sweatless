@@ -5,8 +5,6 @@ package sweatless.navigation.basics{
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	
-	import molina.comunication.Comunication;
-	
 	import sweatless.events.Broadcaster;
 	import sweatless.navigation.core.Config;
 	import sweatless.utils.ValidateUtils;
