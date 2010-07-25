@@ -54,32 +54,37 @@ package sweatless.navigation.core{
 					load(null);
 				}
 			}
-
+			
 			Config.tracking ? Config.addAnalytics(Layers.get("navigation")) : null;
 
 			Config.started = true;
 		}
 
 		private static function loaded(evt:Event):void{
-			loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
-			loader.removeEventListener(BulkProgressEvent.COMPLETE, loaded);
-			
-			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
-			
-			ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
-			
-			current = BasicArea(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
-			current.id = Config.currentAreaID;
-			
-			Layers.swapDepth("navigation", Layers.depth("navigation"));
-			Layers.get("navigation").addChild(current);
-			
-			current.addEventListener(BasicArea.READY, show);
-			current.create();
-			
-			align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
-			
-			last = current;
+			try{
+				loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
+				loader.removeEventListener(BulkProgressEvent.COMPLETE, loaded);
+				
+				Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
+				last && Config.hasLoading(last.id) ? Config.getLoading(last.id).hide() : null;
+				
+				ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
+				
+				current = BasicArea(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
+				current.id = Config.currentAreaID;
+				
+				Layers.swapDepth("navigation", Layers.depth("navigation"));
+				Layers.get("navigation").addChild(current);
+				
+				current.addEventListener(BasicArea.READY, show);
+				current.create();
+				
+				align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
+				
+				last = current;
+			}catch(e:Error){
+				//trace(e.getStackTrace());
+			}
 		}
 		
 		private static function show(evt:Event):void{
@@ -90,7 +95,7 @@ package sweatless.navigation.core{
 		private static function hide(evt:Event):void{
 			setID(evt.type);
 			
-			if(last && last.id == Config.currentAreaID) return;
+			//if(last && last.id == Config.currentAreaID) return;
 			
 			if(last) {
 				last.addEventListener(BasicArea.CLOSED, load);
@@ -108,6 +113,7 @@ package sweatless.navigation.core{
 			
 			Config.crossdomain ? Security.loadPolicyFile(Config.crossdomain) : null;
 			
+			var cache : Boolean = StringUtils.toBoolean(Config.getAreaAdditionals(Config.currentAreaID, "@cache"));
 			var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Config.crossdomain));
 			var imageContext : LoaderContext = new LoaderContext(Boolean(Config.crossdomain), ApplicationDomain.currentDomain);
 			
@@ -120,20 +126,21 @@ package sweatless.navigation.core{
 			var images : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "image");
 			var others : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "other");
 			
-			loader = BulkLoader.getLoader(Config.currentAreaID) || new BulkLoader(Config.currentAreaID);
-			
-			if (loader.hasItem(swf, true)){
+			loader = BulkLoader.getLoader(Config.currentAreaID) ? BulkLoader.getLoader(Config.currentAreaID) : new BulkLoader(Config.currentAreaID);
+			//loader.logLevel = BulkLoader.LOG_INFO;
+
+			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
 			}else{
 				var id : *;
-				for(id in videos) loader.add(videos[id], {id:id, pausedAtStart:true});
-				for(id in images) loader.add(images[id], {id:id, context:imageContext});
-				for(id in audios) loader.add(audios[id], {id:id, context:audioContext});
-				for(id in others) loader.add(others[id], {id:id});
+				for(id in videos) loader.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
+				for(id in images) loader.add(images[id], {id:id, context:imageContext, preventCache:!cache});
+				for(id in audios) loader.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
+				for(id in others) loader.add(others[id], {id:id, preventCache:!cache});
 				
-				tracking ? loader.add(tracking, {id:"tracking"}) : null;
-				assets ? loader.add(assets, {id:"assets"}) : null;
-				loader.add(swf, {id:"swf", priority:loader.itemsTotal});
+				tracking ? loader.add(tracking, {id:"tracking", preventCache:!cache}) : null;
+				assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
+				loader.add(swf, {id:"swf", priority:loader.highestPriority, preventCache:!cache});
 
 				loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
 				loader.addEventListener(BulkProgressEvent.COMPLETE, loaded);
@@ -150,7 +157,7 @@ package sweatless.navigation.core{
 			
 			last.destroy();
 
-			StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? null : removeLoadedItens();
+			!StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : null;
 		}
 		
 		private static function removeLoadedItens():void{

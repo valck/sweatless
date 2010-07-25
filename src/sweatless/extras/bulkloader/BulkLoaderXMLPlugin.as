@@ -9,11 +9,11 @@ package sweatless.extras.bulkloader{
         
 			public var source : XML;
 		
-    	function BulkLoaderXMLPlugin(url : *, name : String){
+    	function BulkLoaderXMLPlugin(url:*, name:String){
     		super (url, name);
     	}
     
-    	lazy_loader override function _lazyParseLoader(p_data : String) : void{
+    	lazy_loader override function _lazyParseLoader(p_data:String):void{
     	    var xml : XML = source = new XML(p_data);
     		
 			xml..fixed.asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
