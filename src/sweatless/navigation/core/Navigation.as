@@ -34,8 +34,6 @@ package sweatless.navigation.core{
 			
 			broadcaster = Broadcaster.getInstance();
 			
-			Layers.add("navigation");
-
 			for(var i:uint=0; i<Config.areas.length(); i++){
 				var area : String = Config.areas[i].@id;
 				
@@ -55,7 +53,7 @@ package sweatless.navigation.core{
 				}
 			}
 			
-			Config.tracking ? Config.addAnalytics(Layers.get("navigation")) : null;
+			Config.tracking ? Config.addAnalytics(Layers.get("debug")) : null;
 
 			Config.started = true;
 		}
@@ -66,14 +64,12 @@ package sweatless.navigation.core{
 				loader.removeEventListener(BulkProgressEvent.COMPLETE, loaded);
 				
 				Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
-				last && Config.hasLoading(last.id) ? Config.getLoading(last.id).hide() : null;
 				
 				ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
 				current = BasicArea(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
 				current.id = Config.currentAreaID;
 				
-				Layers.swapDepth("navigation", Layers.depth("navigation"));
 				Layers.get("navigation").addChild(current);
 				
 				current.addEventListener(BasicArea.READY, show);
@@ -94,8 +90,6 @@ package sweatless.navigation.core{
 		
 		private static function hide(evt:Event):void{
 			setID(evt.type);
-			
-			//if(last && last.id == Config.currentAreaID) return;
 			
 			if(last) {
 				last.addEventListener(BasicArea.CLOSED, load);
@@ -172,13 +166,12 @@ package sweatless.navigation.core{
 		}
 
 		private static function progress(evt:BulkProgressEvent):void{
-			Layers.swapDepth("loading", "top");
 			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).progress = evt.percentLoaded : null;
 		}
 		
 		private static function setDeeplink():void{
 			SWFAddress.setTitle(Config.getAreaAdditionals(Config.currentAreaID, "@title"));
-			Config.getCurrentDeeplinkArea(SWFAddress.getPath()) != Config.currentAreaID ? SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink")) : null;
+			Config.getAreaByDeeplink(SWFAddress.getPath()) != Config.currentAreaID ? SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink")) : null;
 			
 			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
 		}

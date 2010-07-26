@@ -134,7 +134,6 @@ package sweatless.navigation.core{
 		}
 		
 		public static function addLoading(p_loading:Class, p_id:String):void{
-			!Layers.exists("loading") ? Layers.add("loading") : null;
 			loadings[p_id] = Layers.get("loading").addChild(new p_loading());
 		}
 		
@@ -152,13 +151,6 @@ package sweatless.navigation.core{
 			}
 			
 			return getAreaAdditionals(firstArea, "@deeplink");
-		}
-		
-		public static function getCurrentDeeplinkArea(p_deeplink:String):String{
-			for(var key : String in getAllDeeplinks()){
-				if(p_deeplink == getAllDeeplinks()[key]) return key;
-			}			
-			return null;
 		}
 		
 		public static function getAreaByDeeplink(p_deeplink:String):String{
