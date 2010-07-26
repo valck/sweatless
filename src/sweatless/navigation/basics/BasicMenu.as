@@ -20,15 +20,8 @@ package sweatless.navigation.basics{
 		
 		public function BasicMenu(p_type:String="*"){
 			type = p_type;
-			
+			buttons = Config.getMenu(type);
 			broadcaster = Broadcaster.getInstance();
-			
-			buttons = new Array();
-			var menu : Array = Config.getMenu(p_type);
-
-			for(var area : String in menu){
-				buttons.push({area:menu[area].area != undefined ? menu[area].area : menu[area].external, label:menu[area].label, order:menu[area].order, external: ValidateUtils.isUrl(menu[area].external) ? menu[area].external : null, target:menu[area].target});
-			}
 		}
 
 		public function create():void{
@@ -60,18 +53,16 @@ package sweatless.navigation.basics{
 			for(var i:uint=0; i<buttons.length; i++){
 				var button : BasicMenuButton = new p_skin();
 				
-				button.area = buttons[i].area;
+				for (var prop:* in buttons[i]){
+					button.setProperty(prop, buttons[i][prop]);
+				}
+
 				button.type = type;
-				button.label = buttons[i].label;
-				button.order = buttons[i].order;
-				button.external = buttons[i].external;
-				button.target = buttons[i].target;
+				button.area = buttons[i].area == undefined ? buttons[i].external : buttons[i].area;
 				
 				broadcaster.hasEvent("show_"+buttons[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+buttons[i].area), change) : null;
 				
 				results.push(button);
-				
-				buttons.sortOn("order", Array.NUMERIC);
 			}
 			
 			return results;

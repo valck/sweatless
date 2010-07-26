@@ -178,7 +178,7 @@ package sweatless.navigation.core{
 			for(var a:uint=0; a<uint(all ? source..button.length() : source..buttons.(@type==p_type).button.length()); a++){
 				var attributes : Object = new Object();
 				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..buttons.(@type==p_type).button[a].@*.length()); b++){
-					all ? attributes[String(source..button[a].@*[b].name())] = source..button[a].@*[b] : attributes[String(source..buttons.(@type==p_type)..button[a].@*[b].name())] = source..buttons.(@type==p_type)..button[a].@*[b];
+					all ? attributes[String(source..button[a].@*[b].name())] = String(source..button[a].@*[b]) : attributes[String(source..buttons.(@type==p_type)..button[a].@*[b].name())] = String(source..buttons.(@type==p_type)..button[a].@*[b]);
 				}
 				
 				buttons.push(attributes);

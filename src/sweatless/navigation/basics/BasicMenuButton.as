@@ -6,15 +6,10 @@ package sweatless.navigation.basics{
 	import flash.net.navigateToURL;
 	
 	import sweatless.events.Broadcaster;
-
+	
 	public class BasicMenuButton extends Sprite{
 		
-		private var _type : String;
-		private var _area : String;
-		private var _order : uint;
-		private var _label : String;    
-		private var _external : String;
-		private var _target : String;
+		private var data : Object = new Object();
 
 		private var clicked : Boolean;
 		private var broadcaster : Broadcaster;
@@ -23,61 +18,60 @@ package sweatless.navigation.basics{
 			addEventListener(Event.ADDED_TO_STAGE, check);
 		}
 		
-
 		private function check(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, check);
 			
 			broadcaster = Broadcaster.getInstance();
 			
-			if(!_area) throw new Error("Please, set a area for this button.");
+			if(!area) throw new Error("Please, set a area for this button, before add to stage");
 		}
 		
 		public function get area():String{
-			return _area;
+			return data.area;
 		}
 		
 		public function set area(p_area:String):void{
-			_area = p_area;
+			data["area"] = p_area; 
 		}
 		
 		public function get label():String{
-			return _label;
+			return data.label;
 		}
 		
 		public function set label(p_label:String):void{
-			_label = p_label;
+			data["label"] = p_label;
 		}
 		
 		public function get type():String{
-			return _type;
+			return data.type;
 		}
 		
 		public function set type(p_type:String):void{
-			_type = p_type;
-		}
-		
-		public function get order():uint{
-			return _order;
-		}
-
-		public function set order(p_value:uint):void{
-			_order = p_value;
+			data["type"] = p_type;
 		}
 		
 		public function get external():String{
-			return _external;
+			return data.external;
 		}
 		
 		public function set external(p_value:String):void{
-			_external = p_value;
+			data["external"] = p_value;
 		}
-
+		
 		public function get target():String{
-			return _target;
+			return data.target;
 		}
-    	
+		
 		public function set target(p_value:String):void{
-			_target = p_value;
+			data["target"] = p_value;
+		}
+		
+		public function getProperty(p_id:String):*{
+			return data[p_id];
+		}
+		
+		public function setProperty(p_id:String, p_value:*):void{
+			data[p_id] = p_value;
 		}
 		
 		public function create():void{
@@ -102,7 +96,7 @@ package sweatless.navigation.basics{
 		
 		public function enabled():void{
 			clicked ? clicked = false : null;
-
+			
 			addListeners();
 			out(null);
 		}
@@ -130,7 +124,7 @@ package sweatless.navigation.basics{
 			
 			if(stage) parent.removeChild(this);
 		}
-
+		
 		override public function get name():String{
 			return area;
 		}
