@@ -51,6 +51,7 @@ package sweatless.navigation{
 			
 			Config.source = loader.source;
 			
+			addFonts();
 			addDefaultLayers();
 			addLoading();
 			addFPS();
@@ -83,6 +84,9 @@ package sweatless.navigation{
 			Navigation.init();
 			
 			build();
+		}
+		
+		public function addFonts():void{
 		}
 		
 		public function addLoading():void{
