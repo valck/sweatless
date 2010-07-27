@@ -77,7 +77,7 @@ package sweatless.navigation.core{
 				current.addEventListener(BasicArea.READY, show);
 				current.create();
 				
-				align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")));
+				align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@top")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@bottom")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@right")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@left")));
 				
 				last = current;
 			}catch(e:Error){
@@ -149,7 +149,7 @@ package sweatless.navigation.core{
 		}
 		
 		private static function unload(evt:Event):void{
-			Align.remove(last, Number(Config.getAreaAdditionals(last.id, "@width")), Number(Config.getAreaAdditionals(last.id, "@height")));
+			Align.remove(last, Number(Config.getAreaAdditionals(last.id, "@width")), Number(Config.getAreaAdditionals(last.id, "@height")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@top")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@bottom")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@right")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@left")));
 			
 			last.destroy();
 			
@@ -187,14 +187,19 @@ package sweatless.navigation.core{
 			Config.currentAreaID = p_value.slice(5);
 		}
 		
-		private static function align(p_area:BasicArea, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0):void{
+		private static function align(p_area:BasicArea, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
 			p_hanchor = !p_hanchor ? "NONE" : p_hanchor.toUpperCase();
 			p_vanchor = !p_vanchor ? "NONE" : p_vanchor.toUpperCase();
 			
 			p_width = (p_width==0 || !p_width) ? undefined : p_width;
 			p_height = (p_height==0 || !p_height) ? undefined : p_height;
 			
-			Align.add(p_area, Align[p_hanchor] + Align[p_vanchor], {width:p_width, height:p_height});
+			p_top = !p_top ? 0 : p_top;
+			p_bottom = !p_bottom ? 0 : p_bottom;
+			p_right = !p_right ? 0 : p_right;
+			p_left = !p_left ? 0 : p_left;
+			
+			Align.add(p_area, Align[p_hanchor] + Align[p_vanchor], {width:p_width, height:p_height, margin_bottom:p_bottom, margin_top:p_top, margin_left:p_left, margin_right:p_right});
 		}
 	}
 }
