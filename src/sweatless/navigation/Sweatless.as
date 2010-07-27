@@ -128,17 +128,17 @@ internal class Signature extends EventDispatcher{
 		
 		menu.hideBuiltInItems();
 		
-		var item1:ContextMenuItem = new ContextMenuItem("View FullScreen" );
-		item1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
-		menu.customItems.push(item1);
+		var view:ContextMenuItem = new ContextMenuItem("View FullScreen" );
+		view.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
+		menu.customItems.push(view);
 		
-		var item2:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
-		item2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
-		menu.customItems.push(item2);
+		var exit:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
+		exit.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
+		menu.customItems.push(exit);
 		
-		var item3:ContextMenuItem = new ContextMenuItem("Built with Sweatless AS3 Framework", true);
-		item3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
-		menu.customItems.push(item3);
+		var linkCode:ContextMenuItem = new ContextMenuItem("Built with Sweatless AS3 Framework", true);
+		linkCode.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
+		menu.customItems.push(linkCode);
 		
 		menu.customItems[0].enabled = true;
 		menu.customItems[1].enabled = false;
