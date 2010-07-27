@@ -70,8 +70,6 @@ package sweatless.navigation.core{
 				current = BasicArea(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
 				current.id = Config.currentAreaID;
 				
-				Config.currentArea = current;
-				
 				Layers.get("navigation").addChild(current);
 				
 				current.addEventListener(BasicArea.READY, show);
@@ -105,6 +103,7 @@ package sweatless.navigation.core{
 			if(last){
 				last.removeEventListener(BasicArea.CLOSED, load);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
+				last = null;
 			}
 			
 			Config.crossdomain ? Security.loadPolicyFile(Config.crossdomain) : null;

@@ -8,7 +8,6 @@ package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
 	import sweatless.layout.Layers;
-	import sweatless.navigation.basics.BasicArea;
 	import sweatless.navigation.basics.BasicLoading;
 	import sweatless.utils.StringUtils;
 	
@@ -16,7 +15,6 @@ package sweatless.navigation.core{
 		
 		private static var _started : Boolean;
 		private static var _source : XML;
-		private static var _currentArea : BasicArea;
 		private static var _currentAreaID : String;
 		
 		private static var trackerGA : AnalyticsTracker;
@@ -45,14 +43,6 @@ package sweatless.navigation.core{
 		
 		public static function set currentAreaID(p_area:String):void{
 			_currentAreaID = p_area;
-		}
-		
-		public static function get currentArea():BasicArea{
-			return _currentArea;
-		}
-		
-		public static function set currentArea(p_area:BasicArea):void{
-			_currentArea = p_area;
 		}
 		
 		public static function get firstArea():String{
