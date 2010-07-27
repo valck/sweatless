@@ -18,7 +18,9 @@ package sweatless.navigation{
 		
 		private var loader : BulkLoaderXMLPlugin;
 		
-		public function Sweatless(){
+		public function Sweatless(p_fullScreen:Boolean=true){
+			var signature : Signature = new Signature(this, p_fullScreen);
+			
 			stage.addEventListener(Event.RESIZE, resize);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -33,8 +35,6 @@ package sweatless.navigation{
 		}
 		
 		private function loadConfig():void{
-			var signature : Signature = new Signature(this);
-			
 			loader = new BulkLoaderXMLPlugin(String(Config.getFlashVars("CONFIG")), "sweatless");
 			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
@@ -113,12 +113,14 @@ import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
 internal class Signature extends EventDispatcher{
+	
 	private var menu : ContextMenu = new ContextMenu();
-	
 	private var scope : InteractiveObject;
+	private var fullScreen : Boolean;
 	
-	public function Signature(p_scope : InteractiveObject){
+	public function Signature(p_scope : InteractiveObject, p_fullScreen:Boolean){
 		scope = p_scope;
+		fullScreen = p_fullScreen;
 		
 		add();
 	}
@@ -128,20 +130,22 @@ internal class Signature extends EventDispatcher{
 		
 		menu.hideBuiltInItems();
 		
-		var view:ContextMenuItem = new ContextMenuItem("View FullScreen" );
-		view.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
-		menu.customItems.push(view);
-		
-		var exit:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
-		exit.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
-		menu.customItems.push(exit);
+		if(fullScreen){
+			var view:ContextMenuItem = new ContextMenuItem("View FullScreen" );
+			view.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
+			menu.customItems.push(view);
+			
+			var exit:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
+			exit.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
+			menu.customItems.push(exit);
+			
+			menu.customItems[0].enabled = true;
+			menu.customItems[1].enabled = false;
+		};
 		
 		var linkCode:ContextMenuItem = new ContextMenuItem("Built with Sweatless AS3 Framework", true);
 		linkCode.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
 		menu.customItems.push(linkCode);
-		
-		menu.customItems[0].enabled = true;
-		menu.customItems[1].enabled = false;
 		
 		scope.contextMenu = menu;
 	}
