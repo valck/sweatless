@@ -13,9 +13,9 @@ package sweatless.navigation{
 	import sweatless.layout.Layers;
 	import sweatless.navigation.core.Config;
 	import sweatless.navigation.core.Navigation;
-
+	
 	public class Sweatless extends Sprite{
-
+		
 		private var loader : BulkLoaderXMLPlugin;
 		
 		public function Sweatless(){
@@ -24,7 +24,7 @@ package sweatless.navigation{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.showDefaultContextMenu = false;
 			stage.stageFocusRect = false;
-
+			
 			for(var i:String in loaderInfo.parameters){
 				Config.setFlashVars(i, loaderInfo.parameters[i]);
 			}
@@ -32,13 +32,9 @@ package sweatless.navigation{
 			loadConfig();
 		}
 		
-		private function resize(evt:Event):void{
-			scrollRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-		}
-		
 		private function loadConfig():void{
 			var signature : Signature = new Signature(this);
-
+			
 			loader = new BulkLoaderXMLPlugin(String(Config.getFlashVars("CONFIG")), "sweatless");
 			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
@@ -64,7 +60,7 @@ package sweatless.navigation{
 		
 		private function addDefaultLayers():void{
 			Layers.init(this);
-
+			
 			Layers.add("navigation");
 			Layers.add("loading");
 			
@@ -72,7 +68,7 @@ package sweatless.navigation{
 				Layers.add(Config.layers[i]["@id"]);
 				Config.layers[i]["@depth"] ? Layers.swapDepth(Config.layers[i]["@id"], Config.layers[i]["@depth"]) : null;
 			};
-
+			
 			Layers.add("debug");
 		}
 		
@@ -84,6 +80,10 @@ package sweatless.navigation{
 			Navigation.init();
 			
 			build();
+		}
+		
+		public function resize(evt:Event):void{
+			scrollRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 		}
 		
 		public function addFonts():void{

@@ -8,40 +8,51 @@ package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
 	import sweatless.layout.Layers;
+	import sweatless.navigation.basics.BasicArea;
 	import sweatless.navigation.basics.BasicLoading;
 	import sweatless.utils.StringUtils;
 	
 	public final class Config{
 		
-		private static var file : XML;
-		private static var actualArea : String;
-		private static var initialized : Boolean;
-		private static var tracker : AnalyticsTracker;
+		private static var _started : Boolean;
+		private static var _source : XML;
+		private static var _currentArea : BasicArea;
+		private static var _currentAreaID : String;
+		
+		private static var trackerGA : AnalyticsTracker;
 		private static var parameters : Dictionary = new Dictionary();
 		private static var loadings : Dictionary = new Dictionary();
 		
 		public static function get started():Boolean{
-			return initialized;
+			return _started;
 		}
 		
 		public static function set started(p_value:Boolean):void{
-			initialized = p_value;
+			_started = p_value;
 		}
 		
 		public static function set source(p_file:XML):void{
-			file = p_file;
+			_source = p_file;
 		}
 		
 		public static function get source():XML{
-			return file;
+			return _source;
 		}
 		
 		public static function get currentAreaID():String{
-			return actualArea;
+			return _currentAreaID;
 		}
 		
 		public static function set currentAreaID(p_area:String):void{
-			actualArea = p_area;
+			_currentAreaID = p_area;
+		}
+		
+		public static function get currentArea():BasicArea{
+			return _currentArea;
+		}
+		
+		public static function set currentArea(p_area:BasicArea):void{
+			_currentArea = p_area;
 		}
 		
 		public static function get firstArea():String{
@@ -69,11 +80,11 @@ package sweatless.navigation.core{
 		}
 		
 		public static function addAnalytics(p_scope:DisplayObject):void{
-			tracker = new GATracker(p_scope, String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
+			trackerGA = new GATracker(p_scope, String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
 		}
 		
 		public static function trackPage(p_id:String):void{
-			BulkLoader.getLoader("sweatless").hasItem("tracking") ? tracker.trackPageview(String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackpage.(@id==p_id).@tag)) : null;
+			BulkLoader.getLoader("sweatless").hasItem("tracking") ? trackerGA.trackPageview(String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackpage.(@id==p_id).@tag)) : null;
 		}
 		
 		public static function get layers():XMLList{
