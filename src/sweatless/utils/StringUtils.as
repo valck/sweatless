@@ -24,6 +24,12 @@ package sweatless.utils{
 			return args[0] === true ? str.replace(/^.|\b./g, _upperCase) : str.replace(/(^\w)/, _upperCase);
 		}
 		
+		public static function toHTMLSmartCaps(p_string:String, minSize:int=10, maxSize:int=15):String{
+			var pattern:RegExp = /[a-z]*?([A-Z])/g;
+			var str:String = p_string.replace(pattern, "<font size='"+maxSize+"'>$1<font size='"+minSize+"'>");
+			return str.toUpperCase();
+		}
+			
 		public static function addDecimalZero(p_value:Number):String{
 			var result : String = String(p_value);
 			
