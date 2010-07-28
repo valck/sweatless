@@ -19,10 +19,12 @@ package sweatless.navigation.core{
 	import sweatless.layout.Align;
 	import sweatless.layout.Layers;
 	import sweatless.navigation.basics.BasicArea;
+	import sweatless.navigation.basics.BasicLoading;
 	import sweatless.utils.StringUtils;
 	
 	public final class Navigation{
 		
+		private static var loading : BasicLoading;
 		private static var loader : BulkLoader;
 		private static var broadcaster : Broadcaster;
 		
@@ -58,12 +60,21 @@ package sweatless.navigation.core{
 			Config.started = true;
 		}
 		
+		private static function onLoadComplete(evt:Event):void{
+			loader.removeEventListener(BulkProgressEvent.PROGRESS, onProgress);
+			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
+			
+			if(loading){
+				loading.addEventListener(BasicLoading.COMPLETE, loaded);
+				loading.hide();
+			}else{
+				loaded(null);
+			}
+		}
+		
 		private static function loaded(evt:Event):void{
 			try{
-				loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
-				loader.removeEventListener(BulkProgressEvent.COMPLETE, loaded);
-				
-				Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).hide() : null;
+				loading.removeEventListener(BasicLoading.COMPLETE, loaded);
 				
 				ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
@@ -121,8 +132,7 @@ package sweatless.navigation.core{
 			var images : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "image");
 			var others : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "other");
 			
-			loader = BulkLoader.getLoader(Config.currentAreaID) ? BulkLoader.getLoader(Config.currentAreaID) : new BulkLoader(Config.currentAreaID);
-			//loader.logLevel = BulkLoader.LOG_INFO;
+			loader = BulkLoader.getLoader(Config.currentAreaID) || new BulkLoader(Config.currentAreaID);
 			
 			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
@@ -137,13 +147,15 @@ package sweatless.navigation.core{
 				assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
 				loader.add(swf, {id:"swf", priority:loader.highestPriority, preventCache:!cache});
 				
-				loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
-				loader.addEventListener(BulkProgressEvent.COMPLETE, loaded);
+				loader.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
+				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
+				
+				loading = Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID) : Config.hasLoading("default") ? Config.getLoading("default") : null; 
+				loading ? Layers.get("loading").addChild(loading) : null;
+				loading ? loading.show() : null;
 				
 				loader.sortItemsByPriority();
 				loader.start();
-				
-				Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).show() : null;
 			}
 		}
 		
@@ -166,8 +178,8 @@ package sweatless.navigation.core{
 			}
 		}
 		
-		private static function progress(evt:BulkProgressEvent):void{
-			Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID).progress = evt.percentLoaded : null;
+		private static function onProgress(evt:BulkProgressEvent):void{
+			loading ? loading.progress = evt.percentLoaded : null;
 		}
 		
 		private static function setDeeplink():void{

@@ -134,8 +134,9 @@ package sweatless.navigation.core{
 			return loadings[p_id];
 		}
 		
-		public static function addLoading(p_loading:Class, p_id:String):void{
-			loadings[p_id] = Layers.get("loading").addChild(new p_loading());
+		public static function addLoading(p_loading:Class, p_id:String="default"):void{
+			if(hasLoading(p_id)) throw new Error("The loading "+ p_id +" already added.");
+			loadings[p_id] = new p_loading();
 		}
 		
 		public static function hasDeeplink(p_deeplink:String):Boolean{

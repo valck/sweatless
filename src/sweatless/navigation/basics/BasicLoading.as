@@ -4,14 +4,17 @@ package sweatless.navigation.basics{
 	
 	public class BasicLoading extends Sprite{
 		
+		public static const OPEN : String = "open";
 		public static const COMPLETE : String = "complete";
 		
 		private var _progress : Number=0;
 		
 		public function BasicLoading(){
+			mouseChildren = false;
+			mouseEnabled = false;
 			addEventListener(Event.ADDED_TO_STAGE, create);
 		}
-
+		
 		public function create(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
 		}
@@ -22,15 +25,14 @@ package sweatless.navigation.basics{
 		
 		public function set progress(p_progress:Number):void{
 			_progress = p_progress
-			p_progress >= 1 ? dispatchEvent(new Event(BasicLoading.COMPLETE)) : null;
 		}
-
+		
 		public function show():void{
-			throw new Error("Please, override this method.");
+			dispatchEvent(new Event(BasicLoading.OPEN));
 		}
 		
 		public function hide():void{
-			throw new Error("Please, override this method.");
+			dispatchEvent(new Event(BasicLoading.COMPLETE));
 		}
 		
 		public function destroy():void{
