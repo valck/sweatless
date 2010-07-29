@@ -14,6 +14,14 @@ package sweatless.graphics{
 			graphics.drawRoundRectComplex(0, 0, width, height, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
 		}
 		
+		public function set bothCorners(p_value:Number):void{
+			TLCorner = p_value;
+			TRCorner = p_value;
+			BLCorner = p_value;
+			BRCorner = p_value;
+			update();
+		}
+		
 		public function set topLeftCorner(p_value:Number):void{
 			TLCorner = p_value;
 			update();
