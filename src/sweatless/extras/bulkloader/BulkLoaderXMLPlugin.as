@@ -18,7 +18,7 @@ package sweatless.extras.bulkloader{
 			
 			xml..fixed.asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
 			
-			xml..tracking.@file == undefined ? add(String(xml..tracking.@file), {id:String("tracking")}) : null;
+			xml..tracking.@file != undefined ? add(String(xml..tracking.@file), {id:String("tracking")}) : null;
 			
 			for each (var asset:XML in xml..fixed.asset) {
 				add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
