@@ -40,10 +40,12 @@ package sweatless.ui{
 		
 		override public function show():void{
 			alpha = 1;
+			super.show();
 		}
 		
 		override public function hide():void{
 			alpha = 0;
+			super.hide();
 		}
 		
 		override public function set progress(p_progress:Number):void{
