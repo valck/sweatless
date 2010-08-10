@@ -1,11 +1,6 @@
 package sweatless.utils{
 	public class StringUtils{
 		
-		/*
-		TODO
-		field.restrict = p_type == "string" ? "ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ A-Z" : p_type == "number" ? "0-9" : p_type == "email" ? "A-Z 0-9 @ _ . \\-" : p_type == "message" ? "âãàáèéêìíõòôóùûúÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚçÇ A-Z a-z . \\' \\\" \\- ( ) ? ' , _ ! & 0-9" : "";
-		*/
-		
 		public static function reverse(p_string:String):String {
 			if (p_string == null) return "";
 			
