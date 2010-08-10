@@ -1,6 +1,10 @@
 package sweatless.utils{
 	public class StringUtils{
 		
+		public static function hasString(p_str:String, p_search:String):Boolean{
+			return p_str.split(p_search).length != 1 ? true : false;
+		}
+		
 		public static function reverse(p_string:String):String {
 			if (p_string == null) return "";
 			
@@ -23,6 +27,12 @@ package sweatless.utils{
 			var str:String = trimLeft(p_string);
 
 			return args[0] === true ? str.replace(/^.|\b./g, _upperCase) : str.replace(/(^\w)/, _upperCase);
+		}
+		
+		public function toTimeFormat(p_miliseconds:Number):String{
+			var minutes : Number = Math.floor(p_miliseconds / 60);
+			var seconds : Number = Math.floor(p_miliseconds % 60);
+			return String(minutes + ":" + seconds);
 		}
 		
 		public static function toHTMLSmartCaps(p_string:String, minSize:int=10, maxSize:int=15):String{
@@ -75,7 +85,7 @@ package sweatless.utils{
         }
 		
 		public static function toBoolean(p_string:String):Boolean{
-			p_string = p_string.toLocaleLowerCase();
+			p_string = p_string.toLowerCase();
 			
 			return p_string == "yes" || p_string == "true" || p_string == "1" ? true : false;
 		}

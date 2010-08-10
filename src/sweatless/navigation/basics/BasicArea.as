@@ -2,7 +2,9 @@ package sweatless.navigation.basics{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	public class BasicArea extends Sprite{
+	import sweatless.interfaces.IDisplay;
+	
+	public class BasicArea extends Sprite implements IDisplay{
 		
 		public static const READY : String = "ready";
 		public static const CLOSED: String = "closed";

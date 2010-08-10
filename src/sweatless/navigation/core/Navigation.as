@@ -47,7 +47,7 @@ package sweatless.navigation.core{
 			}
 			
 			if(ExternalInterface.available && Config.areas..@deeplink.length() > 0){
-				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, change);
+				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
 			}else{
 				if(Config.firstArea){
 					Config.currentAreaID = Config.firstArea;
@@ -189,7 +189,7 @@ package sweatless.navigation.core{
 			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
 		}
 		
-		private static function change(evt:SWFAddressEvent):void{
+		private static function onChange(evt:SWFAddressEvent):void{
 			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getPath());
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Config.currentAreaID)));
 		}
