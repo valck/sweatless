@@ -30,24 +30,20 @@ package sweatless.ui{
 			fill.visible = false;
 		}
 
-		private function handlers(evt:MouseEvent):void{
-			switch(evt.type){
-				case "click":
-					clicked = fill.visible = clicked ? false : true;
-				break;
-			}
+		private function click(evt:MouseEvent):void{
+			clicked = fill.visible = clicked ? false : true;
 		}
 
 		public function addListeners():void{
 			buttonMode = true;
 			
-			addEventListener(MouseEvent.CLICK, handlers);
+			addEventListener(MouseEvent.CLICK, click);
 		}
 
 		public function removeListeners():void{
 			buttonMode = false;
 			
-			removeEventListener(MouseEvent.CLICK, handlers);
+			removeEventListener(MouseEvent.CLICK, click);
 		}
 
 		public function get value():Boolean{
