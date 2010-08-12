@@ -6,7 +6,6 @@ package sweatless.navigation.primitives{
 	
 	import sweatless.events.Broadcaster;
 	import sweatless.interfaces.IBase;
-	import sweatless.utils.ArrayUtils;
 	
 	internal class Base extends Sprite implements IBase{
 		
