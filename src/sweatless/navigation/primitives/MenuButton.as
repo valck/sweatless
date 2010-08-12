@@ -118,7 +118,7 @@ package sweatless.navigation.primitives{
 		
 		override public function destroy():void{
 			removeListeners();
-			
+			removeAllEventListeners();
 			if(stage) parent.removeChild(this);
 		}
 		
