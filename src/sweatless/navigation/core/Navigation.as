@@ -18,18 +18,18 @@ package sweatless.navigation.core{
 	import sweatless.events.Broadcaster;
 	import sweatless.layout.Align;
 	import sweatless.layout.Layers;
-	import sweatless.navigation.basics.BasicArea;
-	import sweatless.navigation.basics.BasicLoading;
+	import sweatless.navigation.primitives.Area;
+	import sweatless.navigation.primitives.Loading;
 	import sweatless.utils.StringUtils;
 	
 	public final class Navigation{
 		
-		private static var loading : BasicLoading;
+		private static var loading : Loading;
 		private static var loader : BulkLoader;
 		private static var broadcaster : Broadcaster;
 		
-		private static var current : BasicArea;
-		private static var last : BasicArea;
+		private static var current : Area;
+		private static var last : Area;
 		
 		public static function init():void{
 			if(Config.started) throw new Error("Navigation already initialized.");
@@ -65,7 +65,7 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 			
 			if(loading){
-				loading.addEventListener(BasicLoading.COMPLETE, loaded);
+				loading.addEventListener(Loading.COMPLETE, loaded);
 				loading.hide();
 			}else{
 				loaded(null);
@@ -74,16 +74,16 @@ package sweatless.navigation.core{
 		
 		private static function loaded(evt:Event):void{
 			try{
-				loading.removeEventListener(BasicLoading.COMPLETE, loaded);
+				loading.removeEventListener(Loading.COMPLETE, loaded);
 				
 				ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
-				current = BasicArea(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
+				current = Area(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
 				current.id = Config.currentAreaID;
 				
 				Layers.get("navigation").addChild(current);
 				
-				current.addEventListener(BasicArea.READY, show);
+				current.addEventListener(Area.READY, show);
 				current.create();
 				
 				align(current, Config.getAreaAdditionals(Config.currentAreaID, "@halign"), Config.getAreaAdditionals(Config.currentAreaID, "@valign"), Number(Config.getAreaAdditionals(Config.currentAreaID, "@width")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@height")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@top")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@bottom")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@right")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@left")));
@@ -95,7 +95,7 @@ package sweatless.navigation.core{
 		}
 		
 		private static function show(evt:Event):void{
-			current.removeEventListener(BasicArea.READY, show);
+			current.removeEventListener(Area.READY, show);
 			current.show();
 		}
 		
@@ -103,7 +103,7 @@ package sweatless.navigation.core{
 			setID(evt.type);
 			
 			if(last) {
-				last.addEventListener(BasicArea.CLOSED, load);
+				last.addEventListener(Area.CLOSED, load);
 				last.hide();
 			}else{
 				load(null);
@@ -112,7 +112,7 @@ package sweatless.navigation.core{
 		
 		private static function load(evt:Event):void{
 			if(last){
-				last.removeEventListener(BasicArea.CLOSED, load);
+				last.removeEventListener(Area.CLOSED, load);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
 				last = null;
 			}
@@ -150,7 +150,7 @@ package sweatless.navigation.core{
 				loader.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
 				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
-				loading = Config.hasLoading(Config.currentAreaID) ? Config.getLoading(Config.currentAreaID) : Config.hasLoading("default") ? Config.getLoading("default") : null; 
+				loading = Loadings.exists(Config.currentAreaID) ? Loadings.get(Config.currentAreaID) : Loadings.exists("default") ? Loadings.get("default") : null; 
 				loading ? Layers.get("loading").addChild(loading) : null;
 				loading ? loading.show() : null;
 				
@@ -198,7 +198,7 @@ package sweatless.navigation.core{
 			Config.currentAreaID = p_value.slice(5);
 		}
 		
-		private static function align(p_area:BasicArea, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
+		private static function align(p_area:Area, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
 			p_hanchor = !p_hanchor ? "NONE" : p_hanchor.toUpperCase();
 			p_vanchor = !p_vanchor ? "NONE" : p_vanchor.toUpperCase();
 			

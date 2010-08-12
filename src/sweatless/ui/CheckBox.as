@@ -81,6 +81,8 @@ package sweatless.ui{
 		}
 		
 		public function destroy():void{
+			removeListeners();
+			
 			fill.destroy();
 			background.destroy();
 		}

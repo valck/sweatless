@@ -7,8 +7,6 @@ package sweatless.navigation.core{
 	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
 	
-	import sweatless.layout.Layers;
-	import sweatless.navigation.basics.BasicLoading;
 	import sweatless.utils.StringUtils;
 	
 	public final class Config{
@@ -19,7 +17,6 @@ package sweatless.navigation.core{
 		
 		private static var trackerGA : AnalyticsTracker;
 		private static var parameters : Dictionary = new Dictionary();
-		private static var loadings : Dictionary = new Dictionary();
 		
 		public static function get started():Boolean{
 			return _started;
@@ -124,19 +121,6 @@ package sweatless.navigation.core{
 			}
 			
 			return dependencies;
-		}
-		
-		public static function hasLoading(p_id:String):Boolean{
-			return loadings[p_id] ? true : false;
-		}
-		
-		public static function getLoading(p_id:String):BasicLoading{
-			return loadings[p_id];
-		}
-		
-		public static function addLoading(p_loading:Class, p_id:String="default"):void{
-			if(hasLoading(p_id)) throw new Error("The loading "+ p_id +" already added.");
-			loadings[p_id] = new p_loading();
 		}
 		
 		public static function hasDeeplink(p_deeplink:String):Boolean{
