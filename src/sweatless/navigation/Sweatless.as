@@ -63,6 +63,8 @@ package sweatless.navigation{
 			
 			Layers.add("navigation");
 			Layers.add("loading");
+			Layers.get("loading").mouseChildren = false;
+			Layers.get("loading").mouseEnabled = false;
 			
 			for(var i:uint=0; i<Config.layers.length(); i++) {
 				Layers.add(Config.layers[i]["@id"]);

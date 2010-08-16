@@ -1,7 +1,10 @@
 package sweatless.navigation.primitives{
+	import br.com.stimuli.loading.BulkLoader;
+	
 	import flash.events.Event;
 	
 	import sweatless.interfaces.IDisplay;
+	import sweatless.navigation.core.Config;
 	
 	public class Area extends Base implements IDisplay{
 		
@@ -21,6 +24,10 @@ package sweatless.navigation.primitives{
 		
 		public function get id():String{
 			return _id;
+		}
+		
+		public function get loader():BulkLoader{
+			return BulkLoader.getLoader(Config.currentAreaID);
 		}
 		
 		public function navigateTo(p_areaID:String):void{
