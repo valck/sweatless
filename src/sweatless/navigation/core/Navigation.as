@@ -74,7 +74,7 @@ package sweatless.navigation.core{
 		
 		private static function loaded(evt:Event):void{
 			try{
-				loading.removeEventListener(Loading.COMPLETE, loaded);
+				loading ? loading.removeEventListener(Loading.COMPLETE, loaded) : null;
 				
 				ExternalInterface.available && Config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
@@ -90,7 +90,7 @@ package sweatless.navigation.core{
 				
 				last = current;
 			}catch(e:Error){
-				//trace(e.getStackTrace());
+				trace(e.getStackTrace());
 			}
 		}
 		
