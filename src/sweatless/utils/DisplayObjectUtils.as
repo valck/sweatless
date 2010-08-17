@@ -4,6 +4,7 @@ package sweatless.utils{
 	import flash.display.MovieClip;
 	import flash.geom.Matrix;
 	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
 	
 	public class DisplayObjectUtils{
 
@@ -16,6 +17,11 @@ package sweatless.utils{
 	
 			return p_clone;
 	    }
+		
+		public static function getClass(p_source:*, p_class:String):*{
+			var reference : Class = p_source.loaderInfo.applicationDomain.getDefinition(p_class) as Class;
+			return new reference();
+		}
 		
 		public static function removeAll(p_target:*):void{
 			if(!p_target) return;
