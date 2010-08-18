@@ -11,12 +11,11 @@ package sweatless.physics{
 	import org.cove.ape.SpringConstraint;
 	import org.cove.ape.VectorForce;
 	
+	import sweatless.extras.ape.InteractiveParticle;
 	import sweatless.utils.NumberUtils;
 	
-	import valck.extras.ape.DragableWheel;
-	
 	public class Rope extends Sprite{
-		private var neb : DragableWheel; 
+		private var neb : InteractiveParticle; 
 		private var texture : DisplayObject;
 		
 		private var distanceBetween : uint = 1;
@@ -49,9 +48,9 @@ package sweatless.physics{
 			
 			for(var i:uint=0; i<p_nodes; i++){
 				if(i == (p_nodes-1)){
-					node = new DragableWheel(0, 0, 1, false, 10);
+					node = new InteractiveParticle(0, 0, 1, false, 10);
 					
-					neb = DragableWheel(node);
+					neb = InteractiveParticle(node);
 					neb.setDisplay(texture);
 					neb.py = -texture.height;
 					p_interactive ? neb.addListeners() : null;
