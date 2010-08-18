@@ -22,10 +22,10 @@ package sweatless.physics{
 		private var distanceBetween : uint = 1;
 		
 		public function Rope(){
-			
+			config();			
 		}
 		
-		private function config():void{
+		protected function config():void{
 			APEngine.init();
 			APEngine.container = this;
 			APEngine.addForce(new VectorForce(false, 0, 3));
@@ -34,8 +34,6 @@ package sweatless.physics{
 		}
 		
 		public function create(p_texture:DisplayObject, p_nodes:uint=50, p_interactive:Boolean=false):void{
-			config();
-			
 			var group : Group = new Group();
 			var pin : CircleParticle = new CircleParticle(0, -10, 1, true);
 			var node : CircleParticle;

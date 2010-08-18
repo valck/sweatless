@@ -33,7 +33,7 @@ package sweatless.display {
 		}
 		
 		public function removeListeners():void{
-			//source.removeEventListener(MouseEvent.MOUSE_OVER, over);
+			source.removeEventListener(MouseEvent.MOUSE_MOVE, over);
 			source.removeEventListener(MouseEvent.MOUSE_OUT, out);
 		}
 		
