@@ -18,19 +18,30 @@ package sweatless.display{
 		public static const CENTER : int = 16;
 		public static const RIGHT : int = 32;
 
+		/**
+		 * The CustomSprite class is a substitute class for the native Sprite class. It adds
+		 * dynamic anchor points to Sprite.
+		 */
 		public function CustomSprite() {
 			addEventListener(Event.ADDED_TO_STAGE, created);
 		}
 		
 		private function created(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, created);
-
+			
 			_anchors = new Point();
 			temp = new Point(super.x, super.y);
 			
 			update();
 		}
-
+		
+		/**
+		 * Sets the anchors of the sprite to predefined positions. 
+		 * @param p_anchors The values to be applied to the sprite registration point. Valid values
+		 * @type sweatless.display.CustomSprite.CENTER
+		 * @type sweatless.display.CustomSprite.LEFT
+		 * @type sweatless.display.CustomSprite.MIDDLE
+		 */
 		public function anchors(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
 			var p_x : Number = 0;
 			var p_y : Number = 0;
