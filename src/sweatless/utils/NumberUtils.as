@@ -28,8 +28,8 @@ package sweatless.utils{
 			return (((p_max - p_min) / 100) * p_percent) + p_min;
 		}
 				
-		public static function rangeRandom(p_low:Number, p_high:Number):Number{
-          return Math.round(Math.random() * (p_high - p_low)) + p_low;
+		public static function rangeRandom(p_low:Number, p_high:Number, p_rounded:Boolean=false):Number{
+          return !p_rounded ? (Math.random() * (p_high - p_low)) + p_low : Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
         }
 	}
 }
