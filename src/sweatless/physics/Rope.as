@@ -9,6 +9,7 @@ package sweatless.physics{
 	import org.cove.ape.CircleParticle;
 	import org.cove.ape.Group;
 	import org.cove.ape.SpringConstraint;
+	import org.cove.ape.VectorAPE;
 	import org.cove.ape.VectorForce;
 	
 	import sweatless.extras.ape.InteractiveParticle;
