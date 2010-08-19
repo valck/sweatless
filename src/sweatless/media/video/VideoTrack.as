@@ -97,6 +97,7 @@ package sweatless.media.video{
 		public function set track(p_netstream:NetStream):void{
 			stream = p_netstream;
 			video.attachNetStream(stream);
+			stream.client.onCuePoint = onCuePoint;
 		}
 		
 		public function set seek(p_offset:Number):void{
@@ -117,8 +118,6 @@ package sweatless.media.video{
 			for(var prop:String in p_object) {
 				properties[String(prop)] = String(p_object[prop]);
 			}
-			
-			stream.client.onCuePoint = onCuePoint;
 		}
 		
 		public function play(p_loops:uint=0):void{
