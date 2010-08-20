@@ -95,7 +95,7 @@ package sweatless.physics{
 			stopRender();
 		}
 		
-		private function rendering(evt:Event):void{
+		protected function rendering(evt:Event):void{
 			APEngine.step();
 			APEngine.paint();
 		}

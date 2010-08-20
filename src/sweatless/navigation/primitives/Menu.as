@@ -1,6 +1,7 @@
 package sweatless.navigation.primitives{
 	
 	import flash.events.Event;
+	import flash.utils.getQualifiedSuperclassName;
 	
 	import sweatless.events.Broadcaster;
 	import sweatless.interfaces.IBase;
@@ -11,13 +12,14 @@ package sweatless.navigation.primitives{
 		public static const CHANGE : String = "change";
 		
 		private var type : String;
+		private var properties : Array;
 		private var buttons : Array;
 		
 		protected var selected : MenuButton;
 		
 		public function Menu(p_type:String="*"){
 			type = p_type;
-			buttons = Config.getMenu(type);
+			properties = Config.getMenu(type);
 			broadcaster = Broadcaster.getInstance();
 		}
 		
@@ -34,40 +36,36 @@ package sweatless.navigation.primitives{
 		
 		private function getButton(p_area:String):MenuButton{
 			for(var i:uint=0; i<buttons.length; i++){
-				if(getChildAt(i) is MenuButton && MenuButton(getChildAt(i)).area == p_area) return MenuButton(getChildAt(i));
+				if(buttons[i].area == p_area && buttons[i].type == type) return buttons[i];
 			}
 			return null; 
 		}
 		
 		protected final function getButtons(p_skin:Class):Array{
-			var results : Array = new Array();
-			//if(getQualifiedClassName(p_skin) != MenuButton) throw new Error("Please, extends MenuButton Class");
+			buttons = new Array();
+			if(getQualifiedSuperclassName(p_skin) != (new MenuButton).toString()) throw new Error("Please, extends MenuButton Class");
 			
-			for(var i:uint=0; i<buttons.length; i++){
+			for(var i:uint=0; i<properties.length; i++){
 				var button : MenuButton = new p_skin();
 				
-				for (var prop:* in buttons[i]){
-					button.setProperty(prop, buttons[i][prop]);
+				for (var prop:* in properties[i]){
+					button.setProperty(prop, properties[i][prop]);
 				}
 				
 				button.type = type;
-				button.area = buttons[i].area == undefined ? buttons[i].external : buttons[i].area;
+				button.area = properties[i].area == undefined ? properties[i].external : properties[i].area;
 				
-				broadcaster.hasEvent("show_"+buttons[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+buttons[i].area), change) : null;
+				broadcaster.hasEvent("show_"+properties[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+properties[i].area), change) : null;
 				
-				results.push(button);
+				buttons.push(button);
 			}
 			
-			return results;
+			return buttons;
 		}
 		
 		override public function destroy():void{
 			removeAllEventListeners();
 			if(stage) parent.removeChild(this);
-		}
-		
-		public static function toString():String{
-			return "BasicMenu";
 		}
 	}
 }

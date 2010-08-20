@@ -7,7 +7,7 @@ package sweatless.extras.ape{
 		
 		private var mouseDown : Boolean;
 		private var _angle : Number;
-
+		
 		public function InteractiveParticle(x:Number, y:Number, radius:Number, fixed:Boolean = false, mass:Number = 1, elasticity:Number = 0.3, friction:Number = 0){
 			super(x, y, radius, fixed, mass, elasticity, friction);
 			
@@ -17,11 +17,11 @@ package sweatless.extras.ape{
 		public function get angle():Number{
 			return _angle;
 		}
-
+		
 		public function set angle(value:Number):void{
 			_angle = value;
 		}
-
+		
 		public function addListeners():void{
 			mouseDown = false;
 			
@@ -42,15 +42,15 @@ package sweatless.extras.ape{
 			switch(evt.type){
 				case "mouseUp":
 					mouseDown = false;
-				break;
+					break;
 				
 				case "mouseDown":
 					mouseDown = true;
 					
 					curr.setTo((evt.stageX - sprite.parent.x), (evt.stageY - sprite.parent.y));
 					prev.setTo((evt.stageX - sprite.parent.x), (evt.stageY - sprite.parent.y));
-				break;
-
+					break;
+				
 				case "mouseMove":
 					if(!mouseDown) return;
 					
@@ -65,14 +65,13 @@ package sweatless.extras.ape{
 					sprite.rotation = center.x < 90 ? center.x : sprite.rotation;
 					
 					//trace("rotation:", sprite.rotation, "angle:", angle, px, py);
-				break;
+					break;
 			}
 		}
 		
 		public override function update(dt2:Number):void {
 			if(mouseDown) return;
-			
-			sprite.rotation = angle = sprite.rotation != 0 ? center.x : 0;
+			sprite.rotation = angle = sprite.rotation != 0 ? (center.x-px) : 0;
 			
 			super.update(dt2);
 		}
