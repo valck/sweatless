@@ -10,6 +10,8 @@ package sweatless.media.video{
 	import flash.net.NetStream;
 	import flash.utils.Dictionary;
 	
+	import org.osmf.video.CuePoint;
+	
 	import sweatless.events.CustomEvent;
 	
 	public class VideoTrack extends Sprite{
@@ -29,6 +31,7 @@ package sweatless.media.video{
 		private var _looping : Boolean;
 		private var _mute : Boolean;
 
+		private var _cuepoints:Dictionary;
 		private var properties : Dictionary;
 		
 		private var stream : NetStream;
@@ -40,6 +43,8 @@ package sweatless.media.video{
 		private var count : uint;
 
 		private var object : DisplayObject;
+		
+		
 		
 		public function VideoTrack(){
 			video = new Video();
@@ -108,6 +113,12 @@ package sweatless.media.video{
 			return stream.time;
 		}
 		
+		public function seekToCuepoint(p_name:String):void{
+			if(!_cuepoints) throw new Error("No metadata was assigned to this VideoTrack");
+			if(!_cuepoints[p_name]) throw new Error("The requested cuepoint does not exist");
+			stream.seek(_cuepoints[p_name]);
+		}
+		
 		public function get duration():Number{
 			return properties ? properties["duration"] : NaN;
 		}
@@ -117,6 +128,13 @@ package sweatless.media.video{
 			
 			for(var prop:String in p_object) {
 				properties[String(prop)] = String(p_object[prop]);
+			}
+			
+			if(!p_object["cuePoints"]) return;
+			_cuepoints = new Dictionary();
+			var cueData:Object =  p_object["cuePoints"];
+			for(prop in cueData) {
+				_cuepoints[cueData[prop].name] = cueData[prop].time;
 			}
 		}
 		
@@ -252,7 +270,20 @@ package sweatless.media.video{
 		
 		private function onCuePoint(p_object:Object):void {
 			//trace(p_object.name + "\t" + p_object.time);
+			
+			if(!_cuepoints) _cuepoints = new Dictionary();
+			if(!_cuepoints[p_object.name]) _cuepoints[p_object.name] = p_object.time;
+			
 			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
+		}
+		
+		public function get cuepoints():Array{
+			var result:Array = [];
+			if(!_cuepoints) return result;
+			for(var prop:String in _cuepoints) result.push({name:prop, time:_cuepoints[prop]});
+			result.sortOn("time",Array.NUMERIC);
+			for(prop in result) result[prop] = result[prop].name;
+			return result;
 		}
 
 		override public function set width(p_value:Number):void{
