@@ -18,11 +18,11 @@ package sweatless.media.video{
 		
 		public static const CUEPOINT : String = "cuepoint";
 		public static const COMPLETE : String = "complete";
-
+		
 		private var _duration : Number;
 		private var _width : Number;
 		private var _height : Number;
-
+		
 		private var _deblocking : int = 3;
 		private var _smoothing : Boolean;
 		
@@ -30,7 +30,7 @@ package sweatless.media.video{
 		private var _playing : Boolean;
 		private var _looping : Boolean;
 		private var _mute : Boolean;
-
+		
 		private var _cuepoints:Dictionary;
 		private var properties : Dictionary;
 		
@@ -41,7 +41,7 @@ package sweatless.media.video{
 		private var currentPan : Number = 0;
 		
 		private var count : uint;
-
+		
 		private var object : DisplayObject;
 		
 		
@@ -50,15 +50,15 @@ package sweatless.media.video{
 			video = new Video();
 			addChild(video);
 		}
-
+		
 		public function get autoRewind():Boolean{
 			return _rewind;
 		}
-
+		
 		public function set autoRewind(value:Boolean):void{
 			_rewind = value;
 		}
-
+		
 		public function get isMute():Boolean{
 			return _mute;
 		}
@@ -116,6 +116,7 @@ package sweatless.media.video{
 		public function seekToCuepoint(p_name:String):void{
 			if(!_cuepoints) throw new Error("No metadata was assigned to this VideoTrack");
 			if(!_cuepoints[p_name]) throw new Error("The requested cuepoint does not exist");
+			
 			stream.seek(_cuepoints[p_name]);
 		}
 		
@@ -131,10 +132,11 @@ package sweatless.media.video{
 			}
 			
 			if(!p_object["cuePoints"]) return;
+			
 			_cuepoints = new Dictionary();
-			var cueData:Object =  p_object["cuePoints"];
-			for(prop in cueData) {
-				_cuepoints[cueData[prop].name] = cueData[prop].time;
+			
+			for(prop in p_object["cuePoints"]) {
+				_cuepoints[p_object["cuePoints"][prop].name] = p_object["cuePoints"][prop].time;
 			}
 		}
 		
@@ -142,12 +144,12 @@ package sweatless.media.video{
 			isPlaying = true;
 			
 			stream.addEventListener(NetStatusEvent.NET_STATUS, status);
-
+			
 			p_loops>0 ? count = p_loops : null;
-
+			
 			stream.seek(0);
 			stream.resume();
-
+			
 			volume = currentVolume;
 		}
 		
@@ -236,7 +238,7 @@ package sweatless.media.video{
 				
 			}
 		}
-
+		
 		private function move(evt:MouseEvent):void{
 			if(!object && !stream) return;
 			
@@ -285,7 +287,7 @@ package sweatless.media.video{
 			for(prop in result) result[prop] = result[prop].name;
 			return result;
 		}
-
+		
 		override public function set width(p_value:Number):void{
 			_width = video.width = int(p_value);
 		}
@@ -302,12 +304,11 @@ package sweatless.media.video{
 			return properties ? properties["height"] : _height;
 		}
 		
-		public function destroy():void{
+		public function destroy(p_close_netstream:Boolean=true):void{
 			stop();
-			stream.close();
+			p_close_netstream ? stream.close() : stream = null;
 			video.clear();
 			removeMousePan();
 		}
-		
 	}
 }
