@@ -71,7 +71,7 @@ package sweatless.extras.ape{
 		
 		public override function update(dt2:Number):void {
 			if(mouseDown) return;
-			sprite.rotation = angle = sprite.rotation != 0 ? (center.x-px) : 0;
+			sprite.rotation = angle = sprite.rotation != 0 ? center.x : 0;
 			
 			super.update(dt2);
 		}
