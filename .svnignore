@@ -7,6 +7,10 @@
 .as3proj
 .as3_classpath
 .DS_Store
+src/.flexLibProperties
+src/.project
+src/.actionScriptProperties
+src/.settings
 *.yaml
 *.tmproj
 *.as3proj

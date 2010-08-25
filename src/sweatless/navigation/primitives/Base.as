@@ -10,7 +10,7 @@ package sweatless.navigation.primitives{
 	internal class Base extends Sprite implements IBase{
 		
 		public var data : Object = new Object();
-		public var broadcaster : Broadcaster;
+		public var broadcaster : Broadcaster = Broadcaster.getInstance();
 		
 		protected var events : Dictionary;
 		
