@@ -5,6 +5,7 @@ package sweatless.navigation.primitives{
 	import flash.net.navigateToURL;
 	
 	import sweatless.events.Broadcaster;
+	import sweatless.events.CustomEvent;
 	import sweatless.interfaces.IButton;
 	
 	public class MenuButton extends Base implements IButton{
@@ -114,6 +115,7 @@ package sweatless.navigation.primitives{
 		
 		private function click(evt:MouseEvent):void{
 			external ? navigateToURL(new URLRequest(external), target) : broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+area))) : null;
+			broadcaster.dispatchEvent(new CustomEvent(broadcaster.getEvent("change_menu"), area));
 		}
 		
 		override public function destroy():void{

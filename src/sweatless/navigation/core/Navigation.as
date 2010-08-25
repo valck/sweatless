@@ -16,6 +16,7 @@ package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
 	import sweatless.events.Broadcaster;
+	import sweatless.events.CustomEvent;
 	import sweatless.layout.Align;
 	import sweatless.layout.Layers;
 	import sweatless.navigation.primitives.Area;
@@ -35,6 +36,8 @@ package sweatless.navigation.core{
 			if(Config.started) throw new Error("Navigation already initialized.");
 			
 			broadcaster = Broadcaster.getInstance();
+
+			broadcaster.setEvent("change_menu");
 			
 			for(var i:uint=0; i<Config.areas.length(); i++){
 				var area : String = Config.areas[i].@id;
@@ -192,6 +195,7 @@ package sweatless.navigation.core{
 		private static function onChange(evt:SWFAddressEvent):void{
 			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getPath());
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Config.currentAreaID)));
+			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_menu")));
 		}
 		
 		private static function setID(p_value:String):void{

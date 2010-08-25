@@ -4,6 +4,7 @@ package sweatless.navigation.primitives{
 	import flash.utils.getQualifiedSuperclassName;
 	
 	import sweatless.events.Broadcaster;
+	import sweatless.events.CustomEvent;
 	import sweatless.interfaces.IBase;
 	import sweatless.navigation.core.Config;
 	
@@ -23,13 +24,14 @@ package sweatless.navigation.primitives{
 			broadcaster = Broadcaster.getInstance();
 		}
 		
-		private function change(evt:*):void{
+		private function change(evt:Event):void{
 			var changed : MenuButton = getButton(Config.currentAreaID);
-			if(!changed) throw new Error("this button doesn't exists.");
+			
 			if(selected) selected.enabled();
 			
 			selected = changed;
-			selected.disabled();
+			
+			if(selected) selected.disabled();
 			
 			dispatchEvent(new Event(Menu.CHANGE));
 		}
@@ -55,10 +57,10 @@ package sweatless.navigation.primitives{
 				button.type = type;
 				button.area = properties[i].area == undefined ? properties[i].external : properties[i].area;
 				
-				broadcaster.hasEvent("show_"+properties[i].area) ? broadcaster.addEventListener(broadcaster.getEvent("show_"+properties[i].area), change) : null;
-				
 				buttons.push(button);
 			}
+
+			broadcaster.addEventListener(broadcaster.getEvent("change_menu"), change);
 			
 			return buttons;
 		}
