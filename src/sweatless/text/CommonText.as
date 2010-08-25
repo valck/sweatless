@@ -7,6 +7,7 @@ package sweatless.text{
 	public class CommonText extends Sprite{
 		private var _format : TextFormat;
 		private var _field : TextField;
+		private var _autosize : String = "left";
 		
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ;";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
@@ -29,18 +30,33 @@ package sweatless.text{
 			
 			update();
 		}
+
 		
 		private function update():void{
 			_field.setTextFormat(_format);
 			
 			_field.defaultTextFormat = _format;
-			_field.autoSize = "left";
+			_field.autoSize = _autosize;
 		}
 		
 		public function set align(p_value:String):void{
 			_format.align = p_value;
 			
 			update();
+		}
+		
+		public function set autoSize(p_value:String):void{
+			_autosize = p_value;
+			
+			update();
+		}
+		
+		public function get autoSize():String{
+			return _autosize;
+		}
+		
+		public function get length():uint{
+			return _field.length;
 		}
 		
 		public function set format(p_format:TextFormat):void{
