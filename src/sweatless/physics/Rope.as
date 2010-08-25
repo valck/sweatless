@@ -7,6 +7,7 @@ package sweatless.physics{
 	
 	import org.cove.ape.APEngine;
 	import org.cove.ape.CircleParticle;
+	import org.cove.ape.CollisionEvent;
 	import org.cove.ape.Group;
 	import org.cove.ape.SpringConstraint;
 	import org.cove.ape.VectorForce;
@@ -39,7 +40,6 @@ package sweatless.physics{
 			var last : CircleParticle;
 			var link : SpringConstraint;
 			
-			group.collideInternal = false;
 			group.addParticle(pin);
 			
 			last = pin;
