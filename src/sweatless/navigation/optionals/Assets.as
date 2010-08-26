@@ -43,6 +43,10 @@ package sweatless.navigation.optionals{
 			return result;
 		}
 		
+		public static function get source():XML{
+			return BulkLoader.getLoader(Config.currentAreaID).getXML("assets");
+		}
+		
 		public static function getStringGroup(p_type:String, p_area:XML=null):Dictionary{
 			var result : Dictionary = new Dictionary();
 			var i : uint = 0;
