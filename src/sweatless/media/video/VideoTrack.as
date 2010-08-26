@@ -115,7 +115,7 @@ package sweatless.media.video{
 		
 		public function seekToCuepoint(p_name:String):void{
 			if(!_cuepoints) throw new Error("No metadata was assigned to this VideoTrack");
-			if(!_cuepoints[p_name]) throw new Error("The requested cuepoint does not exist");
+			if(!_cuepoints[p_name]) throw new Error("The " + p_name + " cuepoint does not exist");
 			
 			stream.seek(_cuepoints[p_name]);
 		}
