@@ -11,7 +11,7 @@ package sweatless.utils{
 	import flash.geom.Rectangle;
     
 	public class BitmapUtils{
-		public static function convertToBitmap(p_target:DisplayObject, p_margin:int=5, p_remove:Boolean=true):Bitmap{
+		public static function convertToBitmap(p_target:DisplayObject, p_margin:int=5, p_smoothing:Boolean=true, p_remove:Boolean=true):Bitmap{
 			var qualityStage : String;
 			
 			if(p_target.stage){
@@ -28,7 +28,7 @@ package sweatless.utils{
 			targetDrawed.name = p_target.name;
 			targetDrawed.x = p_target.x;
 			targetDrawed.y = p_target.y;
-			targetDrawed.smoothing = true;
+			targetDrawed.smoothing = p_smoothing;
 			
 			if(p_remove){
 				if(p_target.stage){
