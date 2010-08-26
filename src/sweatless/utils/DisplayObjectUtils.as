@@ -8,11 +8,15 @@ package sweatless.utils{
 	
 	public class DisplayObjectUtils{
 
-		public static function cloneProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
+		public static function cloneObject(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
 	
-			for each (var item:XML in description.accessor){
-			    if (item.@access != "readonly") p_clone[item.@name] = p_target[item.@name];  
+			for each (var variable:XML in description.variable){
+				p_clone.hasOwnProperty(variable.@name) ? p_clone[variable.@name] = p_target[variable.@name] : null;  
+			}
+				
+			for each (var property:XML in description.accessor){
+			    property.@access == "readwrite" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
 			}
 	
 			return p_clone;
@@ -49,7 +53,7 @@ package sweatless.utils{
 			p_old.parent.addChild(p_new);
 			p_old.parent.swapChildren(p_new, p_old);
 			
-			p_new = cloneProperties(p_old, p_new);
+			p_new = cloneObject(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
 		}

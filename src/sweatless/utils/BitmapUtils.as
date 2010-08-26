@@ -32,7 +32,7 @@ package sweatless.utils{
 			
 			if(p_remove){
 				if(p_target.stage){
-					p_target.parent.removeChild(p_target)
+					p_target.parent.removeChild(p_target);
 				};
 			}
 
