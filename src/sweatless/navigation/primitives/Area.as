@@ -26,6 +26,10 @@ package sweatless.navigation.primitives{
 			return _id;
 		}
 		
+		public function get assets():XML{
+			return loader.getXML("assets");
+		}
+		
 		public function get loader():BulkLoader{
 			return BulkLoader.getLoader(Config.currentAreaID);
 		}
