@@ -54,11 +54,11 @@ package sweatless.navigation.core{
 			return String(source..tracking.@file);
 		}
 		
-		public static function getFlashVars(p_name:String):Object{
+		public static function getVar(p_name:String):Object{
 			return parameters[p_name];
 		}
 		
-		public static function setFlashVars(p_name:String, p_value:Object):void{
+		public static function setVar(p_name:String, p_value:Object):void{
 			parameters[p_name] = p_value;
 		}
 		

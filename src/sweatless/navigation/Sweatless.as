@@ -28,14 +28,14 @@ package sweatless.navigation{
 			stage.stageFocusRect = false;
 			
 			for(var i:String in loaderInfo.parameters){
-				Config.setFlashVars(i, loaderInfo.parameters[i]);
+				Config.setVar(i, loaderInfo.parameters[i]);
 			}
 			
 			loadConfig();
 		}
 		
 		private function loadConfig():void{
-			loader = new BulkLoaderXMLPlugin(String(Config.getFlashVars("CONFIG")), "sweatless");
+			loader = new BulkLoaderXMLPlugin(String(Config.getVar("CONFIG")), "sweatless");
 			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
 			loader.addEventListener(BulkProgressEvent.COMPLETE, removeLoadListeners);
