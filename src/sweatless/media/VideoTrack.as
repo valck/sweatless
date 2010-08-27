@@ -16,7 +16,6 @@ package sweatless.media{
 		public static const CUEPOINT : String = "cuepoint";
 		public static const COMPLETE : String = "complete";
 		
-		private var _duration : Number;
 		private var _width : Number;
 		private var _height : Number;
 		
@@ -28,7 +27,7 @@ package sweatless.media{
 		private var _looping : Boolean;
 		private var _mute : Boolean;
 		
-		private var _cuepoints:Dictionary;
+		private var _cuepoints : Dictionary;
 		private var properties : Dictionary;
 		
 		private var stream : NetStream;
@@ -40,7 +39,6 @@ package sweatless.media{
 		private var count : uint;
 		
 		private var object : DisplayObject;
-		
 		
 		
 		public function VideoTrack(){
@@ -233,7 +231,9 @@ package sweatless.media{
 				!isPlaying ? dispatchEvent(new Event(VideoTrack.COMPLETE)) : null;
 			}else if(evt.info.code == "NetStream.Seek.Notify"){
 				
-			}
+			}else if(evt.info.code == "NetStream.Seek.InvalidTime"){
+				
+			} 
 		}
 		
 		private function move(evt:MouseEvent):void{
