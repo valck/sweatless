@@ -164,6 +164,10 @@ package sweatless.text{
 			update();
 		}
 		
+		public function get text():String{
+			return _field.text;
+		}
+		
 		public function destroy():void{
 			_format = null;
 			
