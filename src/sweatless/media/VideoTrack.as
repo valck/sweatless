@@ -112,11 +112,11 @@ package sweatless.media{
 			if(!_cuepoints) throw new Error("No metadata was assigned to this VideoTrack");
 			if(!_cuepoints[p_name]) throw new Error("The requested cuepoint does not exist");
 			
-			stream.seek(_cuepoints[p_name].time);
+			seek = Number(_cuepoints[p_name].time);
 		}
 		
 		public function get duration():Number{
-			return properties ? properties["duration"] : NaN;
+			return properties ? Number(properties["duration"]) : NaN;
 		}
 		
 		public function set metadata(p_object:*):void{
@@ -131,7 +131,7 @@ package sweatless.media{
 			_cuepoints = new Dictionary();
 			
 			for(prop in p_object["cuePoints"]) {
-				_cuepoints[p_object["cuePoints"][prop].name] = new CuePoint(p_object["cuePoints"][prop].name,p_object["cuePoints"][prop].time);
+				_cuepoints[p_object["cuePoints"][prop].name] = new CuePoint(p_object["cuePoints"][prop].name, p_object["cuePoints"][prop].time);
 			}
 		}
 		
