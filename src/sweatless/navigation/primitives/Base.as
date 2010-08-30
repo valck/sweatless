@@ -65,9 +65,6 @@ package sweatless.navigation.primitives{
 		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
 			var key : Object = {type:type, listener:listener, capture:useCapture};
 
-			trace(type, listener, useCapture);
-			trace(events[key]);
-			
 			events[key] = null;
 			delete events[key];
 			
