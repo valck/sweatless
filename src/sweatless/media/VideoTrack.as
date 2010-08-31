@@ -129,6 +129,15 @@ package sweatless.media{
 			stream.client.onCuePoint = onCuePoint;
 		}
 		
+		public function get track():NetStream{
+			return stream;
+		}
+		
+		public function get percentLoaded():Number{
+			return stream.bytesLoaded/stream.bytesTotal;
+		}
+	
+		
 		public function set seek(p_offset:Number):void{
 			stream.seek(p_offset);
 		}
