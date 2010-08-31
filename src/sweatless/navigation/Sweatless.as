@@ -157,11 +157,12 @@ internal class Signature extends EventDispatcher{
 	}
 	
 	private function add():void {
-		scope.stage.addEventListener(Event.FULLSCREEN, toggle);
-		
+			
 		menu.hideBuiltInItems();
 		
 		if(fullScreen){
+			scope.stage.addEventListener(Event.FULLSCREEN, toggle);
+			
 			var view:ContextMenuItem = new ContextMenuItem("View FullScreen" );
 			view.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
 			menu.customItems.push(view);
