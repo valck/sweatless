@@ -50,6 +50,8 @@ package sweatless.physics{
 		
 		private var distanceBetween : uint = 1;
 		
+		public var group : Group;
+		
 		public function Rope(){
 			config();			
 		}
@@ -63,7 +65,7 @@ package sweatless.physics{
 		}
 		
 		public function create(p_texture:DisplayObject, p_nodes:uint=50, p_interactive:Boolean=false):void{
-			var group : Group = new Group();
+			group = new Group();
 			var pin : CircleParticle = new CircleParticle(0, -10, 1, true);
 			var node : CircleParticle;
 			var last : CircleParticle;
@@ -94,13 +96,13 @@ package sweatless.physics{
 					});
 					
 				}else{
-					node = new CircleParticle(0, 0, 1, false, 5, .5, 1);
+					node = new CircleParticle(0, 0, 1, false, 5, .4, 1);
 					node.visible = false;
 				}
 				
 				group.addParticle(node);
 				
-				link = new SpringConstraint(last, node, .7, false);
+				link = new SpringConstraint(last, node, .75, false);
 				link.restLength = distanceBetween;
 				link.setStyle(2, 0x2e1903);
 				

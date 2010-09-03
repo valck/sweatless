@@ -125,7 +125,6 @@ package sweatless.navigation.primitives{
 			clicked ? clicked = false : null;
 			
 			addListeners();
-			out(null);
 		}
 		
 		public function disabled():void{
