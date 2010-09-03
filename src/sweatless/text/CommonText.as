@@ -41,8 +41,8 @@ package sweatless.text{
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ;";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
 		public static const RESTRICT_NUMBER : String = "0-9";
-		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûú";
-		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚ";
+		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
+		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
 		public function CommonText(p_format:TextFormat=null){
 			_format = p_format || new TextFormat();
