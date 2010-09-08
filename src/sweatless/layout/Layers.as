@@ -74,6 +74,8 @@ package sweatless.layout{
 		}
 		
 		public static function get(p_id:String):Layer{
+			p_id = p_id.toLowerCase();
+			
 			for (var i:uint=0; i<layers.length; i++) {
 				if (layers[i].name == p_id) {
 					return layers[i];
