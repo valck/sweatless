@@ -204,8 +204,6 @@ package sweatless.media{
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.pause();
 			}
-			
-			volume = currentVolume;
 		}
 		
 		public function set pan(p_pan:Number):void {
@@ -239,17 +237,15 @@ package sweatless.media{
 				isMute = true
 				
 				transform = new SoundTransform(0, currentPan);
-				
 				transform.volume = 0;
-				stream.soundTransform = transform;
 				
-				currentVolume = transform.volume;
+				stream.soundTransform = transform;				
 			}else{
 				isMute = false
 				
 				transform = new SoundTransform(currentVolume, currentPan);
-				
 				transform.volume = currentVolume;
+				
 				stream.soundTransform = transform;
 			}
 		}
