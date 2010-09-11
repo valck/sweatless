@@ -51,15 +51,12 @@ package sweatless.ui
 		private var scrollWheelScope:DisplayObject;
 		private var mouseWheelEnabled:Boolean = false;
 		private var scrollMode:String;
-		private var stage:Stage;
 		
 		
 		public function ScrollBar(dragger:Sprite, limits:Rectangle, wheelScope:DisplayObject=null)
 		{
 			scrollDragger = dragger;
 			originalLimits = limits;
-			
-			stage = dragger.stage;
 			
 			scrollMode = (originalLimits.width>originalLimits.height) ? MODE_HORIZONTAL : MODE_VERTICAL;
 			
@@ -80,13 +77,13 @@ package sweatless.ui
 			switch(e.type){
 				case MouseEvent.MOUSE_DOWN:
 					scrollDragger.startDrag(false, scrollLimits);
-					stage.addEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-					stage.addEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+					scrollDragger.stage.addEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+					scrollDragger.stage.addEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 					break;
 				
 				case MouseEvent.MOUSE_UP:
-					stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-					stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+					scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+					scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 					scrollDragger.stopDrag();
 					break;
 				
@@ -128,8 +125,8 @@ package sweatless.ui
 		
 		public function destroy():void{
 	
-			stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+			scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+			scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 			scrollDragger.removeEventListener(MouseEvent.MOUSE_DOWN, scrollHandler);
 			if(scrollWheelScope) scrollWheelScope.removeEventListener(MouseEvent.MOUSE_WHEEL, scrollHandler);
 			
@@ -137,7 +134,6 @@ package sweatless.ui
 			scrollDragger =null;
 			scrollWheelScope=null;
 			scrollMode=null;
-			stage=null;
 		}
 	}
 }
