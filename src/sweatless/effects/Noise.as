@@ -32,58 +32,39 @@ package sweatless.effects{
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.filters.BlurFilter;
 
 	public class Noise{
 		private var scope : DisplayObjectContainer;
 		private var statics : Bitmap;
-		private var _grayscale : Boolean = true;
 		
 		public function Noise(){
 		}
 
-		public function create(p_scope:DisplayObjectContainer, p_width:Number, p_height:Number, p_blur_x:Number=0, p_blur_y:Number=0):void{
+		public function create(p_scope:DisplayObjectContainer, p_width:Number=0, p_height:Number=0, p_blur_x:Number=0, p_blur_y:Number=0):void{
 			scope = p_scope;
 			
 			statics = new Bitmap();
+			add(p_width, p_height);
 			scope.addChild(statics);
 			
 			if(p_blur_x || p_blur_y) statics.filters = [new BlurFilter(p_blur_x, p_blur_y, 2)]; 
 		}
 		
-		public function get grayscale():Boolean{
-			return _grayscale;
-		}
-
-		public function set grayscale(p_value:Boolean):void{
-			_grayscale = p_value;
+		public function add(p_width:Number=0, p_height:Number=0):void{
+			statics.bitmapData = new BitmapData(p_width == 0 ? scope.width : p_width, p_height == 0 ? scope.height : p_height, true, 0x000000);
 		}
 		
-		public function start():void{
-			addBitmap();
-			scope.addEventListener(Event.ENTER_FRAME, render);
-		}
-		
-		public function stop(p_remove:Boolean=true):void{
-			p_remove ? removeBitmap() : null;
-			scope.removeEventListener(Event.ENTER_FRAME, render);
-		}
-		
-		private function addBitmap():void{
-			statics.bitmapData = new BitmapData(scope.width, scope.height, true, 0x000000);
-		}
-		
-		private function removeBitmap():void{
+		public function dispose():void{
 			statics.bitmapData.dispose();
 		}
 		
-		private function render(e:Event):void{
-			statics.bitmapData.noise(int(Math.random() * int.MAX_VALUE), 0, 0xFFFFFF, BitmapDataChannel.ALPHA, grayscale);
+		public function render(p_random:int=-1, p_min:uint=0, p_max:uint=0xFFFFFF, p_channel:uint=BitmapDataChannel.ALPHA, p_grayscale:Boolean=true):void{
+			statics.bitmapData.noise(p_random == -1 ? int(Math.random() * int.MAX_VALUE) : p_random, p_min, p_max, p_channel, p_grayscale);
 		}
 		
 		public function destroy():void{
-			stop();
+			dispose();
 			
 			scope.removeChild(statics);
 			statics = null;
