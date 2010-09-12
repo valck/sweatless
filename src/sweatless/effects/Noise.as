@@ -38,6 +38,8 @@ package sweatless.effects{
 	public class Noise{
 		private var scope : DisplayObjectContainer;
 		private var statics : Bitmap;
+		private var _grayscale : Boolean = true;
+
 		
 		public function Noise(){
 		}
@@ -51,6 +53,14 @@ package sweatless.effects{
 			if(p_blur_x || p_blur_y) statics.filters = [new BlurFilter(p_blur_x, p_blur_y, 2)]; 
 		}
 		
+		public function get grayscale():Boolean{
+			return _grayscale;
+		}
+
+		public function set grayscale(p_value:Boolean):void{
+			_grayscale = p_value;
+		}
+		
 		public function start():void{
 			scope.addEventListener(Event.ENTER_FRAME, render);
 		}
@@ -60,7 +70,7 @@ package sweatless.effects{
 		}
 		
 		private function render(e:Event):void{
-			statics.bitmapData.noise(int(Math.random() * int.MAX_VALUE), 0, 0xFFFFFF, BitmapDataChannel.ALPHA, true);
+			statics.bitmapData.noise(int(Math.random() * int.MAX_VALUE), 0, 0xFFFFFF, BitmapDataChannel.ALPHA, grayscale);
 		}
 		
 		public function destroy():void{
