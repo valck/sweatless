@@ -35,6 +35,7 @@ package sweatless.display {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	
 	import sweatless.utils.NumberUtils;
 	
@@ -42,6 +43,7 @@ package sweatless.display {
 		
 		private var source : DisplayObject;
 		private var position : Point;
+		private var over : Boolean;
 		
 		public function Hanged(){
 			
@@ -57,17 +59,18 @@ package sweatless.display {
 		}
 		
 		public function addListeners():void{
-			source.addEventListener(MouseEvent.MOUSE_MOVE, over);
-			source.addEventListener(MouseEvent.MOUSE_OUT, out);
+			source.addEventListener(MouseEvent.ROLL_OUT, handlers);
 		}
 		
 		public function removeListeners():void{
-			source.removeEventListener(MouseEvent.MOUSE_MOVE, over);
-			source.removeEventListener(MouseEvent.MOUSE_OUT, out);
+			source.removeEventListener(MouseEvent.ROLL_OUT, handlers);
 		}
 		
 		public function swing():void{
-			TweenMax.to(this, 5,{
+			rotationY = NumberUtils.rangeRandom(-15, 4);
+			rotationX = NumberUtils.rangeRandom(-7, 7);
+			
+			TweenMax.to(this, 3,{
 				rotationX:0, 
 				rotationY:0,
 				ease:Elastic.easeOut
@@ -75,22 +78,19 @@ package sweatless.display {
 			
 			source.y = 0;
 			
-			TweenMax.to(source, 3,{
+			TweenMax.to(source, 1.5,{
 				y:position.y,
-				ease:Elastic.easeOut
-			});
-		}
-		
-		private function over(evt:MouseEvent):void{
-			TweenMax.to(this, 5,{
-				rotationY:(evt.localX - position.x)/4,
 				ease:Elastic.easeOut,
 				onComplete:swing
 			});
 		}
 
-		private function out(evt:MouseEvent):void{
-			swing();
+		private function handlers(evt:MouseEvent):void{
+			switch(evt.type){
+				case "rollOut":
+					swing();
+				break;
+			}
 		}
 
 		public function destroy():void{

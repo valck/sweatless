@@ -58,7 +58,7 @@ package sweatless.utils{
 		}
 		
 		public static function percentToValue(p_percent:Number, p_min:Number, p_max:Number):Number{
-			return (((p_max - p_min) / 100) * p_percent) + p_min;
+			return ((p_max - p_min) * p_percent) + p_min;
 		}
 		
 		public static function rangeRandom(p_low:Number, p_high:Number, p_rounded:Boolean=false):Number{
