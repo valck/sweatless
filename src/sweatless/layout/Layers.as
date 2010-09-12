@@ -53,7 +53,7 @@ package sweatless.layout{
 		
 		public static function remove(p_id:String):void{
 			for (var i:uint=0; i<layers.length; i++) {
-				if (layers[i].name == p_id) {
+				if (layers[i].name == p_id.toLowerCase()) {
 					scope.removeChild(layers[i]);
 					layers[i] = null;
 					break;
