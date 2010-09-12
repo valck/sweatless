@@ -55,7 +55,7 @@ package sweatless.layout{
 			for (var i:uint=0; i<layers.length; i++) {
 				if (layers[i].name == p_id.toLowerCase()) {
 					scope.removeChild(layers[i]);
-					layers[i] = null;
+					layers.splice(i, 1);
 					break;
 				};
 			}
