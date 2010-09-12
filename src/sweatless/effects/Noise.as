@@ -39,7 +39,6 @@ package sweatless.effects{
 		private var scope : DisplayObjectContainer;
 		private var statics : Bitmap;
 		private var _grayscale : Boolean = true;
-
 		
 		public function Noise(){
 		}
@@ -47,7 +46,7 @@ package sweatless.effects{
 		public function create(p_scope:DisplayObjectContainer, p_width:Number, p_height:Number, p_blur_x:Number=0, p_blur_y:Number=0):void{
 			scope = p_scope;
 			
-			statics = new Bitmap(new BitmapData(p_width, p_height, true, 0x000000));
+			statics = new Bitmap();
 			scope.addChild(statics);
 			
 			if(p_blur_x || p_blur_y) statics.filters = [new BlurFilter(p_blur_x, p_blur_y, 2)]; 
@@ -62,11 +61,21 @@ package sweatless.effects{
 		}
 		
 		public function start():void{
+			addBitmap();
 			scope.addEventListener(Event.ENTER_FRAME, render);
 		}
 		
-		public function stop():void{
+		public function stop(p_remove:Boolean=true):void{
+			p_remove ? removeBitmap() : null;
 			scope.removeEventListener(Event.ENTER_FRAME, render);
+		}
+		
+		private function addBitmap():void{
+			statics.bitmapData = new BitmapData(scope.width, scope.height, true, 0x000000);
+		}
+		
+		private function removeBitmap():void{
+			statics.bitmapData.dispose();
 		}
 		
 		private function render(e:Event):void{
@@ -76,8 +85,8 @@ package sweatless.effects{
 		public function destroy():void{
 			stop();
 			
-			statics.bitmapData.dispose();
 			scope.removeChild(statics);
+			statics = null;
 		}				
 	}
 }

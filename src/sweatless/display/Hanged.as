@@ -29,6 +29,7 @@
 
 package sweatless.display {
 	import com.greensock.TweenMax;
+	import com.greensock.easing.Back;
 	import com.greensock.easing.Elastic;
 	
 	import flash.display.DisplayObject;
@@ -59,20 +60,26 @@ package sweatless.display {
 		}
 		
 		public function addListeners():void{
+			source.addEventListener(MouseEvent.ROLL_OVER, handlers);
 			source.addEventListener(MouseEvent.ROLL_OUT, handlers);
 		}
 		
 		public function removeListeners():void{
+			source.removeEventListener(MouseEvent.ROLL_OVER, handlers);
 			source.removeEventListener(MouseEvent.ROLL_OUT, handlers);
 		}
 		
 		public function swing():void{
-			rotationY = NumberUtils.rangeRandom(-15, 4);
-			rotationX = NumberUtils.rangeRandom(-7, 7);
-			
+			TweenMax.to(this, .5,{
+				rotationX:NumberUtils.rangeRandom(-7, 7), 
+				rotationY:NumberUtils.rangeRandom(-10, 4),
+				ease:Back.easeInOut
+			});
+	
 			TweenMax.to(this, 3,{
 				rotationX:0, 
 				rotationY:0,
+				delay:.5,
 				ease:Elastic.easeOut
 			});
 			
@@ -80,14 +87,16 @@ package sweatless.display {
 			
 			TweenMax.to(source, 1.5,{
 				y:position.y,
-				ease:Elastic.easeOut,
-				onComplete:swing
+				delay:.5,
+				ease:Elastic.easeOut
 			});
 		}
 
 		private function handlers(evt:MouseEvent):void{
 			switch(evt.type){
 				case "rollOut":
+				break;
+				case "rollOver":
 					swing();
 				break;
 			}
