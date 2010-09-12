@@ -56,8 +56,14 @@ package sweatless.ui
 		
 		public function ScrollBar(dragger:Sprite, limits:Rectangle, wheelScope:DisplayObject=null)
 		{
+		
+			
 			scrollDragger = dragger;
 			originalLimits = limits;
+			
+			stage = scrollDragger.stage;
+			
+			scrollDragger.addEventListener(Event.ADDED_TO_STAGE, getStage);
 			
 			scrollMode = (originalLimits.width>originalLimits.height) ? MODE_HORIZONTAL : MODE_VERTICAL;
 			
@@ -71,6 +77,11 @@ package sweatless.ui
 			
 			if(mouseWheelEnabled) MacMouseWheel.init(scrollDragger.stage);
 			
+		}
+		
+		private function getStage(evt:Event):void{
+			scrollDragger.removeEventListener(Event.ADDED_TO_STAGE, getStage);
+			if(!stage) stage = scrollDragger.stage;
 		}
 		
 		private function scrollHandler(e:MouseEvent):void{
@@ -128,6 +139,8 @@ package sweatless.ui
 		
 		public function destroy():void{
 			if(!stage) stage = scrollDragger.stage;
+			
+			scrollDragger.removeEventListener(Event.ADDED_TO_STAGE, getStage);
 			
 			stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
