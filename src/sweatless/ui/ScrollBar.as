@@ -51,6 +51,7 @@ package sweatless.ui
 		private var scrollWheelScope:DisplayObject;
 		private var mouseWheelEnabled:Boolean = false;
 		private var scrollMode:String;
+		private var stage:Stage;
 		
 		
 		public function ScrollBar(dragger:Sprite, limits:Rectangle, wheelScope:DisplayObject=null)
@@ -74,16 +75,18 @@ package sweatless.ui
 		
 		private function scrollHandler(e:MouseEvent):void{
 			var scrollLimits:Rectangle = getLimits();
+			if(!stage) stage = scrollDragger.stage;
+			
 			switch(e.type){
 				case MouseEvent.MOUSE_DOWN:
 					scrollDragger.startDrag(false, scrollLimits);
-					scrollDragger.stage.addEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-					scrollDragger.stage.addEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+					stage.addEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+					stage.addEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 					break;
 				
 				case MouseEvent.MOUSE_UP:
-					scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-					scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+					stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+					stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 					scrollDragger.stopDrag();
 					break;
 				
@@ -124,9 +127,10 @@ package sweatless.ui
 		}
 		
 		public function destroy():void{
-	
-			scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
-			scrollDragger.stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+			if(!stage) stage = scrollDragger.stage;
+			
+			stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
 			scrollDragger.removeEventListener(MouseEvent.MOUSE_DOWN, scrollHandler);
 			if(scrollWheelScope) scrollWheelScope.removeEventListener(MouseEvent.MOUSE_WHEEL, scrollHandler);
 			
