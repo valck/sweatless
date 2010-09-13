@@ -57,6 +57,10 @@ package sweatless.utils{
 			}
 			return arrTemp;
 		}
+
+		public static function randomIndex(p_array:Array):int {
+			return NumberUtils.rangeRandom(0, p_array.length-1, true);
+		}
 		
 		public static function shuffle(p_array:Array):void {
 			var total : int = p_array.length;

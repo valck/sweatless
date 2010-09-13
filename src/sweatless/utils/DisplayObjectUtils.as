@@ -55,6 +55,10 @@ package sweatless.utils{
 			var reference : Class = p_source.loaderInfo.applicationDomain.getDefinition(p_class) as Class;
 			return new reference();
 		}
+
+		public static function randomItem(p_array:Array):*{
+			return p_array[NumberUtils.rangeRandom(0, p_array.length-1, true)];
+		}
 		
 		public static function removeAll(p_target:*):void{
 			if(!p_target) return;
