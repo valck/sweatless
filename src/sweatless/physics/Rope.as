@@ -127,7 +127,7 @@ package sweatless.physics{
 		}
 		
 		protected function rendering(evt:Event):void{
-			APEngine.step();
+			StepManager.step();
 			APEngine.paint();
 		}
 	}
