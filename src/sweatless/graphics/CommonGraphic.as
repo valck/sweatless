@@ -50,9 +50,9 @@ package sweatless.graphics{
 		private var _fillAlphas : Array = new Array(1, 1);
 		
 		private var _gradientRatios : Array = new Array(0, 255);
-		private var _gradientRotation : Number = Math.PI / 2;
-		private var _gradientTx : Number = 0;
-		private var _gradientTy : Number = 0;
+		private var _fillRotation : Number = 0;
+		private var _fillTx : Number = 0;
+		private var _fillTy : Number = 0;
 
 		private var _width : Number = 0;
 		private var _height : Number = 0;
@@ -70,10 +70,13 @@ package sweatless.graphics{
 			
 			graphics.clear();
 			
+			matrix = new Matrix();
 			if(!texture){
-				matrix.createGradientBox(p_width, p_height, _gradientRotation, _gradientTx, _gradientTy);
+				matrix.createGradientBox(p_width, p_height, _fillRotation, _fillTx, _fillTy);
 				graphics.beginGradientFill(_type, _fillColors, _fillAlphas, _gradientRatios, matrix, _method);
 			}else{
+				matrix.rotate(_fillRotation);
+				matrix.translate(_fillTx, _fillTy);
 				graphics.beginBitmapFill(_texture, matrix, _repeat, true);
 			}
 			
@@ -133,31 +136,31 @@ package sweatless.graphics{
 			update();
 		}
 
-		public function set gradientRotation(p_value:Number):void{
-			_gradientRotation = NumberUtils.toRadians(p_value);
+		public function set fillRotation(p_value:Number):void{
+			_fillRotation = NumberUtils.toRadians(p_value);
 			update();
 		}
 		
-		public function get gradientRotation():Number{
-			return _gradientRotation;
+		public function get fillRotation():Number{
+			return _fillRotation;
 		}
 		
-		public function set gradientTX(p_value:Number):void{
-			_gradientTx = p_value;
+		public function set fillTX(p_value:Number):void{
+			_fillTx = p_value;
 			update();
 		}
 		
-		public function get gradientTX():Number{
-			return _gradientTx;
+		public function get fillTX():Number{
+			return _fillTx;
 		}
 		
-		public function set gradientTY(p_value:Number):void{
-			_gradientTy = p_value;
+		public function set fillTY(p_value:Number):void{
+			_fillTy = p_value;
 			update();
 		}
 		
-		public function get gradientTY():Number{
-			return _gradientTy;
+		public function get fillTY():Number{
+			return _fillTy;
 		}
 		
 		public function set colors(p_value:Array):void{
@@ -256,9 +259,9 @@ package sweatless.graphics{
 			_fillAlphas = new Array(1, 1);
 			_gradientRatios = new Array(0, 255);
 			
-			_gradientRotation = Math.PI / 2;
-			_gradientTx = 0;
-			_gradientTy = 0;
+			_fillRotation = Math.PI / 2;
+			_fillTx = 0;
+			_fillTy = 0;
 			
 			_width = 0;
 			_height = 0;
