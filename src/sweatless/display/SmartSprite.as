@@ -28,12 +28,13 @@
  */
 
 package sweatless.display{
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 
-	dynamic public class CustomSprite extends Sprite{
+	dynamic public class SmartSprite extends DisplayObjectContainer{
 		
 		private var _debug : Boolean;
 		private var _anchors : Point;
@@ -51,7 +52,7 @@ package sweatless.display{
 		 * The CustomSprite class is a substitute class for the native <code>Sprite</code> class. It adds
 		 * dynamic anchor points to <code>Sprite</code>.
 		 */
-		public function CustomSprite() {
+		public function SmartSprite() {
 			addEventListener(Event.ADDED_TO_STAGE, created);
 		}
 		
@@ -77,7 +78,7 @@ package sweatless.display{
 		 * @type sweatless.display.CustomSprite.LEFT
 		 * @type sweatless.display.CustomSprite.MIDDLE
 		 */
-		public function anchors(p_anchors:int=CustomSprite.MIDDLE+CustomSprite.CENTER):void{
+		public function anchors(p_anchors:int=SmartSprite.MIDDLE+SmartSprite.CENTER):void{
 			var p_x : Number = 0;
 			var p_y : Number = 0;
 			
