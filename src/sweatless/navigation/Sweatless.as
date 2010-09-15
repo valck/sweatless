@@ -77,27 +77,26 @@ package sweatless.navigation{
 			Config.source = loader.source;
 			
 			addFonts();
-			addDefaultLayers();
+			addLayers();
 			addLoading();
 			addFPS();
 		}
 		
-		private function addFPS():void{
+		protected function addFPS():void{
 			var fps : FPS = new FPS();
 			Layers.get("debug").addChild(fps);
 		}
 		
-		private function addDefaultLayers():void{
+		private function addLayers():void{
 			Layers.init(this);
 			
 			Layers.add("navigation");
 			Layers.add("loading");
 			Layers.get("loading").mouseChildren = false;
-			Layers.get("loading").mouseEnabled = false;
 			
 			for(var i:uint=0; i<Config.layers.length(); i++) {
 				Layers.add(Config.layers[i]["@id"]);
-				Config.layers[i]["@depth"] ? Layers.swapDepth(Config.layers[i]["@id"], Config.layers[i]["@depth"]) : null;
+				Config.layers[i]["@depth"] ? Layers.get(Config.layers[i]["@id"]).depth = Config.layers[i]["@depth"] : null;
 			};
 			
 			Layers.add("debug");
