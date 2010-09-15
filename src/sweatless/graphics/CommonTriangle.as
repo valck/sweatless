@@ -31,7 +31,8 @@ package sweatless.graphics{
 	
 	public class CommonTriangle extends CommonGraphic{
 		
-		public function CommonTriangle(){
+		public function CommonTriangle(p_width:Number = 100, p_height:Number = 100){
+			super(p_width, p_height);
 		}
 		
 		override protected function addGraphic():void{

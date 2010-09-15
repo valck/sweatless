@@ -45,21 +45,16 @@ package sweatless.text{
 		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
 		public function CommonText(p_format:TextFormat=null){
+			super();
+		
 			_format = p_format || new TextFormat();
 			_field = new TextField();
-			
-			addEventListener(Event.ADDED_TO_STAGE, create);
-		}
-		
-		private function create(evt:Event):void{
-			removeEventListener(Event.ADDED_TO_STAGE, create);
 			
 			_field.embedFonts = true;
 			addChild(_field);
 			
 			update();
 		}
-
 		
 		private function update():void{
 			_field.setTextFormat(_format);

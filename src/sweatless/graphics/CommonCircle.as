@@ -31,7 +31,8 @@ package sweatless.graphics{
 	
 	public class CommonCircle extends CommonGraphic{
 		
-		public function CommonCircle(){
+		public function CommonCircle(p_width:Number = 100, p_height:Number = 100){
+			super(p_width, p_height);
 		}
 		
 		override protected function addGraphic():void{
