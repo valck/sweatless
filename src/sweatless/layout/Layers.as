@@ -49,6 +49,8 @@ package sweatless.layout{
 			layer.name = p_id.toLowerCase();
 			scope.addChild(layer);
 			layers.push(layer);
+			
+			update();
 		}
 		
 		public static function remove(p_id:String):void{
@@ -110,6 +112,7 @@ package sweatless.layout{
 			layers.sortOn("depth", Array.NUMERIC);
 
 			for (var i:uint=0; i<layers.length; i++) {
+				(layers[i].depth==undefined) ? layers[i].depth = scope.getChildIndex(layers[i]) : null;
 				scope.setChildIndex(layers[i], layers[i].depth == -1 ? scope.getChildIndex(layers[i]) : isNaN(layers[i].depth) ? layers[i].depth.toLowerCase() == "top" ? length-1 : layers[i].depth.toLowerCase() == "bottom" ? 0 : layers[i].depth : layers[i].depth >= length-1 ? length-1 : layers[i].depth == -1 ? 0 : layers[i].depth);
 			}
 		}
