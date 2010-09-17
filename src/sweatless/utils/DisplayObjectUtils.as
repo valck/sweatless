@@ -32,6 +32,7 @@ package sweatless.utils{
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 	
@@ -89,6 +90,22 @@ package sweatless.utils{
 			p_new = cloneObject(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
+		}
+		
+		public static function flip(p_target:DisplayObject, p_horizontal:Boolean=true):void{
+			var matrix : Matrix = p_target.transform.matrix;
+			
+			matrix.transformPoint(new Point(p_target.width/2, p_target.height/2));
+			
+			if(p_horizontal){
+				matrix.a = -1 * matrix.a;
+				matrix.tx = matrix.a>0 ? p_target.width + p_target.x : p_target.x - p_target.width;
+			}else {
+				matrix.d = -1 * matrix.d;
+				matrix.ty = matrix.d>0 ? p_target.height + p_target.y : p_target.y - p_target.height;
+			}
+			
+			p_target.transform.matrix = matrix;
 		}
 		
 		public static function skew(p_target:DisplayObject, p_x:Number, p_y:Number):void{
