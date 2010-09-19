@@ -41,21 +41,21 @@ package sweatless.utils{
 		}
 		
 		public static function toLighten(p_color:uint, p_amount:Number):uint{	
-			var rgb : RGB = getRGB(p_color);
+			var color : RGB = getRGB(p_color);
 			
-			for (var value : * in rgb){
-				rgb[value] += (255 - rgb[value]) * p_amount;
-			}
+			color.r += (255 - color.r) * p_amount;
+			color.g += (255 - color.g) * p_amount;
+			color.b += (255 - color.g) * p_amount;
 			
-			return getHex(rgb.r, rgb.g, rgb.b);
+			return getHex(color.r, color.g, color.b);
 		}
 		
 		public static function toDarken(p_color:uint, p_amount:Number):uint{
 			var color : RGB = getRGB(p_color);
-			
-			for (var value : * in color){
-				color[value] = color[value] * (1 - p_amount);
-			}
+
+			color.r = color.r * (1 - p_amount);
+			color.g = color.g * (1 - p_amount);
+			color.b = color.b * (1 - p_amount);
 			
 			return getHex(color.r, color.g, color.b);
 		}
@@ -66,20 +66,6 @@ package sweatless.utils{
 		
 		public static function getRGB(p_color:uint):RGB{
 			return new RGB(p_color >> 16 & 0xFF, p_color >> 8 & 0xFF, p_color & 0xFF);
-		}
-		
-		public static function blendColors(p_first:uint, p_last:uint, p_amount:uint):uint{
-			var first : RGB = getRGB(p_first);
-			var last : RGB = getRGB(p_last);
-			
-			for (var value : * in first){
-				first[value] = first[value] + (last[value] - first[value]) * p_amount;
-				
-				if (first[value] > 255) first[value] = 255;
-				if (first[value] < 0) first[value] = 0;
-			}
-			
-			return getHex(first.r, first.g, first.b);
 		}
 	}
 }
