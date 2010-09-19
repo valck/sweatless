@@ -183,7 +183,7 @@ package sweatless.navigation.core{
 				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				loading = Loadings.exists(Config.currentAreaID) ? Loadings.get(Config.currentAreaID) : Loadings.exists("default") ? Loadings.get("default") : null; 
-				loading ? Layers.get("loading").addChild(loading) : null;
+				loading && !loading.stage ? Layers.get("loading").addChild(loading) : null;
 				loading ? loading.show() : null;
 				
 				loader.sortItemsByPriority();
