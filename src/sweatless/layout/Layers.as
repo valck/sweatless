@@ -81,7 +81,7 @@ package sweatless.layout{
 			trace("[START LAYERS DEBUG]");
 			trace("Layers length:"+length);
 			for (var i:uint=0; i<getAll().length; i++) {
-				trace("		{Layer:"+Layer(layers[i]).name+", layer depth:"+ Layer(layers[i]).depth+", real stage depth:"+scope.getChildIndex(layers[i])+"}");
+				trace("	{Layer:"+Layer(layers[i]).name+", layer depth:"+ Layer(layers[i]).depth+", real stage depth:"+scope.getChildIndex(layers[i])+"}");
 			}
 			trace("[END LAYERS DEBUG]");
 		}
