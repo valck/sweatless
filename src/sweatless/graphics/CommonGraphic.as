@@ -60,7 +60,7 @@ package sweatless.graphics{
 		private var _type : String = "linear";
 		private var _method : String = "pad";
 
-		public function CommonGraphic(p_width:Number = 100, p_height:Number = 100){
+		public function CommonGraphic(p_width:Number = 0, p_height:Number = 0){
 			_width = p_width;
 			_height = p_height;
 			update();

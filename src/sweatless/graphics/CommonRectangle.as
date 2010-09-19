@@ -36,7 +36,7 @@ package sweatless.graphics{
 		private var BLCorner : Number = 0;
 		private var BRCorner : Number = 0;
 		
-		public function CommonRectangle(p_width:Number = 100, p_height:Number = 100){
+		public function CommonRectangle(p_width:Number = 0, p_height:Number = 0){
 			super(p_width, p_height);
 		}
 		
