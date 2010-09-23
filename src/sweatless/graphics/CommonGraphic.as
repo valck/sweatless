@@ -189,9 +189,7 @@ package sweatless.graphics{
 			return _fillColors;
 		}
 		
-		public function set alphas(p_value:Array):void{
-			if(p_value.length>2) return;
-			
+		public function set alphas(p_value:Array):void{			
 			_fillAlphas = p_value;
 			update();
 		}
@@ -200,9 +198,7 @@ package sweatless.graphics{
 			return _fillAlphas;
 		}
 		
-		public function set ratios(p_value:Array):void{
-			if(p_value.length>2) return;
-			
+		public function set ratios(p_value:Array):void{			
 			_gradientRatios = p_value;
 			update();
 		}
