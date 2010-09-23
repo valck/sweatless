@@ -39,6 +39,11 @@ package sweatless.utils{
 			return validate.test(p_value);
 		}
 
+		public static function isCPF(p_value:String):Boolean {
+			var validate:RegExp = /(\d{3}.?\d{3}.?\d{3}-?\d{2})/g;
+			return validate.test(p_value);
+		}
+
 	}
 }
 
