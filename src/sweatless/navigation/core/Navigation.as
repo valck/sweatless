@@ -45,7 +45,6 @@ package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
 	import sweatless.events.Broadcaster;
-	import sweatless.events.CustomEvent;
 	import sweatless.layout.Align;
 	import sweatless.layout.Layers;
 	import sweatless.navigation.primitives.Area;
@@ -194,7 +193,7 @@ package sweatless.navigation.core{
 		private static function unload(evt:Event):void{
 			Align.remove(last, Number(Config.getAreaAdditionals(last.id, "@width")), Number(Config.getAreaAdditionals(last.id, "@height")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@top")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@bottom")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@right")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@left")));
 			
-			last.destroy();
+			Layers.get("navigation").removeChild(last);
 			
 			!StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : null;
 		}

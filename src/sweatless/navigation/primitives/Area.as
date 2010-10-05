@@ -45,6 +45,8 @@ package sweatless.navigation.primitives{
 		public function Area(){
 			tabEnabled = false;
 			tabChildren = false;
+			
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		public function set id(p_id:String):void{
@@ -71,9 +73,8 @@ package sweatless.navigation.primitives{
 			dispatchEvent(new Event(READY));
 		}
 		
-		override public function destroy():void{
+		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
-			if(stage) parent.removeChild(this);
 		}
 		
 		public function show():void{

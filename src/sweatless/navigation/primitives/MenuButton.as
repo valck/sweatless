@@ -43,6 +43,7 @@ package sweatless.navigation.primitives{
 		
 		public function MenuButton(){
 			addEventListener(Event.ADDED_TO_STAGE, check);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		private function check(evt:Event):void{
@@ -146,10 +147,9 @@ package sweatless.navigation.primitives{
 			broadcaster.dispatchEvent(new CustomEvent(broadcaster.getEvent("change_menu"), area));
 		}
 		
-		override public function destroy():void{
+		override public function destroy(evt:Event=null):void{
 			removeListeners();
 			removeAllEventListeners();
-			if(stage) parent.removeChild(this);
 		}
 		
 		override public function get name():String{

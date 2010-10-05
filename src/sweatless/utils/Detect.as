@@ -38,9 +38,6 @@ package sweatless.utils{
 
 	/**
 	 * 
-	 * @author valck
-	 * @copyright 2009
-	 * 
 	 * Simple Class for detect OS and browser.
 	 * 
 	 * Usage:

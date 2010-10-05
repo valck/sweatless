@@ -33,7 +33,6 @@ package sweatless.navigation.primitives{
 	import flash.utils.getQualifiedSuperclassName;
 	
 	import sweatless.events.Broadcaster;
-	import sweatless.events.CustomEvent;
 	import sweatless.interfaces.IBase;
 	import sweatless.navigation.core.Config;
 	
@@ -51,6 +50,8 @@ package sweatless.navigation.primitives{
 			type = p_type;
 			properties = Config.getMenu(type);
 			broadcaster = Broadcaster.getInstance();
+			
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		private function change(evt:Event):void{
@@ -94,9 +95,8 @@ package sweatless.navigation.primitives{
 			return buttons;
 		}
 		
-		override public function destroy():void{
+		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
-			if(stage) parent.removeChild(this);
 		}
 	}
 }

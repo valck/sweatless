@@ -23,7 +23,7 @@
  * http://code.google.com/p/sweatless/
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * @author Valério Oliveira (valck)
+ * @author João Marquesini
  * 
  */
 

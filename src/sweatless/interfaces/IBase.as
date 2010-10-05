@@ -32,6 +32,6 @@ package sweatless.interfaces{
 
 	public interface IBase{
 		function create(evt:Event=null):void;
-		function destroy():void;
+		function destroy(evt:Event=null):void;
 	}
 }

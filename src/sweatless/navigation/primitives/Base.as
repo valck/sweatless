@@ -30,7 +30,6 @@
 package sweatless.navigation.primitives{
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
 	import sweatless.events.Broadcaster;
@@ -41,39 +40,53 @@ package sweatless.navigation.primitives{
 		public var data : Object = new Object();
 		public var broadcaster : Broadcaster = Broadcaster.getInstance();
 		
-		protected var events : Dictionary;
+		private var listeners : Array;
 		
 		public function Base(){
-			events = new Dictionary(true);
+			listeners = new Array();
 		}
 		
 		public function create(evt:Event=null):void{
 			throw new Error("Please, override this method.");
 		}
 		
-		public function destroy():void{
+		public function destroy(evt:Event=null):void{
 			throw new Error("Please, override this method.");
 		}
 		
-		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void{
-			var key : Object = {type:type, listener:listener, capture:useCapture};
-			events[key] = listener;
-			
-			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		override public function addEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false, p_priority:int=0, p_useWeakReference:Boolean=false):void{
+			listeners.push({type:p_type, listener:p_listener, capture:p_useCapture});
+
+			super.addEventListener(p_type, p_listener, p_useCapture, p_priority, p_useWeakReference);
 		}
 		
-		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
-			var key : Object = {type:type, listener:listener, capture:useCapture};
+		override public function removeEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false):void{
+			for (var i:uint=0; i<listeners.length; i++) {
+				if (listeners[i].type == p_type && listeners[i].listener == p_listener && listeners[i].capture == p_useCapture) {
+					listeners[i] = null;
+					listeners.splice(i, 1);
+					
+					break;
+				};
+			}
 
-			events[key] = null;
-			delete events[key];
-			
-			super.removeEventListener(type, listener, useCapture);
+			super.removeEventListener(p_type, p_listener, p_useCapture);
+		}
+		
+		public function getAllEventListeners():Array{
+			return listeners;
 		}
 		
 		public function removeAllEventListeners():void{
-			for(var key:* in events){
-				removeEventListener(key.type, key.listener, key.capture);	
+			var i:uint = listeners.length;
+			
+			while (i) {
+				super.removeEventListener(listeners[i-1].type, listeners[i-1].listener, listeners[i-1].capture);
+
+				listeners[i-1] = null;
+				listeners.splice(i-1, 1);
+				
+				i--;
 			}
 		}
 		

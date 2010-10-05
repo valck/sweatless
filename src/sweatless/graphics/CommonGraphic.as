@@ -46,10 +46,10 @@ package sweatless.graphics{
 		private var _strokeColor : uint = 0x000000;
 		private var _strokeMode : String = "normal";
 		
-		private var _fillColors : Array = new Array(0xff0000, 0x0000ff);
-		private var _fillAlphas : Array ;
+		private var _fillColors : Array = new Array(0xff0000, 0x00ff00, 0x0000ff);
+		private var _fillAlphas : Array;
 		
-		private var _gradientRatios : Array;
+		private var _fillRatios : Array;
 		private var _fillRotation : Number = 0;
 		private var _fillTx : Number = 0;
 		private var _fillTy : Number = 0;
@@ -74,11 +74,9 @@ package sweatless.graphics{
 			
 			matrix = new Matrix();
 			
-			
-			
 			if(!texture){
 				matrix.createGradientBox(p_width, p_height, _fillRotation, _fillTx, _fillTy);
-				graphics.beginGradientFill(_type, _fillColors, _fillAlphas ? _fillAlphas : autoAlpha, _gradientRatios ? _gradientRatios : autoRatio, matrix, _method);
+				graphics.beginGradientFill(_type, _fillColors, _fillAlphas ? _fillAlphas : autoAlpha, _fillRatios ? _fillRatios : autoRatio, matrix, _method);
 			}else{
 				matrix.rotate(_fillRotation);
 				matrix.translate(_fillTx, _fillTy);
@@ -97,14 +95,22 @@ package sweatless.graphics{
 		}
 		
 		private function get autoAlpha():Array{
-			var alphaArray:Array = [];
-			for(var i:int = 0; i<_fillColors.length; i++) alphaArray[i] = 1;
+			var alphaArray : Array = new Array();
+			
+			for(var i:int=0; i<_fillColors.length; i++) {
+				alphaArray.push(1);
+			}
+			
 			return alphaArray;
 		}
 		
 		private function get autoRatio():Array{
-			var ratioArray:Array = [];
-			for(var i:int=0; i<_fillColors.length; i++) ratioArray[i] = (i/(_fillColors.length-1)*255);
+			var ratioArray : Array = new Array();
+
+			for(var i:int=0; i<_fillColors.length; i++) {
+				ratioArray.push((i/(_fillColors.length-1)*255));
+			}
+			
 			return ratioArray;
 		}
 		
@@ -199,12 +205,12 @@ package sweatless.graphics{
 		}
 		
 		public function set ratios(p_value:Array):void{			
-			_gradientRatios = p_value;
+			_fillRatios = p_value;
 			update();
 		}
 		
 		public function get ratios():Array{
-			return _gradientRatios;
+			return _fillRatios;
 		}
 		
 		public function set repeat(p_value:Boolean):void{
@@ -264,20 +270,6 @@ package sweatless.graphics{
 		}
 		
 		public function destroy():void{
-			_fillColors = new Array(0xff0000, 0x0000ff);
-			_fillAlphas = new Array(1, 1);
-			_gradientRatios = new Array(0, 255);
-			
-			_fillRotation = Math.PI / 2;
-			_fillTx = 0;
-			_fillTy = 0;
-			
-			_width = 0;
-			_height = 0;
-			
-			_type = "linear";
-			_method = "pad";
-
 			graphics.clear();
 			if(texture) texture.dispose();
 		}

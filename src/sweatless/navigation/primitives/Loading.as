@@ -44,6 +44,7 @@ package sweatless.navigation.primitives{
 			mouseEnabled = false;
 			
 			addEventListener(Event.ADDED_TO_STAGE, create);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		override public function create(evt:Event=null):void{
@@ -55,7 +56,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function set progress(p_progress:Number):void{
-			_progress = p_progress
+			_progress = p_progress <= 1 ? p_progress : 1;
 		}
 		
 		public function show():void{
@@ -70,10 +71,8 @@ package sweatless.navigation.primitives{
 			
 		}
 		
-		override public function destroy():void{
-			_progress = 0;
+		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
-			if(stage) parent.removeChild(this);
 		}
 	}
 }

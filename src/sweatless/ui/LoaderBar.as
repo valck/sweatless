@@ -42,12 +42,9 @@ package sweatless.ui{
 		private var _height : Number = 0;
 		
 		public function LoaderBar(){
-			addEventListener(Event.ADDED_TO_STAGE, create);
  		}
 		
 		override public function create(evt:Event=null):void{
-			removeEventListener(Event.ADDED_TO_STAGE, create);
-			
 			background = new CommonRectangle();
 			addChild(background);
 			
@@ -65,6 +62,8 @@ package sweatless.ui{
 			alpha = 0;
 			
 			align();
+			
+			super.create(evt);
 		}
 		
 		override public function show():void{
@@ -78,7 +77,8 @@ package sweatless.ui{
 		}
 		
 		override public function set progress(p_progress:Number):void{
-			bar ? bar.scaleX = p_progress : null;
+			bar ? bar.scaleX = progress : null;
+
 			super.progress = p_progress;
 		}
 		
@@ -114,11 +114,11 @@ package sweatless.ui{
 			
 		}
 		
-		override public function destroy():void{
+		override public function destroy(evt:Event=null):void{
 			bar.destroy();
 			background.destroy();
 			
-			if(stage) parent.removeChild(this);
+			super.destroy(evt);
 		}
 	}
 }
