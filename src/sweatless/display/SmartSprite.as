@@ -28,17 +28,17 @@
  */
 
 package sweatless.display{
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 
-	dynamic public class SmartSprite extends DisplayObjectContainer{
+	dynamic public class SmartSprite extends Sprite{
 		
 		private var _debug : Boolean;
 		private var _anchors : Point;
-		private var temp : Point;
+		private var _temp : Point;
+		private var listeners : Array;
 		
 		public static const NONE : int = 0;
 		public static const TOP : int = 1;
@@ -49,11 +49,16 @@ package sweatless.display{
 		public static const RIGHT : int = 32;
 
 		/**
-		 * The CustomSprite class is a substitute class for the native <code>Sprite</code> class. It adds
+		 * The SmartSprite class is a substitute class for the native <code>Sprite</code> class. It adds
 		 * dynamic anchor points to <code>Sprite</code>.
 		 */
 		public function SmartSprite() {
+			super();
+			
+			listeners = new Array();
+			
 			addEventListener(Event.ADDED_TO_STAGE, created);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		/**
@@ -65,7 +70,7 @@ package sweatless.display{
 			removeEventListener(Event.ADDED_TO_STAGE, created);
 			
 			_anchors = new Point();
-			temp = new Point(super.x, super.y);
+			_temp = new Point(super.x, super.y);
 			
 			update();
 		}
@@ -74,9 +79,9 @@ package sweatless.display{
 		 * Sets the <code>anchors</code> of the sprite to predefined positions. 
 		 * 
 		 * @param p_anchors The values to be applied to the sprite registration point. Valid values
-		 * @type sweatless.display.CustomSprite.CENTER
-		 * @type sweatless.display.CustomSprite.LEFT
-		 * @type sweatless.display.CustomSprite.MIDDLE
+		 * @type sweatless.display.SmartSprite.CENTER
+		 * @type sweatless.display.SmartSprite.LEFT
+		 * @type sweatless.display.SmartSprite.MIDDLE
 		 */
 		public function anchors(p_anchors:int=SmartSprite.MIDDLE+SmartSprite.CENTER):void{
 			var p_x : Number = 0;
@@ -117,20 +122,20 @@ package sweatless.display{
 		}
 		
 		override public function get x():Number{
-			return temp.x;
+			return _temp.x;
 		}
 
 		override public function set x(p_value:Number):void{
-			temp.x = p_value;
+			_temp.x = p_value;
 			update();
 		}
 
 		override public function get y():Number{
-			return temp.y;
+			return _temp.y;
 		}
 		
 		override public function set y(p_value:Number):void{
-			temp.y = p_value;
+			_temp.y = p_value;
 			update();
 		}
 
@@ -180,6 +185,46 @@ package sweatless.display{
 			update();
 		}
 		
+		override public function addEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false, p_priority:int=0, p_useWeakReference:Boolean=false):void{
+			listeners.push({type:p_type, listener:p_listener, capture:p_useCapture});
+			
+			super.addEventListener(p_type, p_listener, p_useCapture, p_priority, p_useWeakReference);
+		}
+		
+		override public function removeEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false):void{
+			for (var i:uint=0; i<listeners.length; i++) {
+				if (listeners[i].type == p_type && listeners[i].listener == p_listener && listeners[i].capture == p_useCapture) {
+					listeners[i] = null;
+					listeners.splice(i, 1);
+					
+					break;
+				};
+			}
+			
+			super.removeEventListener(p_type, p_listener, p_useCapture);
+		}
+		
+		public function getAllEventListeners():Array{
+			return listeners;
+		}
+		
+		public function removeAllEventListeners():void{
+			var i:uint = listeners.length;
+			
+			while (i) {
+				super.removeEventListener(listeners[i-1].type, listeners[i-1].listener, listeners[i-1].capture);
+				
+				listeners[i-1] = null;
+				listeners.splice(i-1, 1);
+				
+				i--;
+			}
+		}
+
+		public function destroy(evt:Event=null):void{
+			removeAllEventListeners();
+		}
+		
 		private function update():void{
 			var oldPoint:Point = new Point(0, 0);
 			var newPoint:Point = new Point(_anchors.x, _anchors.y);
@@ -187,8 +232,8 @@ package sweatless.display{
 			newPoint = parent.globalToLocal(localToGlobal(newPoint));
 			oldPoint = parent.globalToLocal(localToGlobal(oldPoint));
 			
-			super.x = temp.x - (newPoint.x - oldPoint.x);
-			super.y = temp.y - (newPoint.y - oldPoint.y);
+			super.x = _temp.x - (newPoint.x - oldPoint.x);
+			super.y = _temp.y - (newPoint.y - oldPoint.y);
 			
 			if(_debug){
 				var circle : Shape = getChildByName("debug") ? Shape(getChildByName("debug")) : new Shape();
