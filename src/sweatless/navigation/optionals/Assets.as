@@ -27,13 +27,6 @@
  * 
  */
 
-
-
-/**
- *TODO
- * 
- * return id on error... 
- */
 package sweatless.navigation.optionals{
 	import br.com.stimuli.loading.BulkLoader;
 	
@@ -48,31 +41,37 @@ package sweatless.navigation.optionals{
 		public static const VIDEO : String = "video";
 		public static const IMAGE : String = "image";
 		public static const OTHER : String = "other";
+		
+		private static var _source : XML;
 
 		public static function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
-
-			p_area = p_area ? p_area : BulkLoader.getLoader(Config.currentAreaID).getXML("assets");
-
+			
+			try{
+				_source = p_area ? p_area : BulkLoader.getLoader(Config.currentAreaID).getXML("assets") ? BulkLoader.getLoader(Config.currentAreaID).getXML("assets") : null;
+			}catch(err:Error){
+				return "[id:"+p_id+" type:"+p_type+"]";
+			}
+			
 			switch(p_type){
 				case "text":
-					result = String(p_area..text.(@id==p_id));
+					result = String(source..text.(@id==p_id));
 				break;
 	
 				case "image":
-					result = String(p_area..image.(@id==p_id).@url);
+					result = String(source..image.(@id==p_id).@url);
 				break;
 				
 				case "video":
-					result = String(p_area..video.(@id==p_id).@url);
+					result = String(source..video.(@id==p_id).@url);
 				break;
 				
 				case "audio":
-					result = String(p_area..audio.(@id==p_id).@url);
+					result = String(source..audio.(@id==p_id).@url);
 				break;
 
 				case "other":
-					result = String(p_area..other.(@id==p_id).@url);
+					result = String(source..other.(@id==p_id).@url);
 				break;
 			}
 			
@@ -80,7 +79,7 @@ package sweatless.navigation.optionals{
 		}
 		
 		public static function get source():XML{
-			return BulkLoader.getLoader(Config.currentAreaID).getXML("assets");
+			return _source;
 		}
 		
 		public static function getStringGroup(p_type:String, p_area:XML=null):Dictionary{
