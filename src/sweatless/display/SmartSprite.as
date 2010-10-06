@@ -57,22 +57,12 @@ package sweatless.display{
 			
 			listeners = new Array();
 			
-			addEventListener(Event.ADDED_TO_STAGE, created);
+			addEventListener(Event.ADDED, update);
+			addEventListener(Event.ADDED_TO_STAGE, update);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-		}
-		
-		/**
-		 * @private 
-		 * @param evt
-		 * 
-		 */
-		private function created(evt:Event):void{
-			removeEventListener(Event.ADDED_TO_STAGE, created);
-			
+
 			_anchors = new Point();
 			_temp = new Point(super.x, super.y);
-			
-			update();
 		}
 		
 		/**
@@ -225,7 +215,7 @@ package sweatless.display{
 			removeAllEventListeners();
 		}
 		
-		private function update():void{
+		private function update(evt:Event=null):void{
 			var oldPoint:Point = new Point(0, 0);
 			var newPoint:Point = new Point(_anchors.x, _anchors.y);
 			

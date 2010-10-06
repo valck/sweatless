@@ -33,15 +33,15 @@ package sweatless.events{
     import flash.utils.Dictionary;
 
     public class CustomListener{
-        private static var targetMap : Dictionary = new Dictionary();
+        private static var target : Dictionary = new Dictionary();
 		
         public static function addListener(p_target:IEventDispatcher, p_type:String, p_listener:Function, ...args):void{
-            var targetEventMap : Dictionary;
+            var event : Dictionary;
 
-            targetEventMap = targetMap[p_target] == undefined ? new Dictionary : targetMap[p_target];
+            event = target[p_target] == undefined ? new Dictionary : target[p_target];
             
-            targetEventMap[p_type] = {listener:p_listener, args:args};
-            targetMap[p_target] = targetEventMap;
+            event[p_type] = {listener:p_listener, args:args};
+            target[p_target] = event;
             
             p_target.addEventListener(p_type, onEvent);
         }
@@ -51,28 +51,28 @@ package sweatless.events{
         }
         
         public static function removeListener(p_target:IEventDispatcher, p_type:String) : void{
-            var targetEventMap : Dictionary = targetMap[p_target];
+			var event : Dictionary = target[p_target];
             
-            targetEventMap[p_type] = null;
-            delete targetEventMap[p_type];
+            event[p_type] = null;
+            delete event[p_type];
             
             p_target.removeEventListener(p_type, onEvent);
         }
         
         private static function onEvent (evt:Event):void{
-            var target : IEventDispatcher = evt.currentTarget as IEventDispatcher;
+            var temp : IEventDispatcher = evt.currentTarget as IEventDispatcher;
             
-            var targetEventMap : Dictionary = targetMap[target];
-            var eventType : String = evt.type;
+            var event : Dictionary = target[temp];
+            var type : String = evt.type;
             
-            var listener : Function = targetEventMap[eventType].listener;
-            var args:Array = targetEventMap[eventType].args;
+            var listener : Function = event[type].listener;
+            var args : Array = event[type].args;
             
-            if (args[0] is Event) args.shift();
+            args[0] is Event ? args.shift() : null;
             
             args.unshift(evt);
 
-            listener.apply(target, args);
+            listener.apply(temp, args);
         }
 
     }
