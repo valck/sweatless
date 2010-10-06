@@ -51,6 +51,8 @@ package sweatless.events{
         }
         
         public static function removeListener(p_target:IEventDispatcher, p_type:String) : void{
+			if(!target[p_target]) return;
+			
 			var event : Dictionary = target[p_target];
             
             event[p_type] = null;
