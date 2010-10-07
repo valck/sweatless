@@ -201,8 +201,6 @@ package sweatless.text{
 			
 			removeChild(_field);
 			_field = null;
-			
-			if(parent && stage) parent.removeChild(this);
 		}
 		
 	}
