@@ -34,6 +34,10 @@ package sweatless.utils{
 			return p_str.split(p_search).length != 1 ? true : false;
 		}
 		
+		public static function replace(p_string:String, p_search:String, p_replace:String):String {
+			return p_string.split(p_search).join(p_replace);
+		}
+		
 		public static function reverse(p_string:String):String {
 			if (p_string == null) return "";
 			
