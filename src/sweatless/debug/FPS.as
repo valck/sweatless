@@ -46,12 +46,19 @@ package sweatless.debug{
 		private var lastFrameTime : Number;
 		private var frames : Number = 0;
 		
-		public function FPS(p_danger_percent:int=65):void{
-			_danger = p_danger_percent;
+		/**
+		 * 
+		 * The FPS class is a simple debugger for applications with FPS and MB.
+		 * 
+		 * @param p_danger Percent of the danger value of application.
+		 * 
+		 */
+		public function FPS(p_danger:int=65):void{
+			_danger = p_danger;
 
 			addEventListener(Event.ADDED_TO_STAGE, create);
 		}
-		
+
 		private function create(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
 			
@@ -73,6 +80,13 @@ package sweatless.debug{
 			show(offline);
 		}
 		
+		/**
+		 * If <code>true</code> or <code>false</code> to show.
+		 * for example development is <code>true</code> and online is <code>false</code>.
+		 * 
+		 * @param p_debugger <code>true</code> or <code>false</code>
+		 * 
+		 */
 		public function show(p_debugger:Boolean):void{
 			if(!p_debugger) return;
 			

@@ -25,15 +25,6 @@
  * 
  * @author Valério Oliveira (valck)
  * 
- * @example
- * var so : SO = new SO("some_id");
- * so.data = "foo";
- * 
- * trace(so.data);
- * 
- * trace(so.clear());
- * 
- * trace(so.data);
  * 
  */
 
@@ -42,13 +33,28 @@ package sweatless.data{
     import flash.net.SharedObject;
     import flash.net.SharedObjectFlushStatus;
  
+	/**
+	 * 
+	 * The SO class is a simple manager for <code>SharedObject</code>.
+	 * 
+	 * @example var so : SO = new SO("some_id");
+	 * so.data = "foo";
+	 * 
+	 * trace(so.data);
+	 * 
+	 * trace(so.clear());
+	 * 
+	 * trace(so.data);
+	 * @see SharedObject
+	 * 
+	 */
     public class SO{
  
         private var saved : SharedObject;
 
 		/**
 		 * 
-		 * @param p_name Name/ID of shared-object to save.
+		 * @param p_name Name/ID of <code>SharedObject</code> to save.
 		 * 
 		 */
         public function SO(p_name:String="cookie") {
@@ -57,7 +63,7 @@ package sweatless.data{
  
 		/**
 		 * 
-		 * @param p_value Save data value in SO.
+		 * @param p_value Save <code>data</code> value in SO.
 		 * 
 		 */
 		public function set data(p_value:String):void {
@@ -72,7 +78,7 @@ package sweatless.data{
             } catch (error:Error) {
 				
             }
- 
+ 			
             if(!flushStatus) return;
 			
             switch (flushStatus) {
@@ -86,17 +92,17 @@ package sweatless.data{
  
 		/**
 		 * 
-		 * @return The data value saved in SO.
+		 * @return The <code>data</code> value saved.
 		 * 
 		 */
-		public function get data():*{
+		public function get data():String{
 			if(!saved.data.value) return null;
 			return saved.data.value;
 		}
 		
 		/**
 		 * 
-		 * @return If data has been clean <code>true</code> or <code>false</code>. 
+		 * @return If <code>data</code> has been clean <code>true</code> or <code>false</code>. 
 		 * 
 		 */
         public function clear():Boolean {
@@ -112,14 +118,8 @@ package sweatless.data{
 			return result;
         }
 		
-		/**
-		 * 
-		 * @private
-		 * @param event
-		 * 
-		 */
-        private function onFlushStatus(event:NetStatusEvent):void {
-            switch (event.info.code) {
+        private function onFlushStatus(evt:NetStatusEvent):void {
+            switch (evt.info.code) {
                 case "SharedObject.Flush.Success":
                     break;
                 case "SharedObject.Flush.Failed":

@@ -32,13 +32,29 @@ package sweatless.display{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
-
-	dynamic public class SmartSprite extends Sprite{
+	
+	/**
+	 * 
+	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic anchor points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+	 * 
+	 * @see Sprite
+	 * @see IEventDispatcher
+	 * 
+	 */
+	public class SmartSprite extends Sprite{
 		
 		private var _debug : Boolean;
 		private var _anchors : Point;
 		private var _temp : Point;
 		private var listeners : Array;
+		
+		/**
+		 * 
+		 * A dynamic <code>Object</code> to save temp values.
+		 * @see Object
+		 *  
+		 */
+		public var data : Object = new Object();
 		
 		public static const NONE : int = 0;
 		public static const TOP : int = 1;
@@ -49,8 +65,11 @@ package sweatless.display{
 		public static const RIGHT : int = 32;
 
 		/**
-		 * The SmartSprite class is a substitute class for the native <code>Sprite</code> class. It adds
-		 * dynamic anchor points to <code>Sprite</code>.
+		 * 
+	 	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic anchor points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+		 * @see Sprite
+		 * @see IEventDispatcher
+		 * 
 		 */
 		public function SmartSprite() {
 			super();
@@ -60,18 +79,22 @@ package sweatless.display{
 			addEventListener(Event.ADDED, update);
 			addEventListener(Event.ADDED_TO_STAGE, update);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-
+			
 			_anchors = new Point();
 			_temp = new Point(super.x, super.y);
 		}
 		
 		/**
 		 * Sets the <code>anchors</code> of the sprite to predefined positions. 
+		 * Valid values: (TOP, CENTER, LEFT, MIDDLE, RIGHT and BOTTOM)
+		 * @param p_anchors The values to be applied to the sprite registration point.
+		 * @example Valid values:<listing version="3.0">
+			var smartsprite : SmartSprite = new SmartSprite();
+			addChild(smartsprite);
+			
+			smartsprite.anchors(SmartSprite.BOTTOM+SmartSprite.CENTER);
+ 		 * </listing>
 		 * 
-		 * @param p_anchors The values to be applied to the sprite registration point. Valid values
-		 * @type sweatless.display.SmartSprite.CENTER
-		 * @type sweatless.display.SmartSprite.LEFT
-		 * @type sweatless.display.SmartSprite.MIDDLE
 		 */
 		public function anchors(p_anchors:int=SmartSprite.MIDDLE+SmartSprite.CENTER):void{
 			var p_x : Number = 0;
@@ -111,65 +134,162 @@ package sweatless.display{
 			update();
 		}
 		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function get x():Number{
 			return _temp.x;
 		}
 
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function set x(p_value:Number):void{
 			_temp.x = p_value;
 			update();
 		}
-
+		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function get y():Number{
 			return _temp.y;
 		}
 		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function set y(p_value:Number):void{
 			_temp.y = p_value;
 			update();
 		}
 
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function set scaleX(p_value:Number):void{
 			super.scaleX = p_value;
 			update();
 		}
 
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function set scaleY(p_value:Number):void{
 			super.scaleY = p_value;
 			update();
 		}
-
+		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function set rotation(p_value:Number):void{
 			super.rotation = p_value;
 			update();
 		}
-
+		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function get mouseX():Number{
 			return Math.round(super.mouseX - _anchors.x);
 		}
-
+		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see Number
+		 * 
+		 */
 		override public function get mouseY():Number{
 			return Math.round(super.mouseY - _anchors.y);
 		}
 		
+		/**
+		 * 
+		 * Get the value of <code>anchorX</code> to predefined positions. 
+		 * @return <code>Number</code>
+		 * @see Number
+		 * 
+		 */
 		public function get anchorX():Number{
 			return _anchors.x;
 		}
 		
+		/**
+		 * Sets the value in pixels of <code>anchorX</code> to predefined positions. 
+		 * @param p_anchors The values to be applied to the sprite registration point.
+		 * @example Valid values:<listing version="3.0">
+		 var smartsprite : SmartSprite = new SmartSprite();
+		 addChild(smartsprite);
+		 
+		 smartsprite.anchorX = 50;
+		 * </listing>
+		 * @see Number
+		 * 
+		 */
 		public function set anchorX(p_value:Number):void{
 			_anchors.x = p_value;
 			update();
 		}
 		
+		/**
+		 * 
+		 * Get the value of <code>anchorY</code> to predefined positions. 
+		 * @return <code>Number</code>
+		 * @see Number
+		 * 
+		 */
 		public function get anchorY():Number{
 			return _anchors.y;
 		}
 		
+		/**
+		 * Sets the value in pixels of <code>anchorY</code> to predefined positions. 
+		 * @param p_anchors The values to be applied to the sprite registration point.
+		 * @example Valid values:<listing version="3.0">
+		 var smartsprite : SmartSprite = new SmartSprite();
+		 addChild(smartsprite);
+		 
+		 smartsprite.anchorY = 50;
+		 * </listing>
+		 * @see Number
+		 * 
+		 */
 		public function set anchorY(p_value:Number):void{
 			_anchors.y = p_value;
 			update();
 		}
 		
+		/**
+		 * 
+		 * @param p_value is <code>true</code> or <code>false</code>
+		 * 
+		 */
 		public function set debug(p_value:Boolean):void{
 			_debug = p_value;
 			update();
