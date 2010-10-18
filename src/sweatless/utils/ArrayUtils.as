@@ -28,8 +28,22 @@
  */
 
 package sweatless.utils{
+	/**
+	 * The <code>ArrayUtils</code> class have support methods for easier manipulation of 
+	 * the native <code>Array</code> class.
+	 * @see Array
+	 */	
 	public class ArrayUtils{
-		
+			
+		/**
+		 * Removes an item from an <code>Array</code>. 
+		 * @param p_array The <code>Array</code> that contains the item that should be removed. 
+		 * @param p_item The item to be removed from the <code>Array</code>.
+		 * @return An <code>Array</code> with the removed items.
+		 * @see Array.pop()
+		 * @see Array.shift()
+		 * @see Array.splice()
+		 */
 		public static function removeItem(p_array:Array, p_item:*):Array {
 			var i:int = p_array.length;
 			var result:Array = new Array();
@@ -43,7 +57,11 @@ package sweatless.utils{
 			return result;
 		}
 		
-		public static function removeDuplicate(p_array:Array):Array {
+		/**
+		 * Removes all duplicated items from an <code>Array</code>. 
+		 * @param p_array The <code>Array</code> where the duplicates should be removed.
+		 */
+		public static function removeDuplicate(p_array:Array):void {
 			var arrTemp:Array = p_array;
 			for (var y : Number = 0; y<arrTemp.length; y++) {
 				for(var x : * in arrTemp[y]){
@@ -55,13 +73,25 @@ package sweatless.utils{
 					}
 				}
 			}
-			return arrTemp;
 		}
-
+		
+		
+		/**
+		 * Returns a random index inside the range of the <code>Array</code>. 
+		 * @param p_array The <code>Array</code> to be used as reference.
+		 * @return A random valid index.
+		 * 
+		 */
 		public static function randomIndex(p_array:Array):int {
 			return NumberUtils.rangeRandom(0, p_array.length-1, true);
 		}
 		
+				
+		/**
+		 * Shuffles the order of the items in an <code>Array</code>. 
+		 * @param p_array The <code>Array</code> to shuffled.
+		 * 
+		 */
 		public static function shuffle(p_array:Array):void {
 			var total : int = p_array.length;
 			var random : int;

@@ -39,7 +39,26 @@ package sweatless.utils{
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
     
+	/**
+	 * The <code>BitmapUtils</code> class have support methods for easier manipulation of 
+	 * the native <code>Bitmap</code> and <code>BitmapData</code> classes.
+	 * @see flash.display.Bitmap
+	 * @see flash.display.BitmapData
+	 */	
 	public class BitmapUtils{
+		
+		
+		/**
+		 * Draws the target <code>DisplayObject</code> into a <code>Bitmap</code>. 
+		 * @param p_target The <code>DisplayObject</code> to be drawn.
+		 * @param p_margin The margin to be added to the <code>DisplayObject</code> width and height.
+		 * @param p_smoothing Defines if the resulting <code>Bitmap</code> should be smoothed or not.
+		 * @param p_remove Defines if the target <code>DisplayObject</code> should be removed from stage or not.
+		 * @return The resulting <code>Bitmap</code> object.
+		 * @see flash.display.DisplayObject
+		 * @see flash.display.BitmapData
+		 * @see flash.display.Bitmap
+		 */
 		public static function convertToBitmap(p_target:DisplayObject, p_margin:int=5, p_smoothing:Boolean=true, p_remove:Boolean=true):Bitmap{
 			var qualityStage : String;
 			
@@ -67,6 +86,7 @@ package sweatless.utils{
 
 			return targetDrawed;
 		}
+		
 		
 		public static function specialHitTestObject( target1:DisplayObject, target2:DisplayObject, accuracy:Number = 1 ):Boolean{
 			return specialIntersectionRectangle( target1, target2, accuracy ).width != 0;

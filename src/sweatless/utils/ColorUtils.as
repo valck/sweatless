@@ -31,8 +31,20 @@ package sweatless.utils{
 	import flash.display.DisplayObject;
 	import flash.geom.ColorTransform;
 
+	/**
+	 * The <code>ColorUtils</code> class have support methods for easier manipulation of 
+	 * color values and <code>DisplayObject</code> color transformations.
+	 * @see flash.display.DisplayObject
+	 */	
 	public class ColorUtils{
 		
+		
+		/**
+		 * Tints the target <code>DisplayObject</code> with the given color. 
+		 * @param p_target The target <code>DisplayObject</code> to be tinted.
+		 * @param p_color The hexadecimal color value the target <code>DisplayObject</code> should be tinted.
+		 * @see flash.display.DisplayObject
+		 */
 		public static function setColor(p_target:DisplayObject, p_color:uint):void{
 			var colorT : ColorTransform = new ColorTransform();
 			colorT.color = p_color;
@@ -40,6 +52,14 @@ package sweatless.utils{
 			(p_target).transform.colorTransform = colorT;
 		}
 		
+		
+		/**
+		 * Lighten the target color value with the given amount. 
+		 * @param p_color The target hexadecimal color value to be lightened.
+		 * @param p_amount The amount to be lightened. This value must be between 0 and 1.
+		 * @return The resulting lightened hexadecimal value.
+		 * 
+		 */
 		public static function toLighten(p_color:uint, p_amount:Number):uint{	
 			var color : RGB = getRGB(p_color);
 			
@@ -50,6 +70,13 @@ package sweatless.utils{
 			return getHex(color.r, color.g, color.b);
 		}
 		
+		/**
+		 * Darken the target color value with the given amount. 
+		 * @param p_color The target hexadecimal color value to be darkened.
+		 * @param p_amount The amount to be darkened. This value must be between 0 and 1.
+		 * @return The resulting darkened hexadecimal value.
+		 * 
+		 */
 		public static function toDarken(p_color:uint, p_amount:Number):uint{
 			var color : RGB = getRGB(p_color);
 
@@ -60,10 +87,26 @@ package sweatless.utils{
 			return getHex(color.r, color.g, color.b);
 		}
 		
+		
+		/**
+		 * Converts red, green and blue values to Hexadecimal format.  
+		 * @param p_r The red value of the color. This value must be between 0 and 255.
+		 * @param p_g The green value of the color. This value must be between 0 and 255.
+		 * @param p_b The blue value of the color. This value must be between 0 and 255.
+		 * @return The given color converted to Hexadecimal format.
+		 * 
+		 */
 		public static function getHex(p_r:uint, p_g:uint, p_b:uint):uint{
 			return uint("0x" + (p_r<16 ? "0" : "") + p_r.toString(16) + (p_g<16 ? "0" : "") + p_g.toString(16) + (p_b<16 ? "0" : "") + p_b.toString(16));
 		}
 		
+		
+		/**
+		 * Converts a Hexadecimal color value to red, green and blue values. 
+		 * @param p_color The Hexadecimal value that should be converted.
+		 * @return A <code>RGB</code> Object containing the red, green and blue values.
+		 * @see RGB
+		 */
 		public static function getRGB(p_color:uint):RGB{
 			return new RGB(p_color >> 16 & 0xFF, p_color >> 8 & 0xFF, p_color & 0xFF);
 		}
@@ -71,6 +114,9 @@ package sweatless.utils{
 }
 import flash.utils.getQualifiedClassName;
 
+/**
+ *	The RGB class is used to get red, green and blue values with the ColorUtils class.
+ */
 internal class RGB{
 	private var _r : uint;
 	private var _g : uint;
@@ -82,6 +128,10 @@ internal class RGB{
 		b = p_b;
 	}
 	
+	
+	/**
+	 * The red color value. This value must be between 0 and 255.
+	 */
 	public function get r():uint{
 		return _r;
 	}
@@ -90,6 +140,9 @@ internal class RGB{
 		_r = p_value;
 	}
 	
+	/**
+	 * The green color value. This value must be between 0 and 255.
+	 */
 	public function get g():uint{
 		return _g;
 	}
@@ -98,6 +151,9 @@ internal class RGB{
 		_g = p_value;
 	}
 	
+	/**
+	 * The blue color value. This value must be between 0 and 255.
+	 */
 	public function get b():uint{
 		return _b;
 	}
@@ -106,6 +162,10 @@ internal class RGB{
 		_b = p_value;
 	}
 	
+	/**
+	 * The value of the colors in string format.
+	 * @return The value in {r:255, g:255, b:255} format. 
+	 */
 	public function toString():String{
 		return "{r:" + r + ", g:" + g + ", b:" + b + "}";
 	}
