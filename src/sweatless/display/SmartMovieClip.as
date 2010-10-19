@@ -25,7 +25,7 @@
  * 
  * @author Valério Oliveira (valck) / João Marquesini
  * 
- * @todo loop, repeat and custom non-linear ease
+ * @todo loop, repeat and custom eases equations
  * 
  */
 

@@ -36,7 +36,7 @@ package sweatless.effects{
 
 	/**
 	 * 
-	 * A easily way to creates a noise effect.
+	 * The <code>Noise</code> class is a easily way to creates a noise effect.
 	 * 
 	 * @see BitmapData#noise()
 	 * 
@@ -47,7 +47,7 @@ package sweatless.effects{
 		
 		/**
 		 * 
-		 * A easily way to creates a noise effect.
+		 * The <code>Noise</code> class is a easily way to creates a noise effect.
 		 * 
 		 * @see BitmapData#noise()
 		 * 
@@ -56,7 +56,7 @@ package sweatless.effects{
 		}
 
 		/**
-		 * Sets the scope of effect and create a noise dependencies.
+		 * Sets the scope of effect and create the noise dependencies.
 		 *  
 		 * @param p_scope The scope of effect.
 		 * @param p_width The <code>width</code> of effect.
@@ -65,6 +65,7 @@ package sweatless.effects{
 		 * @param p_blur_y The <code>blurY</code> of effect.
 		 * 
 		 * @see DisplayObjectContainer
+		 * @see Bitmap
 		 * 
 		 */
 		public function create(p_scope:DisplayObjectContainer, p_width:Number=0, p_height:Number=0, p_blur_x:Number=0, p_blur_y:Number=0):void{
@@ -82,6 +83,8 @@ package sweatless.effects{
 		 *  
 		 * @param p_width The <code>width</code> of effect.
 		 * @param p_height The <code>height</code> of effect.
+		 * 
+		 * @see BitmapData
 		 * 
 		 */
 		public function add(p_width:Number=0, p_height:Number=0):void{
@@ -126,6 +129,7 @@ package sweatless.effects{
 		
 		/**
 		 * Destroy remove the noise layer and call <code>dispose</code> method.
+		 * 
 		 * @see BitmapData#dispose()
 		 * @see DisplayObjectContainer#removeChild()
 		 * 
