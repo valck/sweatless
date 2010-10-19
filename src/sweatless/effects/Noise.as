@@ -34,13 +34,39 @@ package sweatless.effects{
 	import flash.display.DisplayObjectContainer;
 	import flash.filters.BlurFilter;
 
+	/**
+	 * 
+	 * A easily way to creates a noise effect.
+	 * 
+	 * @see BitmapData#noise()
+	 * 
+	 */
 	public class Noise{
 		private var scope : DisplayObjectContainer;
 		private var statics : Bitmap;
 		
+		/**
+		 * 
+		 * A easily way to creates a noise effect.
+		 * 
+		 * @see BitmapData#noise()
+		 * 
+		 */
 		public function Noise(){
 		}
 
+		/**
+		 * Sets the scope of effect and create a noise dependencies.
+		 *  
+		 * @param p_scope The scope of effect.
+		 * @param p_width The <code>width</code> of effect.
+		 * @param p_height The <code>height</code> of effect.
+		 * @param p_blur_x The <code>blurX</code> of effect.
+		 * @param p_blur_y The <code>blurY</code> of effect.
+		 * 
+		 * @see DisplayObjectContainer
+		 * 
+		 */
 		public function create(p_scope:DisplayObjectContainer, p_width:Number=0, p_height:Number=0, p_blur_x:Number=0, p_blur_y:Number=0):void{
 			scope = p_scope;
 			
@@ -51,22 +77,63 @@ package sweatless.effects{
 			if(p_blur_x || p_blur_y) statics.filters = [new BlurFilter(p_blur_x, p_blur_y, 2)]; 
 		}
 		
+		/**
+		 * Adds replace the noise layer.
+		 *  
+		 * @param p_width The <code>width</code> of effect.
+		 * @param p_height The <code>height</code> of effect.
+		 * 
+		 */
 		public function add(p_width:Number=0, p_height:Number=0):void{
+			if(!statics) return;
 			statics.bitmapData = new BitmapData(p_width == 0 ? scope.width : p_width, p_height == 0 ? scope.height : p_height, true, 0x000000);
 		}
 		
+		/**
+		 * Dispose the noise layer
+		 * 
+		 * @see BitmapData#dispose()
+		 * 
+		 */
 		public function dispose():void{
+			if(!statics) return;
 			statics.bitmapData.dispose();
 		}
 		
+		/**
+		 * Render the effect
+		 *  
+		 * @param p_random The random seed number to use. If you keep all other parameters the same, you can generate different pseudo-random results by varying the random seed value. The noise function is a mapping function, not a <code>true</code> random-number generation function, so it creates the same results each time from the same random seed.
+		 * @param p_min The lowest value to generate for each channel (0 to 255).
+		 * @param p_max The highest value to generate for each channel (0 to 255).
+		 * @param p_channel A number that can be a combination of any of the four color channel values (<code>BitmapDataChannel.RED, BitmapDataChannel.BLUE, BitmapDataChannel.GREEN, and BitmapDataChannel.ALPHA</code>). You can use the logical OR operator (|) to combine channel values.
+		 * @param p_grayscale A Boolean value. If the value is <code>true</code>, a grayscale image is created by setting all of the color channels to the same value. The alpha channel selection is not affected by setting this parameter to <code>true</code>.
+		 * 
+		 * @see BitmapDataChannel#RED
+		 * @see BitmapDataChannel#BLUE
+		 * @see BitmapDataChannel#GREEN
+		 * @see BitmapDataChannel#ALPHA
+		 * 
+		 */
 		public function render(p_random:int=-1, p_min:uint=0, p_max:uint=0xFFFFFF, p_channel:uint=BitmapDataChannel.ALPHA, p_grayscale:Boolean=true):void{
-			statics.bitmapData.noise(p_random == -1 ? int(Math.random() * int.MAX_VALUE) : p_random, p_min, p_max, p_channel, p_grayscale);
+			if(!statics) return;
+			try{
+				statics.bitmapData.noise(p_random == -1 ? int(Math.random() * int.MAX_VALUE) : p_random, p_min, p_max, p_channel, p_grayscale);
+			}catch(e:Error){
+				throw new Error("Use the add method before the render.");
+			}
 		}
 		
+		/**
+		 * Destroy remove the noise layer and call <code>dispose</code> method.
+		 * @see BitmapData#dispose()
+		 * @see DisplayObjectContainer#removeChild()
+		 * 
+		 */
 		public function destroy():void{
 			dispose();
 			
-			scope.removeChild(statics);
+			statics ? scope.removeChild(statics) : null;
 			statics = null;
 		}				
 	}
