@@ -37,14 +37,17 @@ package sweatless.data{
 	 * 
 	 * The SO class is a simple manager for <code>SharedObject</code>.
 	 * 
-	 * @example var so : SO = new SO("some_id");
-	 * so.data = "foo";
+	 * @example  <listing version="3.0">
+	  var so : SO = new SO("some_id");
+	  so.data = "foo";
+	  
+	  trace(so.data);
+	  
+	  trace(so.clear());
+	  
+	  trace(so.data);
+  	 * </listing>
 	 * 
-	 * trace(so.data);
-	 * 
-	 * trace(so.clear());
-	 * 
-	 * trace(so.data);
 	 * @see SharedObject
 	 * 
 	 */
@@ -54,7 +57,21 @@ package sweatless.data{
 
 		/**
 		 * 
+		 * The SO class is a simple manager for <code>SharedObject</code>.
+		 * 
 		 * @param p_name Name/ID of <code>SharedObject</code> to save.
+		 * @example  <listing version="3.0">
+		 var so : SO = new SO("some_id");
+		 so.data = "foo";
+		 
+		 trace(so.data);
+		 
+		 trace(so.clear());
+		 
+		 trace(so.data);
+		 * </listing>
+		 * 
+		 * @see SharedObject
 		 * 
 		 */
         public function SO(p_name:String="cookie") {
@@ -62,8 +79,9 @@ package sweatless.data{
         }
  
 		/**
+		 * Sets/Get any <code>String</code> value in <code>SharedObject</code>.
 		 * 
-		 * @param p_value Save <code>data</code> value in SO.
+		 * @param p_value any <code>String</code>.
 		 * 
 		 */
 		public function set data(p_value:String):void {
@@ -90,11 +108,6 @@ package sweatless.data{
             }
         }
  
-		/**
-		 * 
-		 * @return The <code>data</code> value saved.
-		 * 
-		 */
 		public function get data():String{
 			if(!saved.data.value) return null;
 			return saved.data.value;

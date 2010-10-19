@@ -111,7 +111,14 @@ package sweatless.display{
 		 * Sets the <code>anchors</code> of the <code>SmartSprite</code> to predefined registration point. 
 		 * @default <code>SmartSprite.MIDDLE+SmartSprite.CENTER</code>
 		 * @param p_anchors The sum of this values to be applied to the <code>SmartSprite</code> registration point. Valid values: SmartSprite.TOP, SmartSprite.CENTER, SmartSprite.LEFT, SmartSprite.MIDDLE, SmartSprite.RIGHT and SmartSprite.BOTTOM
-		 * @example Valid values:<listing version="3.0">
+		 * @see #NONE
+		 * @see #TOP
+		 * @see #LEFT
+		 * @see #MIDDLE
+		 * @see #CENTER
+		 * @see #RIGHT
+		 * @see #BOTTOM
+		 * @example <listing version="3.0">
 			var smartsprite : SmartSprite = new SmartSprite();
 			addChild(smartsprite);
 			
@@ -336,6 +343,7 @@ package sweatless.display{
 		/**
 		 * Remove all events registered in <code>SmartSprite</code>
 		 * 
+		 * @see #removeEventListener()
 		 */
 		public function removeAllEventListeners():void{
 			var i:uint = listeners.length;

@@ -23,8 +23,9 @@
  * http://code.google.com/p/sweatless/
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * @author Valério Oliveira (valck)
- * @author João Marquesini
+ * @author Valério Oliveira (valck) / João Marquesini
+ * 
+ * @todo loop, repeat and custom non-linear ease
  * 
  */
 
@@ -36,9 +37,76 @@ package sweatless.display{
 	
 	import sweatless.events.CustomListener;
 
+	
+	/**
+	 *
+	 * Dispatched when the <code>SmartSprite</code> start the playhead.
+	 * 
+	 * @eventType sweatless.display.SmartMovieClip.START
+	 * @see Event
+	 *  
+	 */
+	[Event(name="start", type="sweatless.display.SmartMovieClip.START")]
+	
+	/**
+	 *
+	 * Dispatched when the <code>SmartSprite</code> has paused.
+	 * 
+	 * @eventType sweatless.display.SmartMovieClip.PAUSE
+	 * @see Event 
+	 * 
+	 */
+	[Event(name="pause", type="sweatless.display.SmartMovieClip.PAUSE")]
+	
+	/**
+	 * 
+	 * Dispatched when the <code>SmartSprite</code> has stopped.
+	 * 
+	 * @eventType sweatless.display.SmartMovieClip.COMPLETE
+	 * @see Event
+	 * 
+	 */
+	[Event(name="complete", type="sweatless.display.SmartMovieClip.COMPLETE")]
+
+	/**
+	 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code>, also all properties of the native <code>MovieClip</code> class and more.
+	 * Remember the <code>SmartMovieClip</code> don't have scenes.
+	 * 
+	 * @param p_source <code>MovieClip</code>
+	 * @see SmartSprite
+	 * @see MovieClip
+	 * @see Sprite
+	 * 
+	 */
 	public class SmartMovieClip extends SmartSprite{
 		
+		/**
+		 * Dispatched when the <code>SmartSprite</code> has played.
+		 * 
+		 * @eventType start
+		 * @see Event
+		 *  
+		 */
 		public static const START : String = "start";
+		
+		/**
+		 *
+		 * Dispatched when the <code>SmartSprite</code> has paused.
+		 * 
+		 * @eventType pause
+		 * @see Event 
+		 * 
+		 */
+		public static const PAUSE : String = "pause";
+		
+		/**
+		 * 
+		 * Dispatched when the <code>SmartSprite</code> has stopped.
+		 * 
+		 * @eventType complete
+		 * @see Event
+		 * 
+		 */
 		public static const COMPLETE : String = "complete";
 		
 		private var timer : uint;
@@ -49,21 +117,43 @@ package sweatless.display{
 		private var _delay : Number = 0;
 		private var _source : MovieClip;
 		
+		/**
+		 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code>, also all properties of the native <code>MovieClip</code> class and more.
+		 * Remember the <code>SmartMovieClip</code> don't have scenes.
+		 * 
+		 * @param p_source <code>MovieClip</code>
+		 * @see SmartSprite
+		 * @see MovieClip
+		 * @see Sprite
+		 * 
+		 */
 		public function SmartMovieClip(p_source:MovieClip=null){
-			super();
-			
 			source = p_source;
+
+			super();
 		}
 		
+		/**
+		 * Sets the <code>MovieClip</code> source
+		 * @param p_value <code>MovieClip</code>
+		 * @see MovieClip
+		 * 
+		 */
 		public function set source(p_value:MovieClip):void{
 			if(!p_value) return;
 			
 			_source = p_value;
-			_source.stage ? null : addChild(_source);
+			addChild(_source);
 			
-			stop();
+			_source.gotoAndStop(1);
 		}
 		
+		/**
+		 * Sets/Get the time in seconds before the playhead should begin.
+		 *  
+		 * @return <code>Number</code>
+		 * 
+		 */
 		public function get delay():Number{
 			return _delay;
 		}
@@ -72,27 +162,77 @@ package sweatless.display{
 			_delay = (p_value*1000);
 		}
 
+		/**
+		 * @copy flash.display.MovieClip#totalFrames
+		 * @return <code>int</code> 
+		 * 
+		 */
 		public function get totalFrames():int{
 			return _source.totalFrames;
 		}
 		
+		/**
+		 * @copy flash.display.MovieClip#currentFrame
+		 * @return <code>int</code> 
+		 * 
+		 */
 		public function get currentFrame():int{
 			return _source.currentFrame;
 		}
 		
+		/**
+		 * @copy flash.display.MovieClip#currentLabel
+		 * @return <code>String</code> 
+		 * 
+		 */
+		public function get currentLabel():String{
+			return _source.currentLabel;
+		}
+		
+		/**
+		 * @copy flash.display.MovieClip#currentLabels
+		 * @return <code>Array</code> 
+		 * 
+		 */
+		public function get currentLabels():Array{
+			return _source.currentLabels;
+		}
+		
+		/**
+		 * @copy flash.display.MovieClip#framesLoaded
+		 * @return <code>int</code> 
+		 * 
+		 */
+		public function get framesLoaded():int{
+			return _source.framesLoaded;
+		}
+		
+		/**
+		 * @copy flash.display.MovieClip#play()
+		 * 
+		 */
 		public function play():void{
 			goto(currentFrame, totalFrames);
 		}
 
+		/**
+		 * @copy flash.display.MovieClip#stop()
+		 * 
+		 */
 		public function stop():void{
 			if(!_source) return;
 
 			clearTimeout(timer);
 			CustomListener.removeListener(_source, Event.ENTER_FRAME);
 
-			_source.gotoAndStop(1);
+			_source.stop();
+			dispatchEvent(new Event(COMPLETE));
 		}
 		
+		/**
+		 * Pause the playhead in the movie clip.
+		 * 
+		 */
 		public function pause():void{
 			if(!_source) return;
 			
@@ -100,24 +240,53 @@ package sweatless.display{
 			CustomListener.removeListener(_source, Event.ENTER_FRAME);
 
 			_source.stop();
+			dispatchEvent(new Event(PAUSE));
 		}
 
+		/**
+		 * Resumes the playhead in the movie clip.
+		 * 
+		 */
 		public function resume():void{
 			play();
 		}
 
+		/**
+		 * 
+		 * Brings the playhead to the specified frame of movie clip and stops it there.
+		 * The <code>SmartMovieClip</code> don't have scenes.
+		 * 
+		 * @param p_frame A number representing the frame number, or a string representing the label of the frame.
+		 * 
+		 */
 		public function gotoAndStop(p_frame:Object):void{
 			if(!_source) return;
 
-			_source.gotoAndStop(p_frame);
+			goto(p_frame is Number ? int(p_frame) : getFrameNumber(String(p_frame)) -1, p_frame);
 		}
 		
+		/**
+		 * 
+		 * Starts playing the movie clip at the specified frame and goes to last frame of movie clip.
+		 * The <code>SmartMovieClip</code> don't have scenes.
+		 *  
+		 * @param p_frame A number representing the frame number, or a string representing the label of the frame.
+		 * 
+		 */
 		public function gotoAndPlay(p_frame:Object):void{
 			if(!_source) return;
 
 			goto(p_frame, totalFrames);
 		}
 
+		/**
+		 *
+		 * Brings the playhead to the specified frame of movie clip and starts playing the movie clip at the specified frame.
+		 *  
+		 * @param p_start A number representing the start frame number, or a string representing the label of the start frame.
+		 * @param p_end A number representing the end frame number, or a string representing the label of the end frame.
+		 * 
+		 */
 		public function goto(p_start:Object, p_end:Object):void{
 			if(!_source) return;
 
@@ -129,15 +298,21 @@ package sweatless.display{
 			
 			timer = setTimeout(
 				function():void{
-					dispatchEvent(new Event(START));
-					
-					gotoAndStop(p_start);
-					
 					CustomListener.addListener(_source, Event.ENTER_FRAME, checkFinalFrameAndStop, start, finish);
+
+					dispatchEvent(new Event(START));
+					_source.gotoAndStop(p_start);
 				},
 			delay);
 		}
 		
+		/**
+		 * Destroy clear the source, delays and all events.
+		 * 
+		 * @default <code>null</code>
+		 * @param evt <code>Event</code>
+		 * @see #removeAllEventListeners()
+		 */
 		override public function destroy(evt:Event=null):void{
 			clearTimeout(timer);
 			
