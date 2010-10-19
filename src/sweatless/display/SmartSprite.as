@@ -35,7 +35,7 @@ package sweatless.display{
 	
 	/**
 	 * 
-	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic anchor points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic registration points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
 	 * 
 	 * @see Sprite
 	 * @see IEventDispatcher
@@ -50,23 +50,46 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * A dynamic <code>Object</code> to save temp values.
+		 * Dynamic <code>Object</code> to temp values.
 		 * @see Object
 		 *  
 		 */
 		public var data : Object = new Object();
 		
+		/**
+		 * Constant value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
+		 */
 		public static const NONE : int = 0;
+		/**
+		 * @copy #NONE
+		 */
 		public static const TOP : int = 1;
+		/**
+		 * @copy #NONE
+		 */
 		public static const MIDDLE : int = 2;
+		/**
+		 * @copy #NONE
+		 */
 		public static const BOTTOM : int = 4;
+		/**
+		 * @copy #NONE
+		 */
 		public static const LEFT : int = 8;
+		/**
+		 * @copy #NONE
+		 */
 		public static const CENTER : int = 16;
+		/**
+		 * @copy #NONE
+		 */
 		public static const RIGHT : int = 32;
 
 		/**
 		 * 
-	 	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic anchor points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+	 	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic registration points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
 		 * @see Sprite
 		 * @see IEventDispatcher
 		 * 
@@ -85,9 +108,9 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Sets the <code>anchors</code> of the sprite to predefined positions. 
-		 * Valid values: (TOP, CENTER, LEFT, MIDDLE, RIGHT and BOTTOM)
-		 * @param p_anchors The values to be applied to the sprite registration point.
+		 * Sets the <code>anchors</code> of the <code>SmartSprite</code> to predefined registration point. 
+		 * @default <code>SmartSprite.MIDDLE+SmartSprite.CENTER</code>
+		 * @param p_anchors The sum of this values to be applied to the <code>SmartSprite</code> registration point. Valid values: SmartSprite.TOP, SmartSprite.CENTER, SmartSprite.LEFT, SmartSprite.MIDDLE, SmartSprite.RIGHT and SmartSprite.BOTTOM
 		 * @example Valid values:<listing version="3.0">
 			var smartsprite : SmartSprite = new SmartSprite();
 			addChild(smartsprite);
@@ -144,12 +167,6 @@ package sweatless.display{
 			return _temp.x;
 		}
 
-		/**
-		 * 
-		 * @inheritDoc
-		 * @see Number
-		 * 
-		 */
 		override public function set x(p_value:Number):void{
 			_temp.x = p_value;
 			update();
@@ -165,12 +182,6 @@ package sweatless.display{
 			return _temp.y;
 		}
 		
-		/**
-		 * 
-		 * @inheritDoc
-		 * @see Number
-		 * 
-		 */
 		override public function set y(p_value:Number):void{
 			_temp.y = p_value;
 			update();
@@ -230,20 +241,9 @@ package sweatless.display{
 		}
 		
 		/**
-		 * 
-		 * Get the value of <code>anchorX</code> to predefined positions. 
-		 * @return <code>Number</code>
-		 * @see Number
-		 * 
-		 */
-		public function get anchorX():Number{
-			return _anchors.x;
-		}
-		
-		/**
-		 * Sets the value in pixels of <code>anchorX</code> to predefined positions. 
-		 * @param p_anchors The values to be applied to the sprite registration point.
-		 * @example Valid values:<listing version="3.0">
+		 * Sets/Get the value in pixels of <code>anchorX</code> to defined positions. 
+		 * @param p_anchors The values to be applied to the <code>SmartSprite</code> registration point.
+		 * @example <listing version="3.0">
 		 var smartsprite : SmartSprite = new SmartSprite();
 		 addChild(smartsprite);
 		 
@@ -252,26 +252,19 @@ package sweatless.display{
 		 * @see Number
 		 * 
 		 */
+		public function get anchorX():Number{
+			return _anchors.x;
+		}
+
 		public function set anchorX(p_value:Number):void{
 			_anchors.x = p_value;
 			update();
 		}
 		
 		/**
-		 * 
-		 * Get the value of <code>anchorY</code> to predefined positions. 
-		 * @return <code>Number</code>
-		 * @see Number
-		 * 
-		 */
-		public function get anchorY():Number{
-			return _anchors.y;
-		}
-		
-		/**
-		 * Sets the value in pixels of <code>anchorY</code> to predefined positions. 
-		 * @param p_anchors The values to be applied to the sprite registration point.
-		 * @example Valid values:<listing version="3.0">
+		 * Sets/Get the value in pixels of <code>anchorY</code> to defined positions. 
+		 * @param p_anchors The values to be applied to the <code>SmartSprite</code> registration point.
+		 * @example <listing version="3.0">
 		 var smartsprite : SmartSprite = new SmartSprite();
 		 addChild(smartsprite);
 		 
@@ -280,13 +273,17 @@ package sweatless.display{
 		 * @see Number
 		 * 
 		 */
+		public function get anchorY():Number{
+			return _anchors.y;
+		}
+
 		public function set anchorY(p_value:Number):void{
 			_anchors.y = p_value;
 			update();
 		}
 		
 		/**
-		 * 
+		 * Debug is only to check the registration point position.
 		 * @param p_value is <code>true</code> or <code>false</code>
 		 * 
 		 */
@@ -295,12 +292,24 @@ package sweatless.display{
 			update();
 		}
 		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see IEventDispatcher
+		 * 
+		 */
 		override public function addEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false, p_priority:int=0, p_useWeakReference:Boolean=false):void{
 			listeners.push({type:p_type, listener:p_listener, capture:p_useCapture});
 			
 			super.addEventListener(p_type, p_listener, p_useCapture, p_priority, p_useWeakReference);
 		}
 		
+		/**
+		 * 
+		 * @inheritDoc
+		 * @see IEventDispatcher
+		 * 
+		 */
 		override public function removeEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false):void{
 			for (var i:uint=0; i<listeners.length; i++) {
 				if (listeners[i].type == p_type && listeners[i].listener == p_listener && listeners[i].capture == p_useCapture) {
@@ -314,10 +323,20 @@ package sweatless.display{
 			super.removeEventListener(p_type, p_listener, p_useCapture);
 		}
 		
+		/**
+		 * Returns a <code>Array</code> of registered events in <code>SmartSprite</code>
+		 * @return <code>Array</code> 
+		 * @see Array
+		 * 
+		 */
 		public function getAllEventListeners():Array{
 			return listeners;
 		}
 		
+		/**
+		 * Remove all events registered in <code>SmartSprite</code>
+		 * 
+		 */
 		public function removeAllEventListeners():void{
 			var i:uint = listeners.length;
 			
@@ -331,8 +350,16 @@ package sweatless.display{
 			}
 		}
 
+		/**
+		 * Destroy by default call <code>removeAllEventListeners</code>, but is very recommend override this method.
+		 * 
+		 * @default <code>null</code>
+		 * @param evt <code>Event</code>
+		 * @see #removeAllEventListeners()
+		 */
 		public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
+			getChildByName("debug-point") && getChildByName("debug-point") is Shape && getChildByName("debug-point").name == "debug-point" ? removeChild(getChildByName("debug-point")) : null;
 		}
 		
 		private function update(evt:Event=null):void{
@@ -346,9 +373,9 @@ package sweatless.display{
 			super.y = _temp.y - (newPoint.y - oldPoint.y);
 			
 			if(_debug){
-				var circle : Shape = getChildByName("debug") ? Shape(getChildByName("debug")) : new Shape();
+				var circle : Shape = getChildByName("debug-point") ? Shape(getChildByName("debug-point")) : new Shape();
 				
-				circle.name = "debug";
+				circle.name = "debug-point";
 				addChild(circle);
 				
 				circle.graphics.clear();

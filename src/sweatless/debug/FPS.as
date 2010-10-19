@@ -38,22 +38,26 @@ package sweatless.debug{
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getTimer;
-
+	
+	/**
+	 * The FPS class is a simple FPS and MB viewer for offline applications.
+	 * 
+	 */
 	public class FPS extends Sprite{
-		private var _danger : int;
 		
+		private var _danger : int;
 		private var label : TextField;
 		private var lastFrameTime : Number;
 		private var frames : Number = 0;
 		
 		/**
-		 * 
-		 * The FPS class is a simple debugger for applications with FPS and MB.
-		 * 
-		 * @param p_danger Percent of the danger value of application.
+		 * The FPS class is a simple FPS and MB viewer for offline applications. 
+		 * @param p_danger Percent of the danger value of fps in application.
+		 * @default <code>65</code>
+		 * @see int
 		 * 
 		 */
-		public function FPS(p_danger:int=65):void{
+		public function FPS(p_danger:int=65){
 			_danger = p_danger;
 
 			addEventListener(Event.ADDED_TO_STAGE, create);
@@ -81,8 +85,9 @@ package sweatless.debug{
 		}
 		
 		/**
-		 * If <code>true</code> or <code>false</code> to show.
-		 * for example development is <code>true</code> and online is <code>false</code>.
+		 * 
+		 * If <code>true</code> or <code>false</code> to show, but it's only can show offline.
+		 * for example, development is <code>true</code> and online is <code>false</code>.
 		 * 
 		 * @param p_debugger <code>true</code> or <code>false</code>
 		 * 
