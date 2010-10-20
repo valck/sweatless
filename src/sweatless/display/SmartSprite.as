@@ -35,7 +35,7 @@ package sweatless.display{
 	
 	/**
 	 * 
-	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic registration points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. With dynamic registration points and a internal manager for <code>IEventDispatcher</code>.
 	 * 
 	 * @see Sprite
 	 * @see IEventDispatcher
@@ -50,46 +50,59 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * Dynamic <code>Object</code> to temp values.
+		 * Dynamic <code>Object</code> to store any temp values.
 		 * @see Object
 		 *  
 		 */
 		public var data : Object = new Object();
 		
 		/**
-		 * Constant value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * Constant default value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
 		 * @see int
 		 * @see #anchors()
 		 */
 		public static const NONE : int = 0;
 		/**
-		 * @copy #NONE
+		 * Constant vertical value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const TOP : int = 1;
 		/**
-		 * @copy #NONE
+		 * Constant vertical value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const MIDDLE : int = 2;
 		/**
-		 * @copy #NONE
+		 * Constant vertical value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const BOTTOM : int = 4;
 		/**
-		 * @copy #NONE
+		 * Constant horizontal value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const LEFT : int = 8;
 		/**
-		 * @copy #NONE
+		 * Constant horizontal value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const CENTER : int = 16;
 		/**
-		 * @copy #NONE
+		 * Constant horizontal value to apply in the <code>SmartSprite</code> registration point <code>anchors</code>.
+		 * @see int
+		 * @see #anchors()
 		 */
 		public static const RIGHT : int = 32;
 
 		/**
 		 * 
-	 	 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. It adds dynamic registration points to <code>Sprite</code> and a internal manager for <code>IEventDispatcher</code>.
+		 * The <code>SmartSprite</code> is a substitute class for the native <code>Sprite</code> class. With dynamic registration points and a internal manager for <code>IEventDispatcher</code>.
+		 * 
 		 * @see Sprite
 		 * @see IEventDispatcher
 		 * 
@@ -108,9 +121,9 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Sets the <code>anchors</code> of the <code>SmartSprite</code> to predefined registration point. 
+		 * Set the <code>anchors</code> of the <code>SmartSprite</code> to predefined registration point. 
 		 * @default <code>SmartSprite.MIDDLE+SmartSprite.CENTER</code>
-		 * @param p_anchors The sum of this values to be applied to the <code>SmartSprite</code> registration point. Valid values: SmartSprite.TOP, SmartSprite.CENTER, SmartSprite.LEFT, SmartSprite.MIDDLE, SmartSprite.RIGHT and SmartSprite.BOTTOM
+		 * @param p_anchors Adds horizontal, vertical or both predefined values to registration point. Valid values: SmartSprite.TOP, SmartSprite.CENTER, SmartSprite.LEFT, SmartSprite.MIDDLE, SmartSprite.RIGHT and SmartSprite.BOTTOM
 		 * @see #NONE
 		 * @see #TOP
 		 * @see #LEFT
@@ -119,10 +132,10 @@ package sweatless.display{
 		 * @see #RIGHT
 		 * @see #BOTTOM
 		 * @example <listing version="3.0">
-			var smartsprite : SmartSprite = new SmartSprite();
-			addChild(smartsprite);
-			
-			smartsprite.anchors(SmartSprite.BOTTOM+SmartSprite.CENTER);
+var smartsprite : SmartSprite = new SmartSprite();
+addChild(smartsprite);
+
+smartsprite.anchors(SmartSprite.BOTTOM+SmartSprite.CENTER);
  		 * </listing>
 		 * 
 		 */
@@ -166,7 +179,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the <code>x</code> coordinate of the <code>DisplayObject</code> instance relative to the local coordinates of the parent <code>DisplayObjectContainer</code>. The object's coordinates refer to the registration point position.
 		 * @see Number
 		 * 
 		 */
@@ -181,7 +194,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the <code>y</code> coordinate of the <code>DisplayObject</code> instance relative to the local coordinates of the parent <code>DisplayObjectContainer</code>. The object's coordinates refer to the registration point position.
 		 * @see Number
 		 * 
 		 */
@@ -196,7 +209,7 @@ package sweatless.display{
 
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the horizontal scale (percentage) of the object as applied from the registration point. The default registration point is (0,0). 1.0 equals 100% scale. Scaling the local coordinate system changes the <code>x</code> and <code>y</code> property values, which are defined in whole pixels.
 		 * @see Number
 		 * 
 		 */
@@ -207,7 +220,7 @@ package sweatless.display{
 
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the vertical scale (percentage) of the object as applied from the registration point. The default registration point is (0,0). 1.0 equals 100% scale. Scaling the local coordinate system changes the <code>x</code> and <code>y</code> property values, which are defined in whole pixels.
 		 * @see Number
 		 * 
 		 */
@@ -218,7 +231,8 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the <code>rotation</code> of the <code>DisplayObject</code> instance, in degrees, from its original orientation. Values from 0 to 180 represent clockwise rotation; values from 0 to -180 represent counterclockwise rotation. Values outside this range are added to or subtracted from 360 to obtain a value within the range. 
+		 * For example, the statement <code>my_video.rotation = 450</code> is the same as <code>my_video.rotation = 90</code>.
 		 * @see Number
 		 * 
 		 */
@@ -229,7 +243,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the <code>x</code> coordinate of the mouse position, in pixels.
 		 * @see Number
 		 * 
 		 */
@@ -239,7 +253,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Indicates the <code>y</code> coordinate of the mouse position, in pixels.
 		 * @see Number
 		 * 
 		 */
@@ -248,13 +262,13 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Sets/Get the value in pixels of <code>anchorX</code> to defined positions. 
+		 * Set/Get the value in pixels of <code>anchorX</code> to defined positions. 
 		 * @param p_anchors The values to be applied to the <code>SmartSprite</code> registration point.
 		 * @example <listing version="3.0">
-		 var smartsprite : SmartSprite = new SmartSprite();
-		 addChild(smartsprite);
-		 
-		 smartsprite.anchorX = 50;
+var smartsprite : SmartSprite = new SmartSprite();
+addChild(smartsprite);
+
+smartsprite.anchorX = 50;
 		 * </listing>
 		 * @see Number
 		 * 
@@ -269,13 +283,13 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Sets/Get the value in pixels of <code>anchorY</code> to defined positions. 
+		 * Set/Get the value in pixels of <code>anchorY</code> to defined positions. 
 		 * @param p_anchors The values to be applied to the <code>SmartSprite</code> registration point.
 		 * @example <listing version="3.0">
-		 var smartsprite : SmartSprite = new SmartSprite();
-		 addChild(smartsprite);
-		 
-		 smartsprite.anchorY = 50;
+var smartsprite : SmartSprite = new SmartSprite();
+addChild(smartsprite);
+
+smartsprite.anchorY = 50;
 		 * </listing>
 		 * @see Number
 		 * 
@@ -290,7 +304,7 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Debug is only to check the registration point position.
+		 * Is only to view the registration point position.
 		 * @param p_value is <code>true</code> or <code>false</code>
 		 * 
 		 */
@@ -301,7 +315,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Registers an event listener object with an <code>EventDispatcher</code> object so that the listener receives notification of an event. You can register event listeners on all nodes in the display list for a specific type of event, phase, and priority.
 		 * @see IEventDispatcher
 		 * 
 		 */
@@ -313,7 +327,7 @@ package sweatless.display{
 		
 		/**
 		 * 
-		 * @inheritDoc
+		 * Removes a listener from the <code>EventDispatcher</code> object. If there is no matching listener registered with the <code>EventDispatcher</code> object, a call to this method has no effect.
 		 * @see IEventDispatcher
 		 * 
 		 */
@@ -359,15 +373,18 @@ package sweatless.display{
 		}
 
 		/**
-		 * Destroy by default call <code>removeAllEventListeners</code>, but is very recommend override this method.
+		 * By default call <code>removeAllEventListeners()</code> and clear <code>data</code>, but is very recommend override this method and call the <code>super()</code> after.
 		 * 
 		 * @default <code>null</code>
-		 * @param evt <code>Event</code>
+		 * @param evt
 		 * @see #removeAllEventListeners()
 		 */
 		public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
 			getChildByName("debug-point") && getChildByName("debug-point") is Shape && getChildByName("debug-point").name == "debug-point" ? removeChild(getChildByName("debug-point")) : null;
+			
+			data = null;
+			data = new Object();
 		}
 		
 		private function update(evt:Event=null):void{

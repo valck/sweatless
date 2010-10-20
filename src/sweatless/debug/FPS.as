@@ -89,7 +89,7 @@ package sweatless.debug{
 		 * If <code>true</code> or <code>false</code> to show, but it's only can show offline.
 		 * for example, development is <code>true</code> and online is <code>false</code>.
 		 * 
-		 * @param p_debugger <code>true</code> or <code>false</code>
+		 * @param p_debugger
 		 * 
 		 */
 		public function show(p_debugger:Boolean):void{

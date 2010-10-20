@@ -36,7 +36,7 @@ package sweatless.effects{
 
 	/**
 	 * 
-	 * The <code>Noise</code> class is a easily way to creates a noise effect.
+	 * The Noise class is a easily way to creates a noise effect.
 	 * 
 	 * @see BitmapData#noise()
 	 * 
@@ -47,7 +47,7 @@ package sweatless.effects{
 		
 		/**
 		 * 
-		 * The <code>Noise</code> class is a easily way to creates a noise effect.
+		 * The Noise class is a easily way to creates a noise effect.
 		 * 
 		 * @see BitmapData#noise()
 		 * 
@@ -79,7 +79,7 @@ package sweatless.effects{
 		}
 		
 		/**
-		 * Adds replace the noise layer.
+		 * Replace the noise layer.
 		 *  
 		 * @param p_width The <code>width</code> of effect.
 		 * @param p_height The <code>height</code> of effect.
@@ -93,7 +93,8 @@ package sweatless.effects{
 		}
 		
 		/**
-		 * Dispose the noise layer
+		 * Dispose the noise.
+		 * Note: After call the <code>dispose()</code>, you needs call <code>add()</code> method before of <code>render()</code>.
 		 * 
 		 * @see BitmapData#dispose()
 		 * 
@@ -104,7 +105,7 @@ package sweatless.effects{
 		}
 		
 		/**
-		 * Render the effect
+		 * Running noise.
 		 *  
 		 * @param p_random The random seed number to use. If you keep all other parameters the same, you can generate different pseudo-random results by varying the random seed value. The noise function is a mapping function, not a <code>true</code> random-number generation function, so it creates the same results each time from the same random seed.
 		 * @param p_min The lowest value to generate for each channel (0 to 255).
@@ -128,7 +129,7 @@ package sweatless.effects{
 		}
 		
 		/**
-		 * Destroy remove the noise layer and call <code>dispose</code> method.
+		 * Remove and dispose the noise.
 		 * 
 		 * @see BitmapData#dispose()
 		 * @see DisplayObjectContainer#removeChild()

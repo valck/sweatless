@@ -39,37 +39,34 @@ package sweatless.display{
 
 	
 	/**
-	 *
-	 * Dispatched when the <code>SmartSprite</code> start the playhead.
 	 * 
-	 * @eventType sweatless.display.SmartMovieClip.START
+	 * Dispatched when the <code>SmartSprite</code> has played.
+	 * @eventType sweatless.display.SmartMovieClip
 	 * @see Event
 	 *  
 	 */
-	[Event(name="start", type="sweatless.display.SmartMovieClip.START")]
-	
+	[Event(name="start", type="sweatless.display.SmartMovieClip")]
+
 	/**
-	 *
-	 * Dispatched when the <code>SmartSprite</code> has paused.
 	 * 
-	 * @eventType sweatless.display.SmartMovieClip.PAUSE
+	 * Dispatched when the <code>SmartSprite</code> has paused.
+	 * @eventType sweatless.display.SmartMovieClip
 	 * @see Event 
 	 * 
 	 */
-	[Event(name="pause", type="sweatless.display.SmartMovieClip.PAUSE")]
+	[Event(name="pause", type="sweatless.display.SmartMovieClip")]
 	
 	/**
 	 * 
 	 * Dispatched when the <code>SmartSprite</code> has stopped.
-	 * 
-	 * @eventType sweatless.display.SmartMovieClip.COMPLETE
+	 * @eventType sweatless.display.SmartMovieClip
 	 * @see Event
 	 * 
 	 */
-	[Event(name="complete", type="sweatless.display.SmartMovieClip.COMPLETE")]
+	[Event(name="complete", type="sweatless.display.SmartMovieClip")]
 
 	/**
-	 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code>, also all properties of the native <code>MovieClip</code> class and more.
+	 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code> also the all properties of the native <code>MovieClip</code> class and more.
 	 * Remember the <code>SmartMovieClip</code> don't have scenes.
 	 * 
 	 * @param p_source <code>MovieClip</code>
@@ -81,9 +78,9 @@ package sweatless.display{
 	public class SmartMovieClip extends SmartSprite{
 		
 		/**
+		 * 
 		 * Dispatched when the <code>SmartSprite</code> has played.
 		 * 
-		 * @eventType start
 		 * @see Event
 		 *  
 		 */
@@ -93,7 +90,6 @@ package sweatless.display{
 		 *
 		 * Dispatched when the <code>SmartSprite</code> has paused.
 		 * 
-		 * @eventType pause
 		 * @see Event 
 		 * 
 		 */
@@ -103,7 +99,6 @@ package sweatless.display{
 		 * 
 		 * Dispatched when the <code>SmartSprite</code> has stopped.
 		 * 
-		 * @eventType complete
 		 * @see Event
 		 * 
 		 */
@@ -118,10 +113,10 @@ package sweatless.display{
 		private var _source : MovieClip;
 		
 		/**
-		 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code>, also all properties of the native <code>MovieClip</code> class and more.
+		 * The <code>SmartMovieClip</code> is a substitute class for the native <code>MovieClip</code> class, but need sets the <code>source</code>. It extends <code>SmartSprite</code> also the all properties of the native <code>MovieClip</code> class and more.
 		 * Remember the <code>SmartMovieClip</code> don't have scenes.
 		 * 
-		 * @param p_source <code>MovieClip</code>
+		 * @param p_source
 		 * @see SmartSprite
 		 * @see MovieClip
 		 * @see Sprite
@@ -134,8 +129,8 @@ package sweatless.display{
 		}
 		
 		/**
-		 * Sets the <code>MovieClip</code> source
-		 * @param p_value <code>MovieClip</code>
+		 * Sets the <code>MovieClip</code> source.
+		 * @param p_value
 		 * @see MovieClip
 		 * 
 		 */
@@ -150,7 +145,6 @@ package sweatless.display{
 		
 		/**
 		 * Sets/Get the time in seconds before the playhead should begin.
-		 *  
 		 * @return <code>Number</code>
 		 * 
 		 */
@@ -163,7 +157,8 @@ package sweatless.display{
 		}
 
 		/**
-		 * @copy flash.display.MovieClip#totalFrames
+		 * The total number of frames in the MovieClip instance.
+		 * If the movie clip contains multiple frames, the totalFrames property returns the total number of frames
 		 * @return <code>int</code> 
 		 * 
 		 */
@@ -172,7 +167,7 @@ package sweatless.display{
 		}
 		
 		/**
-		 * @copy flash.display.MovieClip#currentFrame
+		 * Specifies the number of the frame in which the playhead is located in the timeline of the MovieClip instance. 
 		 * @return <code>int</code> 
 		 * 
 		 */
@@ -181,8 +176,8 @@ package sweatless.display{
 		}
 		
 		/**
-		 * @copy flash.display.MovieClip#currentLabel
-		 * @return <code>String</code> 
+		 * The current label in which the playhead is located in the timeline of the MovieClip instance.
+		 * @return <code>String</code>
 		 * 
 		 */
 		public function get currentLabel():String{
@@ -190,8 +185,8 @@ package sweatless.display{
 		}
 		
 		/**
-		 * @copy flash.display.MovieClip#currentLabels
-		 * @return <code>Array</code> 
+		 * Returns an array of FrameLabel objects from the MovieClip.
+		 * @return <code>Array</code>
 		 * 
 		 */
 		public function get currentLabels():Array{
@@ -199,7 +194,7 @@ package sweatless.display{
 		}
 		
 		/**
-		 * @copy flash.display.MovieClip#framesLoaded
+		 * The number of frames that are loaded.
 		 * @return <code>int</code> 
 		 * 
 		 */
@@ -208,7 +203,7 @@ package sweatless.display{
 		}
 		
 		/**
-		 * @copy flash.display.MovieClip#play()
+		 * Moves the playhead in the timeline of the movie clip.
 		 * 
 		 */
 		public function play():void{
@@ -216,7 +211,7 @@ package sweatless.display{
 		}
 
 		/**
-		 * @copy flash.display.MovieClip#stop()
+		 * Stops the playhead in the movie clip.
 		 * 
 		 */
 		public function stop():void{

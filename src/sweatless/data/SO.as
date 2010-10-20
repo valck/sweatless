@@ -37,17 +37,6 @@ package sweatless.data{
 	 * 
 	 * The SO class is a simple manager for <code>SharedObject</code>.
 	 * 
-	 * @example  <listing version="3.0">
-	  var so : SO = new SO("some_id");
-	  so.data = "foo";
-	  
-	  trace(so.data);
-	  
-	  trace(so.clear());
-	  
-	  trace(so.data);
-  	 * </listing>
-	 * 
 	 * @see SharedObject
 	 * 
 	 */
@@ -60,15 +49,13 @@ package sweatless.data{
 		 * The SO class is a simple manager for <code>SharedObject</code>.
 		 * 
 		 * @param p_name Name/ID of <code>SharedObject</code> to save.
-		 * @example  <listing version="3.0">
-		 var so : SO = new SO("some_id");
-		 so.data = "foo";
-		 
-		 trace(so.data);
-		 
-		 trace(so.clear());
-		 
-		 trace(so.data);
+		 * @example Usage example:<listing version="3.0">
+var so : SO = new SO("some_id");
+so.data = "foo";
+ 
+trace(so.data);
+trace(so.clear());
+trace(so.data);
 		 * </listing>
 		 * 
 		 * @see SharedObject
