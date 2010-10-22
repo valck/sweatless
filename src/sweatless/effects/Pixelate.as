@@ -28,8 +28,6 @@
  */
 
 package sweatless.effects{
-	import com.greensock.TweenMax;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -59,7 +57,7 @@ package sweatless.effects{
 		
 		public function create(p_source:Bitmap, p_amount:Number=0):void{
 			source = p_source.bitmapData;
-			clone = BitmapUtils.convertToBitmap(p_source).bitmapData;
+			clone = BitmapUtils.convertToBitmap(p_source, 0).bitmapData;
 			
 			amount = p_amount;
 		}
@@ -93,22 +91,21 @@ package sweatless.effects{
 			create(bmpIn, bmpIn.width);
 			scopeIn.addChild(bmpIn);
 			
+			setInterval(render, 100);
 			
-			setInterval(render, 1);
-			
-			return
+			/*
 			TweenMax.to(this, 2,{
-				pixelize:10,
-				yoyo:true,
-				repeat:1,
-				onComplete:destroy
-			});
+			pixelize:10,
+			yoyo:true,
+			repeat:1,
+			onComplete:destroy
+			*/
 		}
 		
 		public function render():void{
 			temp ++;
 			pixelize = temp;
-			
+
 			trace(amount);
 		}
 		
