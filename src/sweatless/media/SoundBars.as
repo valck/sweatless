@@ -33,7 +33,8 @@ package sweatless.media{
 	import flash.media.SoundMixer;
 	import flash.utils.ByteArray;
 	
-	import sweatless.graphics.CommonRectangle;
+	import sweatless.display.graphics.SmartRectangle;
+	
 	
 	public class SoundBars extends Sprite{
 		
@@ -53,9 +54,9 @@ package sweatless.media{
 			bytes = new ByteArray();
 			bars = new Array();
 			
-			var last : CommonRectangle;
+			var last : SmartRectangle;
 			for(var i:uint=0; i<p_amount; i++){
-				var bar : CommonRectangle = new CommonRectangle();
+				var bar : SmartRectangle = new SmartRectangle();
 				addChild(bar);
 				
 				bar.width = p_width;

@@ -27,14 +27,14 @@
  * 
  */
 
-package sweatless.graphics{
+package sweatless.display.graphics{
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.geom.Matrix;
 	
 	import sweatless.utils.NumberUtils;
 	
-	internal class CommonGraphic extends Shape{
+	internal class Graphic extends Shape{
 		private var matrix : Matrix = new Matrix();
 		
 		private var _texture : BitmapData;
@@ -60,7 +60,7 @@ package sweatless.graphics{
 		private var _type : String = "linear";
 		private var _method : String = "pad";
 
-		public function CommonGraphic(p_width:Number = 0, p_height:Number = 0){
+		public function Graphic(p_width:Number = 0, p_height:Number = 0){
 			_width = p_width;
 			_height = p_height;
 			update();

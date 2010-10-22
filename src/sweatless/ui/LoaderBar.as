@@ -30,13 +30,13 @@
 package sweatless.ui{
 	import flash.events.Event;
 	
-	import sweatless.graphics.CommonRectangle;
+	import sweatless.display.graphics.SmartRectangle;
 	import sweatless.navigation.primitives.Loading;
 
 	public class LoaderBar extends Loading{
 		
-		private var bar : CommonRectangle;
-		private var background : CommonRectangle;
+		private var bar : SmartRectangle;
+		private var background : SmartRectangle;
 
 		private var _width : Number = 0;
 		private var _height : Number = 0;
@@ -45,10 +45,10 @@ package sweatless.ui{
  		}
 		
 		override public function create(evt:Event=null):void{
-			background = new CommonRectangle();
+			background = new SmartRectangle();
 			addChild(background);
 			
-			bar = new CommonRectangle();
+			bar = new SmartRectangle();
 			addChild(bar);
 
 			background.width = bar.width = 200;

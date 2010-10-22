@@ -27,16 +27,19 @@
  * 
  */
 
-package sweatless.graphics{
+package sweatless.display.graphics{
 	
-	public class CommonCircle extends CommonGraphic{
+	public class SmartTriangle extends Graphic{
 		
-		public function CommonCircle(p_width:Number = 0, p_height:Number = 0){
+		public function SmartTriangle(p_width:Number = 0, p_height:Number = 0){
 			super(p_width, p_height);
 		}
 		
 		override protected function addGraphic():void{
-			graphics.drawEllipse(0, 0, width, height);
+			graphics.moveTo(width/2, 0);
+			graphics.lineTo(width, height);
+			graphics.lineTo(0, height);
+			graphics.lineTo(width/2, 0);
 		}
 	}
 }

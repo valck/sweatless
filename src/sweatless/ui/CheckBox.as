@@ -32,13 +32,13 @@ package sweatless.ui{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import sweatless.graphics.CommonRectangle;
+	import sweatless.display.graphics.SmartRectangle;
 	import sweatless.interfaces.IButton;
 
 	public class CheckBox extends Sprite{
 		
-		private var fill : CommonRectangle;
-		private var background : CommonRectangle;
+		private var fill : SmartRectangle;
+		private var background : SmartRectangle;
 		private var clicked : Boolean;
 		
 		private var _width : Number = 0;
@@ -51,10 +51,10 @@ package sweatless.ui{
 		private function create(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
 			
-			background = new CommonRectangle();
+			background = new SmartRectangle();
 			addChild(background);
 			
-			fill = new CommonRectangle();
+			fill = new SmartRectangle();
 			addChild(fill);
 			fill.visible = false;
 		}

@@ -28,12 +28,23 @@
  */
 
 package sweatless.effects{
+	import com.greensock.TweenMax;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.geom.Matrix;
+	import flash.utils.setInterval;
 	
 	import sweatless.utils.BitmapUtils;
 	
+	/**
+	 * 
+	 * @see BitmapData
+	 * 
+	 */
 	public class Pixelate{
 		
 		private var source : BitmapData;
@@ -41,6 +52,7 @@ package sweatless.effects{
 		private var pixelated : BitmapData;
 		
 		private var amount : Number;
+		private var temp : Number = 0;
 		
 		public function Pixelate(){
 		}
@@ -58,7 +70,7 @@ package sweatless.effects{
 		
 		public function set pixelize(p_value:Number):void{
 			amount = clone.width/p_value;
-			amount>0 ? render() : null;
+			amount>0 ? processing() : null;
 		}
 		
 		public function destroy():void{
@@ -73,7 +85,34 @@ package sweatless.effects{
 			amount = 0;
 		}
 		
-		private function render():void{
+		public function start(p_to:DisplayObject):void{
+			var scopeIn : DisplayObjectContainer = p_to.parent;
+			
+			var bmpIn : Bitmap = BitmapUtils.convertToBitmap(p_to, 0, false);
+			
+			create(bmpIn, bmpIn.width);
+			scopeIn.addChild(bmpIn);
+			
+			
+			setInterval(render, 1);
+			
+			return
+			TweenMax.to(this, 2,{
+				pixelize:10,
+				yoyo:true,
+				repeat:1,
+				onComplete:destroy
+			});
+		}
+		
+		public function render():void{
+			temp ++;
+			pixelize = temp;
+			
+			trace(amount);
+		}
+		
+		private function processing():void{
 			var scale : Number = 1 / amount;
 			var width : int = (scale * source.width) >= 1 ? (scale * source.width) : 1;
 			var height : int = (scale * source.height) >= 1 ? (scale * source.height) : 1;
