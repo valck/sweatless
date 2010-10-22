@@ -57,7 +57,7 @@ package sweatless.effects{
 		
 		public function create(p_source:Bitmap, p_amount:Number=0):void{
 			source = p_source.bitmapData;
-			clone = BitmapUtils.convertToBitmap(p_source, 0).bitmapData;
+			clone = BitmapUtils.convertToBitmap(p_source).bitmapData;
 			
 			amount = p_amount;
 		}
@@ -91,21 +91,14 @@ package sweatless.effects{
 			create(bmpIn, bmpIn.width);
 			scopeIn.addChild(bmpIn);
 			
-			setInterval(render, 100);
 			
-			/*
-			TweenMax.to(this, 2,{
-			pixelize:10,
-			yoyo:true,
-			repeat:1,
-			onComplete:destroy
-			*/
+			setInterval(render, 100);
 		}
 		
 		public function render():void{
 			temp ++;
 			pixelize = temp;
-
+			
 			trace(amount);
 		}
 		
