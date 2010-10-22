@@ -40,19 +40,19 @@ package sweatless.utils{
 	 * 
 	 * Simple Class for detect OS and browser.
 	 * 
-	 * Usage:
-	 * 
-	 * private var detect = new Detect();
-	 * detect.addEventListener(Detect.COMPLETE, detected);
-	 * 
-	 * private function detected(evt:Event):void{
-	 * 		trace(detect.os);
-	 * 		trace(detect.plataform);
-	 * 		trace(detect.browser);
-	 *      trace(detect.browser_version);
-	 *      trace(detect.servicepack);
-	 * }
-	 * 
+	 *  
+	 * @example <listing version="3.0">
+	 private var detect = new Detect();
+	 detect.addEventListener(Detect.COMPLETE, detected);
+	 
+	 private function detected(evt:Event):void{
+	 	trace(detect.os);
+		trace(detect.plataform);
+	 	trace(detect.browser);
+	    trace(detect.browser_version);
+	    trace(detect.servicepack);
+	 }
+	 * </listing>
 	 */
 	public class Detect extends EventDispatcher{
 		
@@ -65,7 +65,7 @@ package sweatless.utils{
 		private var userSPack : String;
 		
 		/**
-		 * Create virtual JS
+		 * Create a virtual JS in memory to detect the browser
 		 */
 		public function Detect(){
 			if(Capabilities.playerType == "StandAlone") throw new Error("UserDetect, only detect the user in browser.");
@@ -77,7 +77,7 @@ package sweatless.utils{
 		}
 		
 		/**
-		 * OS getter
+		 * Returns the current OS.
 		 * @return String
 		 * 
 		 */
