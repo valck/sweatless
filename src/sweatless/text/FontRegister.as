@@ -27,7 +27,7 @@
  * 
  */
 
-package sweatless.font{
+package sweatless.text{
 	import flash.text.Font;
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;

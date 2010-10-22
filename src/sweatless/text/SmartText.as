@@ -33,7 +33,7 @@ package sweatless.text{
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	public class CommonText extends Sprite{
+	public class SmartText extends Sprite{
 		private var _format : TextFormat;
 		private var _field : TextField;
 		private var _autosize : String = "left";
@@ -44,7 +44,7 @@ package sweatless.text{
 		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
 		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
-		public function CommonText(p_format:TextFormat=null){
+		public function SmartText(p_format:TextFormat=null){
 			super();
 		
 			_format = p_format || new TextFormat();
