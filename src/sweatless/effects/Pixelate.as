@@ -55,11 +55,18 @@ package sweatless.effects{
 		public function Pixelate(){
 		}
 		
-		public function create(p_source:Bitmap, p_amount:Number=0):void{
-			source = p_source.bitmapData;
-			clone = BitmapUtils.convertToBitmap(p_source).bitmapData;
+		public function create(p_source:DisplayObject, p_amount:Number=0):void{
+			var scope : DisplayObjectContainer = p_source.parent;
+			var bmp : Bitmap = BitmapUtils.convertToBitmap(p_source, 0, false);
+			
+			source = bmp.bitmapData;
+			clone = BitmapUtils.convertToBitmap(p_source, 0).bitmapData;
+			
+			scope.addChild(bmp);
 			
 			amount = p_amount;
+			
+			//setInterval(render, 10);
 		}
 		
 		public function set pixelize(p_value:Number):void{
@@ -79,21 +86,10 @@ package sweatless.effects{
 			amount = 0;
 		}
 		
-		public function start(p_to:DisplayObject):void{
-			var scopeIn : DisplayObjectContainer = p_to.parent;
-			
-			var bmpIn : Bitmap = BitmapUtils.convertToBitmap(p_to, 0, false, false);
-			
-			create(bmpIn, bmpIn.width);
-			scopeIn.addChild(bmpIn);
-			
-			setInterval(render, 10);
-		}
-		
 		public function render():void{
 			temp ++;
 			pixelize = temp;
-
+			
 			trace(amount);
 		}
 		
