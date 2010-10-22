@@ -62,10 +62,6 @@ package sweatless.effects{
 			amount = p_amount;
 		}
 		
-		public function get pixelize():Number{
-			return amount;
-		}
-		
 		public function set pixelize(p_value:Number):void{
 			amount = clone.width/p_value;
 			amount>0 ? processing() : null;
@@ -86,19 +82,18 @@ package sweatless.effects{
 		public function start(p_to:DisplayObject):void{
 			var scopeIn : DisplayObjectContainer = p_to.parent;
 			
-			var bmpIn : Bitmap = BitmapUtils.convertToBitmap(p_to, 0, false);
+			var bmpIn : Bitmap = BitmapUtils.convertToBitmap(p_to, 0, false, false);
 			
 			create(bmpIn, bmpIn.width);
 			scopeIn.addChild(bmpIn);
 			
-			
-			setInterval(render, 100);
+			setInterval(render, 10);
 		}
 		
 		public function render():void{
 			temp ++;
 			pixelize = temp;
-			
+
 			trace(amount);
 		}
 		
