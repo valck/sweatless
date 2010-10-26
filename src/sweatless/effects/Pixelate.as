@@ -24,6 +24,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * 
  * @author Valério Oliveira (valck)
+ * @todo
  * 
  */
 
@@ -50,7 +51,6 @@ package sweatless.effects{
 		private var pixelated : BitmapData;
 		
 		private var amount : Number;
-		private var temp : Number = 0;
 		
 		public function Pixelate(){
 		}
@@ -65,8 +65,6 @@ package sweatless.effects{
 			scope.addChild(bmp);
 			
 			amount = p_amount;
-			
-			//setInterval(render, 10);
 		}
 		
 		public function set pixelize(p_value:Number):void{
@@ -84,13 +82,6 @@ package sweatless.effects{
 			pixelated = null;
 			
 			amount = 0;
-		}
-		
-		public function render():void{
-			temp ++;
-			pixelize = temp;
-			
-			trace(amount);
 		}
 		
 		private function processing():void{

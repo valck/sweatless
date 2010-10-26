@@ -29,8 +29,21 @@
 
 package sweatless.display.graphics{
 	
+	/**
+	 * The <code>SmartCircle</code> is a simple circle graphic, this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
+	 * 
+	 * @see Graphic
+	 */
 	public class SmartCircle extends Graphic{
 		
+		/**
+		 * The <code>SmartCircle</code> is a simple triangle graphic, this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
+		 * 
+		 * @param p_width The width of the triangle (in pixels). 
+		 * @param p_height The height of the triangle (in pixels).
+		 *  
+		 * @see Graphic
+		 */
 		public function SmartCircle(p_width:Number = 0, p_height:Number = 0){
 			super(p_width, p_height);
 		}

@@ -29,6 +29,12 @@
 
 package sweatless.display.graphics{
 	
+	/**
+	 * The <code>SmartRectangle</code> is a simple and a very useful substitute to native property <code>Graphics.drawRoundRectComplex</code> this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
+	 * Note the baseclass extends <code>Shape</code> not <code>Sprite</code>.
+	 * 
+	 * @see Graphic
+	 */
 	public class SmartRectangle extends Graphic{
 		
 		private var TLCorner : Number = 0;
@@ -36,6 +42,15 @@ package sweatless.display.graphics{
 		private var BLCorner : Number = 0;
 		private var BRCorner : Number = 0;
 		
+		/**
+		 * The <code>SmartRectangle</code> is a simple and a very useful substitute to native property <code>Graphics.drawRoundRectComplex</code> this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
+		 * Note the baseclass extends <code>Shape</code> not <code>Sprite</code>.
+		 * 
+		 * @param p_width The width of the round rectangle (in pixels). 
+		 * @param p_height The height of the round rectangle (in pixels).
+		 *  
+		 * @see Graphic
+		 */
 		public function SmartRectangle(p_width:Number = 0, p_height:Number = 0){
 			super(p_width, p_height);
 		}
@@ -44,6 +59,12 @@ package sweatless.display.graphics{
 			graphics.drawRoundRectComplex(0, 0, width, height, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
 		}
 		
+		/**
+		 * Sets the both rounded corners of rectangle.
+		 * 
+		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
+		 * 
+		 */
 		public function set bothCorners(p_value:Number):void{
 			TLCorner = p_value;
 			TRCorner = p_value;
@@ -52,6 +73,12 @@ package sweatless.display.graphics{
 			update();
 		}
 		
+		/**
+		 * Sets/Get the top left rounded corner of rectangle.
+		 * 
+		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
+		 * 
+		 */
 		public function set topLeftCorner(p_value:Number):void{
 			TLCorner = p_value;
 			update();
@@ -61,6 +88,12 @@ package sweatless.display.graphics{
 			return TLCorner;
 		}
 		
+		/**
+		 * Sets/Get the top right rounded corner of rectangle.
+		 * 
+		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
+		 * 
+		 */
 		public function set topRightCorner(p_value:Number):void{
 			TRCorner = p_value;
 			update();
@@ -70,6 +103,12 @@ package sweatless.display.graphics{
 			return TRCorner;
 		}
 		
+		/**
+		 * Sets/Get the bottom left rounded corner of rectangle.
+		 * 
+		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
+		 * 
+		 */
 		public function set bottomLeftCorner(p_value:Number):void{
 			BLCorner = p_value;
 			update();
@@ -79,6 +118,12 @@ package sweatless.display.graphics{
 			return BLCorner;
 		}
 		
+		/**
+		 * Sets/Get the bottom right rounded corner of rectangle.
+		 * 
+		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
+		 * 
+		 */
 		public function set bottomRightCorner(p_value:Number):void{
 			BRCorner = p_value;
 			update();

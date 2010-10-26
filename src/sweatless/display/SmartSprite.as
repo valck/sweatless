@@ -346,7 +346,7 @@ smartsprite.anchorY = 50;
 		
 		/**
 		 * Returns a <code>Array</code> of registered events in <code>SmartSprite</code>
-		 * @return <code>Array</code> 
+		 * @return 
 		 * @see Array
 		 * 
 		 */
