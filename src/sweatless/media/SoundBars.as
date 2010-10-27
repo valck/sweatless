@@ -33,7 +33,7 @@ package sweatless.media{
 	import flash.media.SoundMixer;
 	import flash.utils.ByteArray;
 	
-	import sweatless.display.graphics.SmartRectangle;
+	import sweatless.graphics.SmartRectangle;
 	
 	
 	public class SoundBars extends Sprite{

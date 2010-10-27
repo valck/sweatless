@@ -30,7 +30,7 @@
 package sweatless.ui{
 	import flash.events.Event;
 	
-	import sweatless.display.graphics.SmartRectangle;
+	import sweatless.graphics.SmartRectangle;
 	import sweatless.navigation.primitives.Loading;
 
 	public class LoaderBar extends Loading{
