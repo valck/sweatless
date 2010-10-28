@@ -24,7 +24,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * 
  * @author Valério Oliveira (valck)
- * @todo
+ * @todo convert 
  * 
  */
 
@@ -38,6 +38,7 @@ package sweatless.effects{
 	import flash.utils.setInterval;
 	
 	import sweatless.utils.BitmapUtils;
+	import sweatless.utils.NumberUtils;
 	
 	/**
 	 * 
@@ -67,9 +68,13 @@ package sweatless.effects{
 			amount = p_amount;
 		}
 		
+		public function get pixelize():Number{
+			return amount;
+		}
+		
 		public function set pixelize(p_value:Number):void{
-			amount = clone.width/p_value;
-			amount>0 ? processing() : null;
+			amount = p_value;
+			amount>0 || amount<source.width/2 ? processing() : null;
 		}
 		
 		public function destroy():void{
@@ -86,8 +91,8 @@ package sweatless.effects{
 		
 		private function processing():void{
 			var scale : Number = 1 / amount;
-			var width : int = (scale * source.width) >= 1 ? (scale * source.width) : 1;
-			var height : int = (scale * source.height) >= 1 ? (scale * source.height) : 1;
+			var width : int = (scale * source.width) > 0 || (scale * source.width) < 2880 ? NumberUtils.isZero(int(scale * source.width)) ? 1 : (scale * source.width) > 2880 ? 2880 : (scale * source.width) : 1;
+			var height : int = (scale * source.height) > 0 || (scale * source.height) < 2880 ? NumberUtils.isZero(int(scale * source.height)) ? 1 : (scale * source.height) > 2880 ? 2880 : (scale * source.height) : 1;
 			
 			var pxMtx : Matrix = new Matrix();
 			pxMtx.identity();
