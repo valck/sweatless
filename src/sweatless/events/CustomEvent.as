@@ -42,20 +42,59 @@
 package sweatless.events{
 	import flash.events.Event;
 	
+	/**
+	 * 
+	 * The <code>CustomEvent</code> is a simple and customizable event for send any objects in this return. It's like a native <code>Event</code> class.
+	 * 
+	 */
 	public dynamic class CustomEvent extends Event{
 		
-		public var data : Object;
-		
+		private var _data : Object;
+
+		/**
+		 * 
+		 * The <code>CustomEvent</code> is a simple and customizable event for send any objects in this return. It's like a native <code>Event</code> class.
+		 * 
+		 */
 		public function CustomEvent(p_type:String, p_data:Object=null, p_bubbles:Boolean=false, p_cancelable:Boolean=false){
 			super(p_type, p_bubbles, p_cancelable);
 			
 			data = p_data;
 		}
 		
+		/**
+		 *
+		 * The <code>data</code> is the <code>Object</code> which are passed as parameter to <code>CustomEvent</code>.
+		 *  
+		 * @param p_value Any <code>Object</code> to send/receive in the <code>CustomEvent</code>
+		 * 
+		 */
+		public function set data(p_value:Object):void{
+			_data = p_value;
+		}
+		
+		public function get data():Object{
+			return _data;
+		}
+		
+		/**
+		 * 
+		 * Returns a new <code>CustomEvent</code> object that is a copy of the original instance of the <code>CustomEvent</code> object. You do not normally call clone(); the <code>EventDispatcher</code> class calls it automatically when you redispatch an event that is, when you call dispatchEvent(customevent) from a handler that is handling event.
+		 * The new <code>CustomEvent</code> object includes all the properties of the original.
+		 *  
+		 * @return A new <code>CustomEvent</code> object that is identical to the original. 
+		 * 
+		 */
 		public override function clone():Event{
             return new CustomEvent(type, data, bubbles, cancelable);
         }
 		
+		/**
+		 * Returns a string containing all the properties of the <code>CustomEvent</code> object. 
+		 * 
+		 * @return The string is in the following format: [CustomEvent type=value data=value bubbles=value cancelable=value]
+		 * 
+		 */
         public override function toString():String{
             return formatToString("CustomEvent", "type", "data", "bubbles", "cancelable");
         }

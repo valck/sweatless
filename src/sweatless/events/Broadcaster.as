@@ -113,7 +113,7 @@ package sweatless.events{
 
 		/**
 		 *
-		 * Clear a previous registered event. 
+		 * Remove a specific registered event. 
 		 *  
 		 * @param p_event The name of the event
 		 * 
