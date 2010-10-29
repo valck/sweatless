@@ -60,6 +60,11 @@ package sweatless.graphics{
 			super(p_width, p_height);
 		}
 		
+		/**
+		 *
+		 * Adds a vector graphic. 
+		 * 
+		 */
 		override protected function addGraphic():void{
 			graphics.drawEllipse(0, 0, width, height);
 		}

@@ -67,6 +67,11 @@ package sweatless.graphics{
 			super(p_width, p_height);
 		}
 		
+		/**
+		 *
+		 * Adds a vector graphic. 
+		 * 
+		 */
 		override protected function addGraphic():void{
 			graphics.drawRoundRectComplex(0, 0, width, height, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
 		}

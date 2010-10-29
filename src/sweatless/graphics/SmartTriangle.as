@@ -60,6 +60,11 @@ package sweatless.graphics{
 			super(p_width, p_height);
 		}
 		
+		/**
+		 *
+		 * Adds a vector graphic. 
+		 * 
+		 */
 		override protected function addGraphic():void{
 			graphics.moveTo(width/2, 0);
 			graphics.lineTo(width, height);
