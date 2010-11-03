@@ -128,15 +128,19 @@ package sweatless.navigation{
 		}
 		
 		public function addFonts():void{
+			throw new Error("Please, override this method.");
 		}
 		
 		public function addLoading():void{
+			throw new Error("Please, override this method.");			
 		}
 		
 		public function progress(evt:BulkProgressEvent):void{
+			throw new Error("Please, override this method.");			
 		}
 		
 		public function build():void{
+			throw new Error("Please, override this method.");			
 		}
 	}
 }
