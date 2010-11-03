@@ -36,7 +36,7 @@
  * http://code.google.com/p/sweatless/
  * 
  * @author Valério Oliveira (valck) / João Marquesini
- * @todo loop, repeat and custom eases equations
+ * @todo toggle pause/resume, loop, repeat and custom eases equations
  * 
  */
 
