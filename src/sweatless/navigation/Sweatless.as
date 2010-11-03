@@ -50,7 +50,6 @@ package sweatless.navigation{
 	import flash.geom.Rectangle;
 	
 	import sweatless.debug.FPS;
-	import sweatless.extras.bulkloader.BulkLoaderXMLPlugin;
 	import sweatless.layout.Layers;
 	import sweatless.navigation.core.Config;
 	import sweatless.navigation.core.Navigation;
@@ -143,6 +142,9 @@ package sweatless.navigation{
 }
 
 
+import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
+import br.com.stimuli.string.printf;
+
 import flash.display.InteractiveObject;
 import flash.display.StageDisplayState;
 import flash.events.ContextMenuEvent;
@@ -153,6 +155,8 @@ import flash.net.URLRequest;
 import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
+
+import sweatless.utils.StringUtils;
 
 internal class Signature extends EventDispatcher{
 	
@@ -214,5 +218,33 @@ internal class Signature extends EventDispatcher{
 			menu.customItems[1].enabled = false;
 		}
 		
+	}
+}
+
+dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader {
+	
+	namespace lazy_loader = "http://code.google.com/p/bulk-loader/"
+		
+		public var source : XML;
+	
+	function BulkLoaderXMLPlugin(url:*, name:String){
+		super (url, name);
+	}
+	
+	lazy_loader override function _lazyParseLoader(p_data:String):void{
+		var substitutions : Object = new Object();
+		
+		for each (var variable:* in new XML(p_data)..globals.variable){
+			substitutions[String(variable.@name)] = String(variable.@value);
+		}
+		
+		source = new XML(printf(StringUtils.replace(StringUtils.replace(p_data, "{", "%("), "}", ")s"), substitutions));
+		
+		source..fixed.asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
+		source..tracking.@file != undefined ? add(String(source..tracking.@file), {id:String("tracking")}) : null;
+		
+		for each (var asset:XML in source..fixed.asset) {
+			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
+		}
 	}
 }
