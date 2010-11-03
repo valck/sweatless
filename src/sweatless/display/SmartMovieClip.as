@@ -46,9 +46,6 @@ package sweatless.display{
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
-	import sweatless.events.CustomListener;
-
-	
 	/**
 	 * 
 	 * Dispatched when the <code>SmartSprite</code> has played.
@@ -119,6 +116,9 @@ package sweatless.display{
 		
 		private var current : int = 0;
 		private var end : int = 0;
+		
+		private var startFrame : int;
+		private var finishFrame : int;
 		
 		private var _delay : Number = 0;
 		private var _source : MovieClip;
@@ -229,7 +229,7 @@ package sweatless.display{
 			if(!_source) return;
 
 			clearTimeout(timer);
-			CustomListener.removeListener(_source, Event.ENTER_FRAME);
+			_source.removeEventListener(Event.ENTER_FRAME, checkFinalFrameAndStop);
 
 			_source.stop();
 			dispatchEvent(new Event(COMPLETE));
@@ -243,7 +243,7 @@ package sweatless.display{
 			if(!_source) return;
 			
 			clearTimeout(timer);
-			CustomListener.removeListener(_source, Event.ENTER_FRAME);
+			_source.removeEventListener(Event.ENTER_FRAME, checkFinalFrameAndStop);
 
 			_source.stop();
 			dispatchEvent(new Event(PAUSE));
@@ -296,16 +296,17 @@ package sweatless.display{
 		public function goto(p_start:Object, p_end:Object):void{
 			if(!_source) return;
 
-			var start : int = p_start is Number ? int(p_start) : getFrameNumber(String(p_start));
-			var finish : int = p_end is Number ? int(p_end) : getFrameNumber(String(p_end));
+			startFrame = p_start is Number ? int(p_start) : getFrameNumber(String(p_start));
+			finishFrame = p_end is Number ? int(p_end) : getFrameNumber(String(p_end));
 			
 			current = 0;
-			end =  Math.abs(start-finish);
+			end =  Math.abs(startFrame-finishFrame);
 			
 			timer = setTimeout(
 				function():void{
-					CustomListener.addListener(_source, Event.ENTER_FRAME, checkFinalFrameAndStop, start, finish);
-
+					//CustomListener.addListener(_source, Event.ENTER_FRAME, checkFinalFrameAndStop, startFrame, finishFrame);
+					_source.addEventListener(Event.ENTER_FRAME, checkFinalFrameAndStop);
+					
 					dispatchEvent(new Event(START));
 					_source.gotoAndStop(p_start);
 				},
@@ -322,7 +323,7 @@ package sweatless.display{
 		override public function destroy(evt:Event=null):void{
 			clearTimeout(timer);
 			
-			_source ? CustomListener.removeListener(_source, Event.ENTER_FRAME) : null;
+			_source ? _source.removeEventListener(Event.ENTER_FRAME, checkFinalFrameAndStop) : null;
 			_source ? _source.stop() : null;
 			_source ? _source.parent.removeChild(_source) : null;
 			_source = null;
@@ -334,11 +335,11 @@ package sweatless.display{
 			super.destroy(evt);
 		}
 		
-		private function checkFinalFrameAndStop(evt:Event, p_start:int, p_finish:int):void{
+		private function checkFinalFrameAndStop(evt:Event):void{
 			if(!_source) return;
 			
-			if(_source.currentFrame == p_finish){
-				CustomListener.removeListener(_source, Event.ENTER_FRAME);
+			if(_source.currentFrame == finishFrame){
+				_source.removeEventListener(Event.ENTER_FRAME, checkFinalFrameAndStop);
 				
 				_source.stop();
 				
@@ -348,7 +349,7 @@ package sweatless.display{
 				
 				dispatchEvent(new Event(COMPLETE));
 			}else{
-				var frame : int = p_start + (p_finish-p_start) * (current/end);
+				var frame : int = startFrame + (finishFrame-startFrame) * (current/end);
 				_source.gotoAndStop(frame);
 				
 				current++;
