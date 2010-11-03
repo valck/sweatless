@@ -39,7 +39,7 @@
  * 
  */
 
-package sweatless.media{
+package sweatless.ui{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.media.SoundMixer;
