@@ -99,9 +99,38 @@ package sweatless.utils{
 			return targetDrawed;
 		}
 		
+		/*
+		Checks whether the bitmap is empty or not. In this case, empty means a BitmapData with a single color.
+		*/
+		public static function isEmptyBitmapData(p_bmp:BitmapData):Boolean{
+			var width : int = p_bmp.width;
+			var height : int = p_bmp.height;
+			
+			var last : uint;
+			var color : uint;
+			var first : Boolean;
+			
+			xAxis: for(var x:int = 0; x<width; x++){
+				yAxis: for(var y:int = 0; y<height; y++){
+					
+					first = x == 0 && y == 0;
+					color = p_bmp.getPixel(x, y);
+					
+					if(!first && last != color) {
+						break xAxis;
+						break yAxis;
+						return false;
+					}
+					last = color;
+				}
+			}
+			return true;	
+		}
+
 		
-		public static function specialHitTestObject( target1:DisplayObject, target2:DisplayObject, accuracy:Number = 1 ):Boolean{
-			return specialIntersectionRectangle( target1, target2, accuracy ).width != 0;
+		
+		public static function specialHitTestObject(p_target:DisplayObject, target2:DisplayObject, accuracy:Number = 1 ):Boolean{
+			return specialIntersectionRectangle(p_target, target2, accuracy).width != 0;
         }
         
         public static function intersectionRectangle( target1:DisplayObject, target2:DisplayObject ):Rectangle{
@@ -149,14 +178,14 @@ package sweatless.utils{
             return intersection;
         }
         
-        private static function getDrawMatrix( target:DisplayObject, hitRectangle:Rectangle, accuracy:Number ):Matrix{
+        private static function getDrawMatrix( p_target:DisplayObject, hitRectangle:Rectangle, accuracy:Number ):Matrix{
             var localToGlobal:Point;;
             var matrix:Matrix;
             
-            var rootConcatenatedMatrix:Matrix = target.root.transform.concatenatedMatrix;
+            var rootConcatenatedMatrix:Matrix = p_target.root.transform.concatenatedMatrix;
             
-            localToGlobal = target.localToGlobal( new Point( ) );
-            matrix = target.transform.concatenatedMatrix;
+            localToGlobal = p_target.localToGlobal( new Point( ) );
+            matrix = p_target.transform.concatenatedMatrix;
             matrix.tx = localToGlobal.x - hitRectangle.x;
             matrix.ty = localToGlobal.y - hitRectangle.y;
             

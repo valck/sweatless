@@ -54,6 +54,7 @@ package sweatless.media{
 	import sweatless.events.CustomEvent;
 
 	public class SoundTrack extends EventDispatcher{
+		
 		public static const CUEPOINT : String = "cuepoint";
 
 		private var _playing : Boolean;
@@ -83,24 +84,24 @@ package sweatless.media{
 			return _mute;
 		}
 
-		public function set isMute(value:Boolean):void{
-			_mute = value;
+		public function set isMute(p_value:Boolean):void{
+			_mute = p_value;
 		}
 
 		public function get isLooping():Boolean{
 			return _looping;
 		}
 
-		public function set isLooping(value:Boolean):void{
-			_looping = value;
+		public function set isLooping(p_value:Boolean):void{
+			_looping = p_value;
 		}
 
 		public function get isPlaying():Boolean{
 			return _playing;
 		}
 
-		public function set isPlaying(value:Boolean):void{
-			_playing = value;
+		public function set isPlaying(p_value:Boolean):void{
+			_playing = p_value;
 		}
 
 		public function set track(p_sound:Sound):void{

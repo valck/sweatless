@@ -91,48 +91,48 @@ package sweatless.media{
 			return _rewind;
 		}
 		
-		public function set autoRewind(value:Boolean):void{
-			_rewind = value;
+		public function set autoRewind(p_value:Boolean):void{
+			_rewind = p_value;
 		}
 		
 		public function get isMute():Boolean{
 			return _mute;
 		}
 		
-		public function set isMute(value:Boolean):void{
-			_mute = value;
+		public function set isMute(p_value:Boolean):void{
+			_mute = p_value;
 		}
 		
 		public function get isLooping():Boolean{
 			return _looping;
 		}
 		
-		public function set isLooping(value:Boolean):void{
-			_looping = value;
+		public function set isLooping(p_value:Boolean):void{
+			_looping = p_value;
 		}
 		
 		public function get isPlaying():Boolean{
 			return _playing;
 		}
 		
-		public function set isPlaying(value:Boolean):void{
-			_playing = value;
+		public function set isPlaying(p_value:Boolean):void{
+			_playing = p_value;
 		}
 		
 		public function get deblocking():int{
 			return _deblocking;
 		}
 		
-		public function set deblocking(value:int):void{
-			_deblocking = video.deblocking = value;
+		public function set deblocking(p_value:int):void{
+			_deblocking = video.deblocking = p_value;
 		}
 		
 		public function get smoothing():Boolean{
 			return _smoothing;
 		}
 		
-		public function set smoothing(value:Boolean):void{
-			_smoothing = video.smoothing = value;
+		public function set smoothing(p_value:Boolean):void{
+			_smoothing = video.smoothing = p_value;
 		}
 		
 		public function set track(p_netstream:NetStream):void{

@@ -42,6 +42,11 @@
 package sweatless.interfaces{
 	import flash.events.Event;
 
+	/**
+	 * @todo
+	 * The <code>IBase</code> interface is implemented by objects for 
+	 * 
+	 */
 	public interface IBase{
 		function create(evt:Event=null):void;
 		function destroy(evt:Event=null):void;

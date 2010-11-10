@@ -53,16 +53,16 @@ package sweatless.media{
 			return _time;
 		}
 		
-		public function set time(value:String):void{
-			_time = value;
+		public function set time(p_value:String):void{
+			_time = p_value;
 		}
 		
 		public function get id():String{
 			return _id;
 		}
 		
-		public function set id(value:String):void{
-			_id = value;
+		public function set id(p_value:String):void{
+			_id = p_value;
 		}
 		
 	}
