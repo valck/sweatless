@@ -46,8 +46,6 @@ package sweatless.media{
 	import flash.events.StatusEvent;
 	import flash.media.Camera;
 	import flash.media.Video;
-	import flash.utils.clearTimeout;
-	import flash.utils.setTimeout;
 	
 	import sweatless.utils.BitmapUtils;
 	
