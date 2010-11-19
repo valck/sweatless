@@ -98,7 +98,7 @@ package sweatless.navigation.core{
 				}
 			}
 			
-			Config.tracking ? Config.addAnalytics(Layers.get("debug")) : null;
+			Config.tracking ? Config.addAnalytics(Layers.getInstance("sweatless").get("debug")) : null;
 			
 			Config.started = true;
 		}
@@ -124,7 +124,7 @@ package sweatless.navigation.core{
 				current = Area(loader.getContent(Config.getInArea(Config.currentAreaID, "@swf")));
 				current.id = Config.currentAreaID;
 				
-				Layers.get("navigation").addChild(current);
+				Layers.getInstance("sweatless").get("navigation").addChild(current);
 				
 				current.addEventListener(Area.READY, show);
 				current.create();
@@ -194,7 +194,7 @@ package sweatless.navigation.core{
 				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				loading = Loadings.exists(Config.currentAreaID) ? Loadings.get(Config.currentAreaID) : Loadings.exists("default") ? Loadings.get("default") : null; 
-				loading && !loading.stage ? Layers.get("loading").addChild(loading) : null;
+				loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 				loading ? loading.show() : null;
 				
 				loader.sortItemsByPriority();
@@ -205,7 +205,7 @@ package sweatless.navigation.core{
 		private static function unload(evt:Event):void{
 			Align.remove(last, Number(Config.getAreaAdditionals(last.id, "@width")), Number(Config.getAreaAdditionals(last.id, "@height")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@top")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@bottom")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@right")), Number(Config.getAreaAdditionals(Config.currentAreaID, "@left")));
 			
-			Layers.get("navigation").removeChild(last);
+			Layers.getInstance("sweatless").get("navigation").removeChild(last);
 			
 			!StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : null;
 		}

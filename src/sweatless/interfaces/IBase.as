@@ -44,7 +44,7 @@ package sweatless.interfaces{
 
 	/**
 	 * @todo
-	 * The <code>IBase</code> interface is implemented by objects for 
+	 * The <code>IBase</code> interface is implemented by objects to
 	 * 
 	 */
 	public interface IBase{

@@ -57,6 +57,7 @@ package sweatless.navigation{
 	public class Sweatless extends Sprite{
 		
 		private var loader : BulkLoaderXMLPlugin;
+		private var layers : Layers;
 		
 		public function Sweatless(p_fullScreen:Boolean=true){
 			var signature : Signature = new Signature(this, p_fullScreen);
@@ -95,22 +96,22 @@ package sweatless.navigation{
 		
 		protected function addFPS():void{
 			var fps : FPS = new FPS();
-			Layers.get("debug").addChild(fps);
+			layers.get("debug").addChild(fps);
 		}
 		
 		private function addLayers():void{
-			Layers.init(this);
+			layers = new Layers(this, "sweatless");
 			
-			Layers.add("navigation");
-			Layers.add("loading");
-			Layers.get("loading").mouseChildren = false;
+			layers.add("navigation");
+			layers.add("loading");
+			layers.get("loading").mouseChildren = false;
 			
 			for(var i:uint=0; i<Config.layers.length(); i++) {
-				Layers.add(Config.layers[i]["@id"]);
-				Config.layers[i]["@depth"] ? Layers.get(Config.layers[i]["@id"]).depth = Config.layers[i]["@depth"] : null;
+				layers.add(Config.layers[i]["@id"]);
+				Config.layers[i]["@depth"] ? layers.get(Config.layers[i]["@id"]).depth = Config.layers[i]["@depth"] : null;
 			};
 			
-			Layers.add("debug");
+			layers.add("debug");
 		}
 		
 		private function removeLoadListeners(evt:Event):void{

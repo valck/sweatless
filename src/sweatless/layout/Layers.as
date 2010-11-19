@@ -41,20 +41,79 @@
 
 package sweatless.layout{
 	import flash.display.DisplayObjectContainer;
+	import flash.utils.Dictionary;
+	
+	import sweatless.utils.DictionaryUtils;
 	
 	public final class Layers{
 
-		private static var scope : DisplayObjectContainer;
-		private static var layers : Array;
+		private var _id : String;
+
+		private static var instances : Dictionary = new Dictionary(true);
 		
-		public static function init(p_scope:DisplayObjectContainer):void{
-			if(getAll()) return;
+		public function Layers(p_scope:DisplayObjectContainer, p_id:String){
+			p_id = p_id.toLowerCase();
 			
-			scope = p_scope;
-			layers = new Array();
+			if (!p_scope) throw new Error ("Cannot create a Layers instance without a scope.");
+			if (hasInstance(p_id)) throw new Error ("The Layers instance with id "+p_id+" has already been created.");
+			
+			instances[p_id] = {id:p_id, scope:p_scope, layer:this, contents:new Array()};
+			
+			_id = p_id;
+		}
+
+		public static function getInstance(p_id:String):Layers{
+			p_id = p_id.toLowerCase();
+			
+			return Layers.instances[p_id].layer as Layers;
 		}
 		
-		public static function add(p_id:String):void{
+		public static function getAllInstances():Dictionary{
+			return instances;
+		}
+		
+		public static function getTotalInstances():int{
+			return DictionaryUtils.length(instances);
+		}
+		
+		public static function hasInstance(p_id:String):Boolean{
+			p_id = p_id.toLowerCase();
+			
+			return instances[p_id] ? true : false;
+		}
+		
+		public static function removeInstance(p_id:String):Boolean{
+			p_id = p_id.toLowerCase();
+			
+			getInstance(p_id).removeAll();
+			
+			instances[p_id] = null;
+			delete instances[p_id];
+
+			return hasInstance(p_id);
+		}
+		
+		public static function removeAllInstances():void{
+			for(var id:* in instances){
+				removeInstance(id);
+			}
+		}
+		
+		public function get id():String{
+			return _id;
+		}
+
+		public function get scope():DisplayObjectContainer{
+			return Layers.instances[id].scope;
+		}
+
+		public function get layers():Array{
+			return Layers.instances[id].contents;
+		}
+
+		public function add(p_id:String):void{
+			p_id = p_id.toLowerCase();
+			
 			if(get(p_id)) throw new Error("The layer " + p_id + " already exists.");
 			
 			var layer : Layer = new Layer();
@@ -65,8 +124,10 @@ package sweatless.layout{
 			update();
 		}
 		
-		public static function remove(p_id:String):void{
-			for (var i:uint=0; i<layers.length; i++) {
+		public function remove(p_id:String):void{
+			p_id = p_id.toLowerCase();
+			
+			for (var i:uint=0; i<length; i++) {
 				if (layers[i].name == p_id.toLowerCase()) {
 					scope.removeChild(layers[i]);
 					layers[i] = null;
@@ -74,34 +135,31 @@ package sweatless.layout{
 					break;
 				};
 			}
+			
 			update();
 		}
 		
-		public static function removeAll():void{
-			for (var i:uint=0; i<layers.length; i++) {
+		public function removeAll():void{
+			for (var i:uint=0; i<length; i++) {
 				scope.removeChild(layers[i]);
 				layers[i] = null;
 				layers.splice(i, 1);
 			}
 		}
 		
-		public static function getAll():Array{
-			return layers;
-		}
-		
-		public static function debug():void{
-			trace("[START LAYERS DEBUG]");
+		public function debug():void{
+			trace("[==== LAYERS DEBUG ====]");
 			trace("Layers length:"+length);
-			for (var i:uint=0; i<getAll().length; i++) {
+			for (var i:uint=0; i<length; i++) {
 				trace("	{Layer:"+Layer(layers[i]).name+", layer depth:"+ Layer(layers[i]).depth+", real stage depth:"+scope.getChildIndex(layers[i])+"}");
 			}
-			trace("[END LAYERS DEBUG]");
+			trace("[==== LAYERS DEBUG ====]");
 		}
 		
-		public static function get(p_id:String):Layer{
+		public function get(p_id:String):Layer{
 			p_id = p_id.toLowerCase();
 			
-			for (var i:uint=0; i<layers.length; i++) {
+			for (var i:uint=0; i<length; i++) {
 				if (layers[i].name == p_id) {
 					return layers[i];
 					break;
@@ -109,18 +167,18 @@ package sweatless.layout{
 			}
 			return null;
 		}
-		
-		public static function get length():int{
+
+		public function get length():int{
 			return layers.length;
 		}
 		
-		public static function swapDepth(p_id:String, p_depth:*):void{
+		public function swapDepth(p_id:String, p_depth:*):void{
 			get(p_id).depth = p_depth;
 
 			update();
 		}
 		
-		public static function update():void{
+		public function update():void{
 			layers.sortOn("depth", Array.NUMERIC);
 
 			for (var i:uint=0; i<layers.length; i++) {
