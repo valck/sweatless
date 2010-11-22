@@ -94,11 +94,6 @@ package sweatless.navigation{
 			addFPS();
 		}
 		
-		protected function addFPS():void{
-			var fps : FPS = new FPS();
-			layers.get("debug").addChild(fps);
-		}
-		
 		private function addLayers():void{
 			layers = new Layers(this, "sweatless");
 			
@@ -122,6 +117,11 @@ package sweatless.navigation{
 			Navigation.init();
 			
 			build();
+		}
+		
+		public function addFPS():void{
+			var fps : FPS = new FPS();
+			layers.get("debug").addChild(fps);
 		}
 		
 		public function resize(evt:Event):void{
@@ -195,7 +195,7 @@ internal class Signature extends EventDispatcher{
 			menu.customItems[1].enabled = false;
 		};
 		
-		var linkCode:ContextMenuItem = new ContextMenuItem("Built with Sweatless AS3 Framework", true);
+		var linkCode:ContextMenuItem = new ContextMenuItem("Built with Sweatless Framework", true);
 		linkCode.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
 		menu.customItems.push(linkCode);
 		
@@ -226,7 +226,7 @@ internal class Signature extends EventDispatcher{
 	}
 }
 
-dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader {
+dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	
 	namespace lazy_loader = "http://code.google.com/p/bulk-loader/"
 		

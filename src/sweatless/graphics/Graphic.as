@@ -60,7 +60,7 @@ package sweatless.graphics{
 		private var _stroke : Boolean;
 
 		private var _strokeSize : Number = 1;
-		private var _strokeAlpha : uint = 1;
+		private var _strokeAlpha : Number = 1;
 		private var _strokeColor : uint = 0x000000;
 		private var _strokeMode : String = "normal";
 		
@@ -214,11 +214,11 @@ package sweatless.graphics{
 		 * @default 1
 		 * 
 		 */
-		public function get strokeAlpha():uint{
+		public function get strokeAlpha():Number{
 			return _strokeAlpha;
 		}
 		
-		public function set strokeAlpha(value:uint):void{
+		public function set strokeAlpha(value:Number):void{
 			_strokeAlpha = value;
 			update();
 		}
