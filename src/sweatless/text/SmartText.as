@@ -49,6 +49,7 @@ package sweatless.text{
 		private var _format : TextFormat;
 		private var _field : TextField;
 		private var _autosize : String = "left";
+		private var _selectable:Boolean;
 		
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ; @";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
@@ -188,6 +189,17 @@ package sweatless.text{
 		
 		public function get type():String{
 			return _field.type;
+		}
+
+		public function get selectable():Boolean
+		{
+			return _selectable;
+		}
+		
+		public function set selectable(value:Boolean):void
+		{
+			_selectable = value;
+			_field.selectable = value
 		}
 		
 		public function set password(p_value:Boolean):void{
