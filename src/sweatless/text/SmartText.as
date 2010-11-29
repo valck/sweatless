@@ -127,6 +127,8 @@ package sweatless.text{
 		}
 		
 		public function set size(p_value:uint):void{
+			p_value > 127 ? trace("Unfortunately text fields formatted via TextFormat, CSS, or HTML have an undocumented maximum font size of 127 px. :(") : null;
+			
 			_format.size = p_value;
 			
 			update();

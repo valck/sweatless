@@ -198,7 +198,7 @@ package sweatless.navigation.core{
 			return deeplinks;
 		}
 		
-		public static function getMenu(p_type:String="*"):Array{
+		public static function getMenuButtons(p_type:String="*"):Array{
 			var all : Boolean = p_type == "*" ? true : false;
 			var buttons : Array = new Array();
 			
@@ -209,6 +209,16 @@ package sweatless.navigation.core{
 				}
 				
 				buttons.push(attributes);
+			}
+			
+			return buttons;
+		}
+
+		public static function getMenuTypes():Array{
+			var buttons : Array = new Array();
+			
+			for(var a:uint=0; a<source..buttons.length(); a++){
+				buttons.push(source..buttons[a]);
 			}
 			
 			return buttons;

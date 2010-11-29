@@ -60,7 +60,7 @@ package sweatless.navigation.primitives{
 		
 		public function Menu(p_type:String="*"){
 			type = p_type;
-			properties = Config.getMenu(type);
+			properties = Config.getMenuButtons(type);
 			broadcaster = Broadcaster.getInstance();
 			
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
