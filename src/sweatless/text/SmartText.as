@@ -186,22 +186,19 @@ package sweatless.text{
 		
 		public function set type(p_value:String):void{
 			_field.type = p_value;
-			p_value == "input" ? _field.selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.selectable = _field.mouseEnabled = _field.tabEnabled = false;
+			p_value == "input" ? _field.selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
 		}
 		
 		public function get type():String{
 			return _field.type;
 		}
 
-		public function get selectable():Boolean
-		{
+		public function get selectable():Boolean{
 			return _selectable;
 		}
 		
-		public function set selectable(value:Boolean):void
-		{
-			_selectable = value;
-			_field.selectable = value
+		public function set selectable(p_value:Boolean):void{
+			_selectable = _field.selectable = p_value;
 		}
 		
 		public function set password(p_value:Boolean):void{
