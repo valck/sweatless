@@ -89,7 +89,7 @@ package sweatless.utils{
 		}
 		
 		/**
-		 * A method heavy to remove all itens inside a <code>Object</code>.
+		 * A heavy method to remove all itens inside a <code>Object</code>.
 		 * @param p_target The object to clean.
 		 */
 		public static function removeAll(p_target:*):void{
