@@ -98,6 +98,16 @@ package sweatless.utils{
 			return NumberUtils.rangeRandom(0, p_array.length-1, true);
 		}
 		
+		/**
+		 * Returns a random item within an <code>Array</code>.
+		 * @param p_array The <code>Array</code> to be used as reference.
+		 * @return The resulting object.
+		 * @see Array
+		 */
+		public static function randomItem(p_array:Array):*{
+			return p_array[NumberUtils.rangeRandom(0, p_array.length-1, true)];
+		}
+		
 				
 		/**
 		 * Shuffles the order of the items in an <code>Array</code>. 

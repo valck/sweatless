@@ -40,7 +40,21 @@
  */
 
 package sweatless.utils{
+	
+	/**
+	 * The <code>NumberUtils</code> class have support methods for easier manipulation of
+	 * the native <code>Number</code> Class.
+	 * @see Number
+	 */
 	public class NumberUtils{
+		
+		/**
+		 * Checks whether the <code>Number</code> is an even number.
+		 * @param p_value The <code>Number</code> to check.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see Number
+		 * @see Boolean
+		 */
 		public static function isEven(p_value:Number):Boolean{
 			if (p_value%2==0) {
 				return true;
@@ -49,30 +63,79 @@ package sweatless.utils{
 			}
 		}
 		
+		/**
+		 * Checks whether the <code>Number</code> is zero.
+		 * @param p_value The <code>Number</code> to check.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see Number
+		 * @see Boolean
+		 */
 		public static function isZero(p_value:Number):Boolean{
 			return Math.abs(p_value) < 0.00001;
 		}
 		
+		/**
+		 * Returns the value in radians of a <code>Number</code>.
+		 * @param p_value The <code>Number</code> to check.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function toRadians(p_value:Number):Number{
 			return p_value / 180 * Math.PI;
 		}
 		
+		/**
+		 * Returns the value in degress of a <code>Number</code>.
+		 * @param p_value The <code>Number</code> to check.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function toDegrees(p_value:Number):Number{
 			return p_value * 180 / Math.PI;
 		}
 		
+		/**
+		 * Returns the value in radians of a degress <code>Number</code>.
+		 * @param p_value The <code>Number</code> to check.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function degreesToRadians(p_value:Number):Number{
 			return (2 * Math.PI * p_value) / 360;
 		}
 		
+		/**
+		 * Returns the value in percent of a <code>Number</code>.
+		 * @param p_value The <code>Number</code> to check.
+		 * @param p_min The <code>Number</code> of lower limit.
+		 * @param p_max The <code>Number</code> of higher limit.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function toPercent(p_value:Number, p_min:Number, p_max:Number):Number{
 			return ((p_value - p_min) / (p_max - p_min)) * 100;
 		}
 		
+		/**
+		 * Returns the value in Number of a <code>percent</code>.
+		 * @param p_percent The <code>Number</code> in percent to check.
+		 * @param p_min The <code>Number</code> of lower limit.
+		 * @param p_max The <code>Number</code> of higher limit.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function percentToValue(p_percent:Number, p_min:Number, p_max:Number):Number{
 			return ((p_max - p_min) * p_percent) + p_min;
 		}
 		
+		/**
+		 * Generates a random number between two numbers.
+		 * @param p_low The <code>Number</code> of lower limit.
+		 * @param p_high The <code>Number</code> of higher limit.
+		 * @param p_rounded Return a round number.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Number
+		 */
 		public static function rangeRandom(p_low:Number, p_high:Number, p_rounded:Boolean=false):Number{
 			return !p_rounded ? (Math.random() * (p_high - p_low)) + p_low : Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
 		}

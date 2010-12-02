@@ -41,8 +41,20 @@
 
 package sweatless.utils{
 	import flash.utils.Dictionary;
-
+	
+	/**
+	 * The <code>DictionaryUtils</code> class have support methods for easier manipulation of
+	 * the native <code>Dictionary</code> Class.
+	 * @see Dictionary
+	 */
 	public class DictionaryUtils{
+		
+		/**
+		 * Return the length of a <code>Dictionary</code> item.
+		 * @param p_item The <code>Dictionary</code> object to count.
+		 * @return The resulting <code>Number</code> object.
+		 * @see Dictionary
+		 */
 		public static function length(p_item:Dictionary):int{
 			var result : int = 0;
 			for (var key:* in p_item) {

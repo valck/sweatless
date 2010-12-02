@@ -40,17 +40,50 @@
  */
 
 package sweatless.utils{
+	
+	/**
+	 * The <code>ValidateUtils</code> class have validation methods for <code>String</code> object.
+	 * @see String
+	 */	
 	public class ValidateUtils{
+		
+		
+		/**
+		 * Checks if the string is a url
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
 		public static function isUrl(p_value:String):Boolean {
 			var validate : RegExp = /^http(s)?:\/\/((\d+\.\d+\.\d+\.\d+)|(([\w-]+\.)+([a-z,A-Z][\w-]*)))(:[1-9][0-9]*)?(\/([\w-.\/:%+@&=]+[\w- .\/?:%+@&=]*)?)?(#(.*))?$/i;
 			return validate.test(p_value);
 		}
-
+		
+		
+		/**
+		 * Checks if the string is a email
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
 		public static function isEmail(p_value:String):Boolean {
 			var validate : RegExp = /([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/gi;
 			return validate.test(p_value);
 		}
-
+		
+		
+		/**
+		 * Checks if the string is a cpf
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
 		public static function isCPF(p_value:String):Boolean {
 			var validate:RegExp = /(\d{3}.?\d{3}.?\d{3}-?\d{2})/g;
 			return validate.test(p_value);

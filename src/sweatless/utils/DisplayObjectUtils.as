@@ -48,8 +48,20 @@ package sweatless.utils{
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 	
+	/**
+	 * The <code>DisplayObjectUtils</code> class have support methods for easier manipulation of
+	 * the native <code>DisplayObject</code> Class.
+	 * @see DisplayObject
+	 */
 	public class DisplayObjectUtils{
-
+		
+		/**
+		 * Clone a DisplayObject.
+		 * @param p_target The <code>DisplayObject</code> object to clone.
+		 * @param p_clone The target to clone.
+		 * @return The resulting <code>DisplayObject</code> object.
+		 * @see Stage
+		 */
 		public static function cloneObject(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
 	
@@ -64,15 +76,22 @@ package sweatless.utils{
 			return p_clone;
 	    }
 		
+		/**
+		 * Get the reference class of a Object.
+		 * @param p_source The object.
+		 * @param p_class The class name in <code>String</code>.
+		 * @return The resulting <code>Class</code> object.
+		 * @see Class
+		 */
 		public static function getClass(p_source:*, p_class:String):*{
 			var reference : Class = p_source.loaderInfo.applicationDomain.getDefinition(p_class) as Class;
 			return new reference();
 		}
-
-		public static function randomItem(p_array:Array):*{
-			return p_array[NumberUtils.rangeRandom(0, p_array.length-1, true)];
-		}
 		
+		/**
+		 * A method heavy to remove all itens inside a <code>Object</code>.
+		 * @param p_target The object to clean.
+		 */
 		public static function removeAll(p_target:*):void{
 			if(!p_target) return;
 			
@@ -93,6 +112,11 @@ package sweatless.utils{
 			child = null;
 		}
 		
+		/**
+		 * replace one by another <code>DisplayObject</code>.
+		 * @param p_new The <code>DisplayObject</code> to add.
+		 * @param p_old The <code>DisplayObject</code> to remove.
+		 */
 		public static function replace(p_new:DisplayObject, p_old:DisplayObject):void{
 			if (p_old.parent == null) return;
 			
@@ -104,6 +128,11 @@ package sweatless.utils{
 			p_old = null;
 		}
 		
+		/**
+		 * Flip horizontally or vertically a <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> to flip.
+		 * @param p_horizontal Flip horizontally.
+		 */
 		public static function flip(p_target:DisplayObject, p_horizontal:Boolean=true):void{
 			var matrix : Matrix = p_target.transform.matrix;
 			
@@ -120,6 +149,12 @@ package sweatless.utils{
 			p_target.transform.matrix = matrix;
 		}
 		
+		/**
+		 * Flip horizontally or vertically a <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> to skew.
+		 * @param p_x The <code>Number</code> of x property of p_target.
+		 * @param p_y The <code>Number</code> of y property of p_target.
+		 */
 		public static function skew(p_target:DisplayObject, p_x:Number, p_y:Number):void{
 			var mtx:Matrix = new Matrix();
 			mtx.b = p_y * Math.PI/180;
