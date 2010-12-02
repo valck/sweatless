@@ -81,8 +81,12 @@ package sweatless.media{
 			removeEventListener(Event.ADDED_TO_STAGE, start);
 			
 			index = 0;
-			index = 0;
+			
 			tryNext();
+		}
+		
+		public function get track():Video{
+			return video;
 		}
 		
 		public function get deblocking():int{
