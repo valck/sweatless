@@ -44,20 +44,44 @@ package sweatless.text{
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	
+	/**
+	 * The <code>FontRegister</code> class have support methods for easier manipulation of
+	 * the native <code>Font</code> Class.
+	 * @see Font
+	 * @see Dictionary
+	 */
 	public class FontRegister {
 		
 		private static var fonts : Dictionary = new Dictionary(true);
-
+		
+		/**
+		 * Return the <code>Font</code> that has been briefly recorded.
+		 * @param p_id The <code>Font</code> id (<code>String</code>).
+		 * @return The resulting <code>Font</code> object.
+		 * @see Font
+		 * @see String
+		 */
 		public static function getFont(p_id:String):Font {
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists.");
 			return fonts[p_id];
 		}
 		
+		/**
+		 * Return the <code>Font</code> name that has been briefly recorded.
+		 * @param p_id The <code>Font</code> id (<code>String</code>).
+		 * @return The resulting <code>String</code> object with the font name.
+		 * @see String
+		 */
 		public static function getfontName(p_id:String):String{
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists.");
 			return getFont(p_id).fontName;
 		}
 		
+		/**
+		 * Returns an <code>Array</code> with the fonts registered.
+		 * @return The resulting <code>Array</code> object.
+		 * @see Array
+		 */
 		public static function getAllFonts():Array{
 			var results:Array = new Array();
 			for(var key:* in fonts){
@@ -66,6 +90,13 @@ package sweatless.text{
 			return results;
 		}
 		
+		/**
+		 * Register a <code>Font</code>.
+		 * @param p_class The <code>Font</code> id (<code>Class</code>).
+		 * @param p_id The <code>Font</code> id (<code>String</code>).
+		 * @see Class
+		 * @see String
+		 */
 		public static function addFont(p_class:Class, p_id:String):void{
 			if(!(describeType(p_class)..factory.extendsClass[0].@type == "flash.text::Font")) throw new Error("The class " + p_class + " is not a valid Font class.");
 			if(hasAdded(p_id)) throw new Error("Font id " + p_id + " already registered.");
@@ -78,10 +109,22 @@ package sweatless.text{
 			}
 		}
 		
+		/**
+		 * Check if a <code>Font</code> has been added.
+		 * @param p_id The <code>Font</code> id (<code>String</code>).
+		 * @return The resulting <code>Boolean</code> object with the font name.
+		 * @see String
+		 * @see Boolean
+		 */
 		public static function hasAdded(p_id:String):Boolean{
 			return fonts[p_id] ? true : false;
 		}
 		
+		/**
+		 * Unregister a <code>Font</code>.
+		 * @param p_id The <code>Font</code> id (<code>String</code>).
+		 * @see String
+		 */
 		public static function removeFont(p_id:String): void{
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists or already removed.");
 
@@ -89,6 +132,9 @@ package sweatless.text{
 			delete fonts[p_id];
 		}
 		
+		/**
+		 * Unregister all fonts.
+		 */
 		public static function removeAllFonts():void{
 			for(var id:* in fonts){
 				fonts[id] = null;

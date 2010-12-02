@@ -45,6 +45,12 @@ package sweatless.text{
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	/**
+	 * The <code>SmartText</code> class have support methods for easier manipulation of
+	 * the native <code>Font</code> Class.
+	 * @see TextField
+	 * @see TextFormat
+	 */
 	public class SmartText extends Sprite{
 		private var _format : TextFormat;
 		private var _field : TextField;
@@ -57,9 +63,14 @@ package sweatless.text{
 		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
 		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
-		public function SmartText(p_format:TextFormat=null){
+		/**
+		 * The constructor method to create the <code>SmartText</code>.
+		 * @param p_format The <code>TextFormat</code> format.
+		 * @see TextField
+		 * @see TextFormat
+		 */
+		public function SmartText(p_format:TextFormat=null):void{
 			super();
-		
 			_format = p_format || new TextFormat();
 			_field = new TextField();
 			
@@ -76,30 +87,45 @@ package sweatless.text{
 			_field.autoSize = _autosize;
 		}
 		
+		/**
+		 * Indicates the alignment of the paragraph.
+		 * @see TextFormatAlign
+		 */
 		public function set align(p_value:String):void{
 			_format.align = p_value;
-			
 			update();
 		}
-		
+
 		public function get align():String{
 			return _format.align;
 		}
 		
+		/**
+		 * Controls automatic sizing and alignment of text fields.
+		 * @see TextFieldAutoSize
+		 */
 		public function set autoSize(p_value:String):void{
 			_autosize = p_value;
 			
 			update();
 		}
-		
+
 		public function get autoSize():String{
 			return _autosize;
 		}
 		
+		/**
+		 * The number of characters in a text field.
+		 */
 		public function get length():uint{
 			return _field.length;
 		}
 		
+		
+		/**
+		 * Applies the text formatting that the format parameter specifies to the specified text in a text field.
+		 * @see TextFormat
+		 */
 		public function set format(p_format:TextFormat):void{
 			_format = p_format;
 			
@@ -110,6 +136,10 @@ package sweatless.text{
 			return _format;
 		}
 		
+		/**
+		 * The name of the font for text in this text format, as a string.
+		 * @see TextFormat
+		 */
 		public function set font(p_value:String):void{
 			_format.font = p_value;
 			
@@ -120,12 +150,20 @@ package sweatless.text{
 			return _format.font;
 		}
 		
+		/**
+		 * The color of text using this text format.
+		 * @see TextFormat
+		 */
 		public function set color(p_value:uint):void{
 			_format.color = p_value;
 			
 			update();
 		}
 		
+		/**
+		 * The size in pixels of text in this text format.
+		 * @see TextFormat
+		 */
 		public function set size(p_value:uint):void{
 			p_value > 127 ? trace("Unfortunately text fields formatted via TextFormat, CSS, or HTML have an undocumented maximum font size of 127 px. :(") : null;
 			
@@ -134,24 +172,40 @@ package sweatless.text{
 			update();
 		}
 		
+		/**
+		 * A number that indicates the amount of leading vertical space between lines.
+		 * @see TextFormat
+		 */
 		public function set lineSpacing(p_value:Number):void{
 			_format.leading = p_value;
 			
 			update();
 		}
 		
+		/**
+		 * A number representing the amount of space that is uniformly distributed between all characters.
+		 * @see TextFormat
+		 */
 		public function set letterSpacing(p_value:Number):void{
 			_format.letterSpacing = p_value;
 			
 			update();
 		}
 		
+		/**
+		 * A Boolean value that indicates whether kerning is enabled (true) or disabled (false).
+		 * @see TextFormat
+		 */
 		public function set kerning(p_value:Number):void{
 			_format.kerning = p_value;
 			
 			update();
 		}
 		
+		/**
+		 * Specifies the tab ordering of objects in a SWF file.
+		 * @see InteractiveObject
+		 */
 		public function set tab(p_value:int):void{
 			_field.tabIndex = p_value;
 		}
@@ -160,6 +214,10 @@ package sweatless.text{
 			return _field.tabIndex;
 		}
 		
+		/**
+		 * The type of anti-aliasing used for this text field.
+		 * @see TextField
+		 */
 		public function set alias(p_value:String):void{
 			_field.antiAliasType = p_value;
 		}
@@ -168,6 +226,10 @@ package sweatless.text{
 			return _field.antiAliasType;
 		}
 		
+		/**
+		 * The maximum number of characters that the text field can contain, as entered by a user.
+		 * @see TextField
+		 */
 		public function set maxChars(p_value:int):void{
 			_field.maxChars = p_value;
 		}
@@ -176,6 +238,10 @@ package sweatless.text{
 			return _field.maxChars;
 		}
 		
+		/**
+		 * Indicates the set of characters that a user can enter into the text field.
+		 * @see TextField
+		 */
 		public function set restrict(p_value:String):void{
 			_field.restrict = p_value;
 		}
@@ -184,6 +250,10 @@ package sweatless.text{
 			return _field.restrict;
 		}
 		
+		/**
+		 * The type of the text field.
+		 * @see TextField
+		 */
 		public function set type(p_value:String):void{
 			_field.type = p_value;
 			p_value == "input" ? _field.selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
@@ -192,7 +262,11 @@ package sweatless.text{
 		public function get type():String{
 			return _field.type;
 		}
-
+		
+		/**
+		 * A Boolean value that indicates whether the text field is selectable.
+		 * @see TextField
+		 */
 		public function get selectable():Boolean{
 			return _selectable;
 		}
@@ -201,6 +275,10 @@ package sweatless.text{
 			_selectable = _field.selectable = p_value;
 		}
 		
+		/**
+		 * Specifies whether the text field is a password text field.
+		 * @see TextField
+		 */
 		public function set password(p_value:Boolean):void{
 			_field.displayAsPassword = p_value;
 		}
@@ -209,6 +287,10 @@ package sweatless.text{
 			return _field.displayAsPassword;
 		}
 		
+		/**
+		 * Indicates whether field is a multiline text field.
+		 * @see TextField
+		 */
 		public function set multiline(p_value:Boolean):void{
 			_field.multiline = _field.wordWrap = p_value;
 		}
@@ -217,6 +299,10 @@ package sweatless.text{
 			return _field.multiline;
 		}
 		
+		/**
+		 * The thickness of the glyph edges in this text field.
+		 * @see TextField
+		 */
 		public function set thickness(p_value:Number):void{
 			_field.thickness = p_value;
 		}
@@ -225,6 +311,10 @@ package sweatless.text{
 			return _field.thickness;
 		}
 		
+		/**
+		 * The sharpness of the glyph edges in this text field.
+		 * @see TextField
+		 */
 		public function set sharpness(p_value:Number):void{
 			_field.sharpness = p_value;
 		}
@@ -233,6 +323,10 @@ package sweatless.text{
 			return _field.sharpness;
 		}
 		
+		/**
+		 * Indicates the width of the display object, in pixels.
+		 * @see DisplayObject
+		 */
 		override public function set width(p_value:Number):void{
 			_field.width = p_value;
 		}
@@ -241,6 +335,10 @@ package sweatless.text{
 			return _field.width;
 		}
 		
+		/**
+		 * Indicates the height of the display object, in pixels.
+		 * @see DisplayObject
+		 */
 		override public function set height(p_value:Number):void{
 			_field.height = p_value;
 		}
@@ -249,10 +347,18 @@ package sweatless.text{
 			return _field.height;
 		}
 		
+		/**
+		 * Indicates the field of the display object, in <code>TextField</code>.
+		 * @see TextField
+		 */
 		public function get field():TextField{
 			return _field;
 		}
 		
+		/**
+		 * A string that is the current text in the text field.
+		 * @see TextField
+		 */
 		public function set text(p_text:String):void{
 			_field.htmlText = p_text;
 
@@ -263,6 +369,9 @@ package sweatless.text{
 			return _field.text;
 		}
 		
+		/**
+		 * Destroy the instance.
+		 */
 		public function destroy():void{
 			_format = null;
 			
