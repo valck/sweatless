@@ -246,9 +246,6 @@ package sweatless.navigation.core{
 			p_hanchor = !p_hanchor ? "NONE" : p_hanchor.toUpperCase();
 			p_vanchor = !p_vanchor ? "NONE" : p_vanchor.toUpperCase();
 			
-			p_width = (p_width==0 || !p_width) ? undefined : p_width;
-			p_height = (p_height==0 || !p_height) ? undefined : p_height;
-			
 			p_top = !p_top ? 0 : p_top;
 			p_bottom = !p_bottom ? 0 : p_bottom;
 			p_right = !p_right ? 0 : p_right;
