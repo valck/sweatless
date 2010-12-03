@@ -246,6 +246,7 @@ package sweatless.media{
 		
 		public function destroy():void{
 			video.clear();
+			video.attachCamera(null);
 			video ? removeChild(video) : null;
 			video = null;
 			
