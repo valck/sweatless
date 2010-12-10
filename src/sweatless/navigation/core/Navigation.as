@@ -61,6 +61,7 @@ package sweatless.navigation.core{
 	import sweatless.layout.Layers;
 	import sweatless.navigation.primitives.Area;
 	import sweatless.navigation.primitives.Loading;
+	import sweatless.navigation.primitives.SubArea;
 	import sweatless.utils.StringUtils;
 	
 	public final class Navigation{
@@ -91,6 +92,7 @@ package sweatless.navigation.core{
 			
 			if(ExternalInterface.available && Config.areas..@deeplink.length() > 0){
 				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
+				SWFAddress.setHistory(false);
 			}else{
 				if(Config.firstArea){
 					Config.currentAreaID = Config.firstArea;
@@ -227,13 +229,22 @@ package sweatless.navigation.core{
 		
 		private static function setDeeplink():void{
 			SWFAddress.setTitle(Config.getAreaAdditionals(Config.currentAreaID, "@title"));
-			Config.getAreaByDeeplink(SWFAddress.getPath()) != Config.currentAreaID ? SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink")) : null;
-			
-			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
+			if(SWFAddress.getValue()!=Config.getAreaAdditionals(Config.currentAreaID, "@deeplink") + "/" + Config.getSubAreaParameter(Config.currentAreaID,Config.currentSubareaID, "deeplink")){
+				SWFAddress.setValue(Config.getAreaAdditionals(Config.currentAreaID, "@deeplink") + "/" + Config.getSubAreaParameter(Config.currentAreaID,Config.currentSubareaID, "deeplink"));
+			}
 		}
 		
 		private static function onChange(evt:SWFAddressEvent):void{
-			Config.currentAreaID = Config.getAreaByDeeplink(SWFAddress.getPath());
+			var newArea:String = Config.getAreaByDeeplink(SWFAddress.getPath().split("/")[1]);
+			var newSubArea:String = Config.getSubAreaByDeeplink(SWFAddress.getPath().split("/")[1], SWFAddress.getPath().substr(SWFAddress.getPath().indexOf("/",3)+1));
+			if(Config.currentAreaID == newArea && Config.currentSubareaID == newSubArea){
+				SWFAddress.setHistory(false);
+				setDeeplink();
+				SWFAddress.setHistory(true);
+				return;
+			}
+			Config.currentAreaID = newArea;
+			Config.currentSubareaID = newSubArea;
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Config.currentAreaID)));
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_menu")));
 		}
@@ -245,6 +256,9 @@ package sweatless.navigation.core{
 		private static function align(p_area:Area, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
 			p_hanchor = !p_hanchor ? "NONE" : p_hanchor.toUpperCase();
 			p_vanchor = !p_vanchor ? "NONE" : p_vanchor.toUpperCase();
+			
+			p_width = (p_width==0 || !p_width) ? undefined : p_width;		
+			p_height = (p_height==0 || !p_height) ? undefined : p_height;
 			
 			p_top = !p_top ? 0 : p_top;
 			p_bottom = !p_bottom ? 0 : p_bottom;

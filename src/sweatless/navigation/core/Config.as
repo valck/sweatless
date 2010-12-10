@@ -55,10 +55,11 @@ package sweatless.navigation.core{
 		private static var _started : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
+		private static var _currentSubareaID : String;
 		
 		private static var trackerGA : AnalyticsTracker;
 		private static var parameters : Dictionary = new Dictionary();
-		
+
 		public static function get started():Boolean{
 			return _started;
 		}
@@ -81,6 +82,16 @@ package sweatless.navigation.core{
 		
 		public static function set currentAreaID(p_area:String):void{
 			_currentAreaID = p_area;
+		}
+		
+		public static function get currentSubareaID():String
+		{
+			return _currentSubareaID;
+		}
+		
+		public static function set currentSubareaID(p_subarea:String):void
+		{
+			_currentSubareaID = p_subarea;
 		}
 		
 		public static function get firstArea():String{
@@ -129,6 +140,18 @@ package sweatless.navigation.core{
 		
 		public static function getAreaAdditionals(p_id:String, p_attribute:String):String{
 			return String(areas.(@id==p_id).additionals[p_attribute]);
+		}
+		
+		public static function getSubAreaParameter(p_area:String, p_subarea:String, p_paramname:String):String{
+			return areas.(@id==p_area).subareas.subarea.(@id==p_subarea).attribute(p_paramname);
+		}
+		
+		public static function getSubareas(p_area:String):Array{
+			var result:Array = new Array();
+			for(var i:String in areas.(@id==p_area).subareas.subarea){
+				result.push(areas.(@id==p_area).subareas.subarea[i].@id);
+			}
+			return result;
 		}
 		
 		public static function getAreaDependencies(p_id:String, p_type:String):Dictionary{
@@ -188,11 +211,27 @@ package sweatless.navigation.core{
 			return firstArea;
 		}
 		
+		public static function getFirstSubArea(p_area:String):String{
+			return areas.(@id == p_area).subareas.@first;
+		}
+		
+		public static function getSubAreaByDeeplink(p_area:String, p_subarea:String):String{
+			var area:String = getAreaByDeeplink(p_area);
+			var node:XMLList = areas.(@id==area); 
+			for(var i:uint=0; i<node.subareas.subarea.length(); i++){
+				if(node.subareas.subarea[i].@deeplink==p_subarea) return node.subareas.subarea[i].@id;
+			}
+			
+			if(node.subareas.@first) return node.subareas.@first;
+			
+			return "";
+		}
+		
 		public static function getAllDeeplinks():Dictionary{
 			var deeplinks : Dictionary = new Dictionary();
 			
 			for(var i:uint=0; i<areas.length(); i++){
-				getAreaAdditionals(String(areas[i].@id), "@deeplink") ? deeplinks[String(areas[i].@id)] = String("/" + getAreaAdditionals(String(areas[i].@id), "@deeplink")) : null;
+				getAreaAdditionals(String(areas[i].@id), "@deeplink") ? deeplinks[String(areas[i].@id)] = String(getAreaAdditionals(String(areas[i].@id), "@deeplink")) : null;
 			}
 			
 			return deeplinks;

@@ -67,7 +67,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		private function change(evt:Event):void{
-			var changed : MenuButton = getButton(Config.currentAreaID);
+			var changed : MenuButton = getButton(Config.currentAreaID, Config.currentSubareaID);
 			
 			if(selected) selected.enabled();
 			
@@ -78,9 +78,11 @@ package sweatless.navigation.primitives{
 			dispatchEvent(new Event(Menu.CHANGE));
 		}
 		
-		private function getButton(p_area:String):MenuButton{
+		private function getButton(p_area:String, p_subarea:String=""):MenuButton{
+			trace(Config.getFirstSubArea(p_area));
+			if(p_subarea == "" && Config.getFirstSubArea(p_area)) p_subarea = Config.getFirstSubArea(p_area);
 			for(var i:uint=0; i<buttons.length; i++){
-				if(buttons[i].area == p_area && buttons[i].type == type) return buttons[i];
+				if(buttons[i].area == p_area && buttons[i].type == type && buttons[i].subarea == p_subarea) return buttons[i];
 			}
 			return null; 
 		}

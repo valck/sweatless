@@ -48,6 +48,7 @@ package sweatless.navigation.primitives{
 	import sweatless.events.Broadcaster;
 	import sweatless.events.CustomEvent;
 	import sweatless.interfaces.IButton;
+	import sweatless.navigation.core.Config;
 	
 	public class MenuButton extends Base implements IButton{
 		
@@ -72,6 +73,14 @@ package sweatless.navigation.primitives{
 		
 		public function set area(p_area:String):void{
 			data["area"] = p_area; 
+		}
+		
+		public function get subarea():String{
+			return data.subarea;
+		}
+		
+		public function set subarea(p_subarea:String):void{
+			data["subarea"] = p_subarea; 
 		}
 		
 		public function get label():String{
@@ -155,6 +164,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		private function click(evt:MouseEvent):void{
+			if(data.subarea) Config.currentSubareaID = data.subarea;
 			external ? navigateToURL(new URLRequest(external), target) : broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+area))) : null;
 			broadcaster.dispatchEvent(new CustomEvent(broadcaster.getEvent("change_menu"), area));
 		}
