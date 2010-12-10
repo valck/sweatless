@@ -64,7 +64,7 @@ package sweatless.text{
 		public static function italic(p_str:String):String{
 			return  "<i>" + p_str + "</i>";
 		}
-		
+				
 		/**
 		 * Use the fontColor method to format and display a string in a document.
 		 * 
