@@ -47,126 +47,121 @@ package sweatless.layout {
 	import flash.utils.Dictionary;
 	import flash.geom.Rectangle;
 
-
 	public class Align {
-		public static const NONE:int = 0;
+		public static const NONE : int = 0;
 
-		public static const TOP:int = 1;
+		public static const TOP : int = 1;
 
-		public static const MIDDLE:int = 2;
+		public static const MIDDLE : int = 2;
 
-		public static const BOTTOM:int = 4;
+		public static const BOTTOM : int = 4;
 
-		public static const LEFT:int = 8;
+		public static const LEFT : int = 8;
 
-		public static const CENTER:int = 16;
+		public static const CENTER : int = 16;
 
-		public static const RIGHT:int = 32;
+		public static const RIGHT : int = 32;
 
-		private static const H:String = 'h';
+		private static const H : String = 'h';
 
-		private static const V:String = 'v';
+		private static const V : String = 'v';
 
-		private static var targets:Dictionary = new Dictionary( true );
+		private static var targets : Dictionary = new Dictionary(true);
 
-		private static var stage:Stage;
+		private static var stage : Stage;
 
-
-		public static function add( object:*, anchors:uint, params:Object = null ):void {
-			if (object is Array) {
-				for each (var obj:Object in object) {
+		public static function add(object : *, anchors : uint, params : Object = null) : void {
+			if(object is Array) {
+				for each(var obj : Object in object) {
 					add(obj, anchors, params);
 				}
-			}else{
+			} else {
 				targets[object] = new RuleSet(object, anchors, params || new Object());
 
-				if (!stage) {
-					if (object.stage) {
+				if(!stage) {
+					if(object.stage) {
 						stage = object.stage;
 						init();
-					}else{
+					} else {
 						object.addEventListener(Event.ADDED_TO_STAGE, init);
 					}
-				}else{
+				} else {
 					place(object, targets[object]);
 				}
 			}
 		}
 
-
-		public static function remove(object:*, ...rest:Array):void {
-			if (object is Array){
+		public static function remove(object : *, ... rest : Array) : void {
+			if(object is Array) {
 				object.forEach(remove);
-			}else{
+			} else {
 				delete targets[object];
 			}
 		}
 
-
-		private static function getValue(value:*, axis:String):Number {
-			if (value == undefined) {
+		private static function getValue(value : *, axis : String) : Number {
+			if(value == undefined) {
 				return 0;
-			} else if (typeof value == 'string' && String(value).indexOf('%')>-1) {
-				switch ( axis ) {
+			} else if(typeof value == 'string' && String(value).indexOf('%') > -1) {
+				switch(axis) {
 					case V:
-						return stage.stageHeight*parseInt(value) / 100;
+						return stage.stageHeight * parseInt(value) / 100;
 					case H:
-						return stage.stageWidth*parseInt(value) / 100;
+						return stage.stageWidth * parseInt(value) / 100;
 				}
 			}
 			return Number(value);
 		}
 
-		public static function getStageBox():Rectangle {
-			if ( !stage ) {
+		public static function getStageBox() : Rectangle {
+			if(!stage) {
 				return null;
 			} else {
-				return new Rectangle( 0, 0, stage.stageWidth, stage.stageHeight );
+				return new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 			}
 		}
 
-
-		public static function place( object:DisplayObject, ... rest:Array ):void {
-			if ( !stage ) {
-				if ( object.stage ) {
+		public static function place(object : DisplayObject, ... rest : Array) : void {
+			if(!stage) {
+				if(object.stage) {
 					stage = object.stage;
 				} else {
-					var placeCb:Function = function( pEvt:Event ):void {
-						init( pEvt );
-						place( object, new RuleSet( object, rest[ 0 ], rest[ 1 ] || new Object() ) );
-						object.removeEventListener( Event.ADDED_TO_STAGE, placeCb );
+					var placeCb : Function = function(pEvt : Event) : void {
+						init(pEvt);
+						place(object, new RuleSet(object, rest[0], rest[1] || new Object()));
+						object.removeEventListener(Event.ADDED_TO_STAGE, placeCb);
 					}
-					object.addEventListener( Event.ADDED_TO_STAGE, placeCb );
+					object.addEventListener(Event.ADDED_TO_STAGE, placeCb);
 					return;
 				}
 			}
 
-			var ruleSet:RuleSet;
+			var ruleSet : RuleSet;
 
-			if ( rest[ 0 ] is RuleSet ) {
-				ruleSet = rest[ 0 ];
+			if(rest[0] is RuleSet) {
+				ruleSet = rest[0];
 			} else {
-				ruleSet = new RuleSet( object, rest[ 0 ], rest[ 1 ] || new Object() );
+				ruleSet = new RuleSet(object, rest[0], rest[1] || new Object());
 			}
 
-			var boundingBox:Rectangle = ruleSet.box || getStageBox();
+			var boundingBox : Rectangle = ruleSet.box || getStageBox();
 
-			var sw:Number = boundingBox.width;
-			var sh:Number = boundingBox.height;
-			var sw2:Number = sw * .5;
-			var sh2:Number = sh * .5;
+			var sw : Number = boundingBox.width;
+			var sh : Number = boundingBox.height;
+			var sw2 : Number = sw * .5;
+			var sh2 : Number = sh * .5;
 
-			var x:Number = boundingBox.x + getValue( ruleSet.margin_left, H ) - getValue( ruleSet.margin_right, H );
-			var y:Number = boundingBox.y + getValue( ruleSet.margin_top, V ) - getValue( ruleSet.margin_bottom, V );
+			var x : Number = boundingBox.x + getValue(ruleSet.margin_left, H) - getValue(ruleSet.margin_right, H);
+			var y : Number = boundingBox.y + getValue(ruleSet.margin_top, V) - getValue(ruleSet.margin_bottom, V);
 
-			if ( ruleSet.resizeH ) {
-				object.width = getValue( ruleSet.width, H );
+			if(ruleSet.resizeH) {
+				object.width = getValue(ruleSet.width, H);
 			}
-			if ( ruleSet.resizeV ) {
-				object.height = getValue( ruleSet.height, V );
+			if(ruleSet.resizeV) {
+				object.height = getValue(ruleSet.height, V);
 			}
 
-			switch ( ruleSet.h ) {
+			switch(ruleSet.h) {
 				case CENTER:
 					x += sw2 - ruleSet.width / 2;
 					break;
@@ -177,7 +172,7 @@ package sweatless.layout {
 					x += object.x;
 			}
 
-			switch ( ruleSet.v ) {
+			switch(ruleSet.v) {
 				case MIDDLE:
 					y += sh2 - ruleSet.height / 2;
 					break;
@@ -188,41 +183,38 @@ package sweatless.layout {
 					y += object.y;
 			}
 
-			x = ruleSet.constrainX( x );
-			y = ruleSet.constrainY( y );
+			x = ruleSet.constrainX(x);
+			y = ruleSet.constrainY(y);
 
 			object.x = x;
 			object.y = y;
 		}
 
-
-		public static function debug():String {
-			var msg:String = "Align targets : ";
-			for ( var object:* in targets ) {
-				msg += '[ Object ' + object + ' ' + targets[ object ] + ' ], ';
+		public static function debug() : String {
+			var msg : String = "Align targets : ";
+			for(var object : * in targets) {
+				msg += '[ Object ' + object + ' ' + targets[object] + ' ], ';
 			}
-			return msg.substring( 0, msg.length - 2 );
+			return msg.substring(0, msg.length - 2);
 		}
 
-
-		private static function init( event:Event = null ):void {
-			if ( !stage ) {
+		private static function init(event : Event = null) : void {
+			if(!stage) {
 				stage = event.currentTarget.stage;
 			}
 
-			for ( var object:* in targets ) {
-				object.removeEventListener( Event.ADDED_TO_STAGE, init );
+			for(var object : * in targets) {
+				object.removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
 
-			stage.addEventListener( Event.RESIZE, arrange );
+			stage.addEventListener(Event.RESIZE, arrange);
 
 			arrange();
 		}
 
-
-		private static function arrange( event:Event = null ):void {
-			for ( var object:* in targets ) {
-				place( object, targets[ object ] );
+		private static function arrange(event : Event = null) : void {
+			for(var object : * in targets) {
+				place(object, targets[object]);
 			}
 		}
 
@@ -234,99 +226,93 @@ import sweatless.layout.Align;
 import flash.display.DisplayObject;
 import flash.geom.Rectangle;
 
-
 internal class RuleSet {
 
-	public var h:int = 0;
+	public var h : int = 0;
 
-	public var v:int = 0;
+	public var v : int = 0;
 
-	public var width:* = 0;
+	public var width : * = 0;
 
-	public var height:* = 0;
+	public var height : * = 0;
 
-	public var margin_bottom:* = 0;
+	public var margin_bottom : * = 0;
 
-	public var margin_top:* = 0;
+	public var margin_top : * = 0;
 
-	public var margin_left:* = 0;
+	public var margin_left : * = 0;
 
-	public var margin_right:* = 0;
+	public var margin_right : * = 0;
 
-	public var max_x:Number;
+	public var max_x : Number;
 
-	public var max_y:Number;
+	public var max_y : Number;
 
-	public var min_y:Number;
+	public var min_y : Number;
 
-	public var min_x:Number;
+	public var min_x : Number;
 
-	public var resizeH:Boolean;
+	public var resizeH : Boolean;
 
-	public var resizeV:Boolean;
+	public var resizeV : Boolean;
 
-	public var box:Rectangle;
+	public var box : Rectangle;
 
-	public var rounded:Boolean = true;
+	public var rounded : Boolean = true;
 
+	public function RuleSet(object : DisplayObject, anchors : int, params : Object) {
+		v = match(anchors, Align.TOP, Align.MIDDLE, Align.BOTTOM);
+		h = match(anchors, Align.LEFT, Align.CENTER, Align.RIGHT);
 
-	public function RuleSet( object:DisplayObject, anchors:int, params:Object ) {
-		v = match( anchors, Align.TOP, Align.MIDDLE, Align.BOTTOM );
-		h = match( anchors, Align.LEFT, Align.CENTER, Align.RIGHT );
-
-		for ( var prop:String in params ) {
-			this[ prop ] = params[ prop ];
+		for(var prop : String in params) {
+			this[prop] = params[prop];
 		}
 
-		if ( !params.ignore_dimensions ) {
-			width = ( params.width == undefined ) ? object.width : params.width;
-			height = ( params.height == undefined ) ? object.height : params.height;
+		if(!params.ignore_dimensions) {
+			width = (params.width == undefined) ? object.width : params.width;
+			height = (params.height == undefined) ? object.height : params.height;
 		}
 
-		if ( width ) {
-			resizeH = String( width ).indexOf( '%' ) > -1;
+		if(width) {
+			resizeH = String(width).indexOf('%') > -1;
 		}
-		if ( height ) {
-			resizeV = String( height ).indexOf( '%' ) > -1;
+		if(height) {
+			resizeV = String(height).indexOf('%') > -1;
 		}
 	}
 
-
-	public function constrainX( x:Number ):Number {
-		if ( !isNaN( max_x ) )
-			x = Math.min( max_x, x );
-		if ( !isNaN( min_x ) )
-			x = Math.max( min_x, x );
-		if ( rounded )
-			x = Math.round( x );
+	public function constrainX(x : Number) : Number {
+		if(!isNaN(max_x))
+			x = Math.min(max_x, x);
+		if(!isNaN(min_x))
+			x = Math.max(min_x, x);
+		if(rounded)
+			x = Math.round(x);
 		return x
 	}
 
-
-	public function constrainY( y:Number ):Number {
-		if ( !isNaN( max_y ) )
-			y = Math.min( max_y, y );
-		if ( !isNaN( min_y ) )
-			y = Math.max( min_y, y );
-		if ( rounded )
-			y = Math.round( y );
+	public function constrainY(y : Number) : Number {
+		if(!isNaN(max_y))
+			y = Math.min(max_y, y);
+		if(!isNaN(min_y))
+			y = Math.max(min_y, y);
+		if(rounded)
+			y = Math.round(y);
 		return y;
 	}
 
-
-	public function toString():String {
-		var msg:String = '(Rules ';
-		if ( h )
-			msg += getAnchorDescription( h ) + ' ';
-		if ( v )
-			msg += getAnchorDescription( v ) + ' ';
+	public function toString() : String {
+		var msg : String = '(Rules ';
+		if(h)
+			msg += getAnchorDescription(h) + ' ';
+		if(v)
+			msg += getAnchorDescription(v) + ' ';
 		msg += ')';
 		return msg;
 	}
 
-
-	private function getAnchorDescription( anchor:int ):String {
-		switch ( anchor ) {
+	private function getAnchorDescription(anchor : int) : String {
+		switch(anchor) {
 			case Align.TOP:
 				return "top";
 			case Align.MIDDLE:
@@ -343,11 +329,10 @@ internal class RuleSet {
 		return '';
 	}
 
-
-	private function match( value:int, ... options:Array ):int {
-		var option:int;
-		while ( option = options.pop() ) {
-			if ( ( value & option ) == option ) {
+	private function match(value : int, ... options : Array) : int {
+		var option : int;
+		while(option = options.pop()) {
+			if((value & option) == option) {
 				return option;
 			}
 		}
