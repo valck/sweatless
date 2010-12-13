@@ -46,7 +46,6 @@ package sweatless.utils{
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
 	
 	/**
 	 * The <code>DisplayObjectUtils</code> class have support methods for easier manipulation of
@@ -56,13 +55,13 @@ package sweatless.utils{
 	public class DisplayObjectUtils{
 		
 		/**
-		 * Clone a DisplayObject.
+		 * Clone a properties of the <code>DisplayObject</code>.
 		 * @param p_target The <code>DisplayObject</code> object to clone.
 		 * @param p_clone The target to clone.
-		 * @return The resulting <code>DisplayObject</code> object.
+		 * @return The clone object with the target properties.
 		 * @see Stage
 		 */
-		public static function cloneObject(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
+		public static function cloneObjectProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
 	
 			for each (var variable:XML in description.variable){
@@ -75,6 +74,15 @@ package sweatless.utils{
 	
 			return p_clone;
 	    }
+		
+		/**
+		 * Duplicates a instance of  the <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> object to duplicate.
+		 * @return The clone of target.
+		 */
+		public static function duplicateObject(p_target:DisplayObject):DisplayObject{
+			return DisplayObjectUtils.cloneObjectProperties(p_target, new (Object(p_target).constructor)());
+		}
 		
 		/**
 		 * Get the reference class of a Object.
@@ -123,7 +131,7 @@ package sweatless.utils{
 			p_old.parent.addChild(p_new);
 			p_old.parent.swapChildren(p_new, p_old);
 			
-			p_new = cloneObject(p_old, p_new);
+			p_new = cloneObjectProperties(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
 		}
