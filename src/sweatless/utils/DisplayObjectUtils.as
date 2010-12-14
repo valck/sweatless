@@ -65,17 +65,18 @@ package sweatless.utils{
 		 */
 		public static function cloneObjectProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
-	
+			
 			for each (var variable:XML in description.variable){
 				p_clone.hasOwnProperty(variable.@name) ? p_clone[variable.@name] = p_target[variable.@name] : null;  
 			}
-				
+			
 			for each (var property:XML in description.accessor){
-			    property.@access == "readwrite" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
+				property.@access == "readwrite" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
 			}
-	
+			
 			return p_clone;
-	    }
+		}
+		
 		
 		/**
 		 * Duplicates a instance of the <code>DisplayObject</code>.
@@ -83,27 +84,24 @@ package sweatless.utils{
 		 * @return The clone of target.
 		 */
 		public static function duplicateObject(p_target:*):DisplayObject{
-			if(!Boolean(p_target is DisplayObjectContainer)) return DisplayObjectUtils.cloneObjectProperties(p_target, new (Object(p_target).constructor)())
-			
 			var clone : * = new (Object(p_target).constructor)();
 			
-			var child : Object;
-			var index : int = p_target.numChildren;
-			
-			while(index){
-				child = p_target.getChildAt(0);
+			if(p_target is DisplayObjectContainer){
+				var child : Object;
+				var index : int = p_target.numChildren;
+				
+				while(index){
+					child = p_target.getChildAt(0);
 
-				trace(">", child.name);
-				
-				if(!child) continue;
-				if(child is DisplayObjectContainer) duplicateObject(child);
-				
-				clone.addChild(child);
-				
-				index--;
+					if(!child) continue;
+					if(child is DisplayObjectContainer) duplicateObject(child);
+					
+					clone.addChild(DisplayObjectUtils.cloneObjectProperties(DisplayObject(child), new (Object(child).constructor)()));
+					
+					index--;
+				}
+				child = null;
 			}
-			
-			child = null;
 			
 			return DisplayObjectUtils.cloneObjectProperties(p_target, clone);
 		}
