@@ -40,9 +40,11 @@
  */
 
 package sweatless.utils{
+	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.utils.describeType;
@@ -76,12 +78,34 @@ package sweatless.utils{
 	    }
 		
 		/**
-		 * Duplicates a instance of  the <code>DisplayObject</code>.
+		 * Duplicates a instance of the <code>DisplayObject</code>.
 		 * @param p_target The <code>DisplayObject</code> object to duplicate.
 		 * @return The clone of target.
 		 */
-		public static function duplicateObject(p_target:DisplayObject):DisplayObject{
-			return DisplayObjectUtils.cloneObjectProperties(p_target, new (Object(p_target).constructor)());
+		public static function duplicateObject(p_target:*):DisplayObject{
+			if(!Boolean(p_target is DisplayObjectContainer)) return DisplayObjectUtils.cloneObjectProperties(p_target, new (Object(p_target).constructor)())
+			
+			var clone : * = new (Object(p_target).constructor)();
+			
+			var child : Object;
+			var index : int = p_target.numChildren;
+			
+			while(index){
+				child = p_target.getChildAt(0);
+
+				trace(">", child.name);
+				
+				if(!child) continue;
+				if(child is DisplayObjectContainer) duplicateObject(child);
+				
+				clone.addChild(child);
+				
+				index--;
+			}
+			
+			child = null;
+			
+			return DisplayObjectUtils.cloneObjectProperties(p_target, clone);
 		}
 		
 		/**
@@ -164,11 +188,11 @@ package sweatless.utils{
 		 * @param p_y The <code>Number</code> of y property of p_target.
 		 */
 		public static function skew(p_target:DisplayObject, p_x:Number, p_y:Number):void{
-			var mtx:Matrix = new Matrix();
-			mtx.b = p_y * Math.PI/180;
-			mtx.c = p_x * Math.PI/180;
-			mtx.concat(p_target.transform.matrix);
-			p_target.transform.matrix = mtx;
+			var matrix : Matrix = new Matrix();
+			matrix.b = p_y * Math.PI/180;
+			matrix.c = p_x * Math.PI/180;
+			matrix.concat(p_target.transform.matrix);
+			p_target.transform.matrix = matrix;
 		}
 	}
 }
