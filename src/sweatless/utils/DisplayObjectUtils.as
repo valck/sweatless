@@ -63,7 +63,7 @@ package sweatless.utils{
 		 * @return The clone object with the target properties.
 		 * @see Stage
 		 */
-		public static function cloneObjectProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
+		public static function cloneProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
 			
 			for each (var variable:XML in description.variable){
@@ -83,7 +83,7 @@ package sweatless.utils{
 		 * @param p_target The <code>DisplayObject</code> object to duplicate.
 		 * @return The clone of target.
 		 */
-		public static function duplicateObject(p_target:*):DisplayObject{
+		public static function duplicate(p_target:*):DisplayObject{
 			var clone : * = new (Object(p_target).constructor)();
 			
 			if(p_target is DisplayObjectContainer){
@@ -94,16 +94,16 @@ package sweatless.utils{
 					child = p_target.getChildAt(0);
 
 					if(!child) continue;
-					if(child is DisplayObjectContainer) duplicateObject(child);
+					if(child is DisplayObjectContainer) duplicate(child);
 					
-					clone.addChild(DisplayObjectUtils.cloneObjectProperties(DisplayObject(child), new (Object(child).constructor)()));
+					clone.addChild(DisplayObjectUtils.cloneProperties(DisplayObject(child), new (Object(child).constructor)()));
 					
 					index--;
 				}
 				child = null;
 			}
 			
-			return DisplayObjectUtils.cloneObjectProperties(p_target, clone);
+			return DisplayObjectUtils.cloneProperties(p_target, clone);
 		}
 		
 		/**
@@ -153,7 +153,7 @@ package sweatless.utils{
 			p_old.parent.addChild(p_new);
 			p_old.parent.swapChildren(p_new, p_old);
 			
-			p_new = cloneObjectProperties(p_old, p_new);
+			p_new = cloneProperties(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
 		}
