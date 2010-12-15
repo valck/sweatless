@@ -56,11 +56,7 @@ package sweatless.utils{
 		 * @see Boolean
 		 */
 		public static function isEven(p_value:Number):Boolean{
-			if (p_value%2==0) {
-				return true;
-			} else {
-				return false;
-			}
+			return (p_value%2==0) ? true : false;
 		}
 		
 		/**
