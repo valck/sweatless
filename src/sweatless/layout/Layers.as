@@ -43,6 +43,7 @@ package sweatless.layout{
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 	
+	import sweatless.interfaces.ILayer;
 	import sweatless.utils.DictionaryUtils;
 	
 	public final class Layers{
@@ -111,13 +112,14 @@ package sweatless.layout{
 			return Layers.instances[id].contents;
 		}
 
-		public function add(p_id:String):void{
+		public function add(p_id:String, p_custom:Object=null):void{
 			p_id = p_id.toLowerCase();
 			
 			if(get(p_id)) throw new Error("The layer " + p_id + " already exists.");
 			
-			var layer : Layer = new Layer();
+			var layer : * = new (p_custom ? p_custom : Layer)();
 			layer.name = p_id.toLowerCase();
+			layer.id = p_id.toLowerCase();
 			scope.addChild(layer);
 			layers.push(layer);
 			
@@ -128,7 +130,7 @@ package sweatless.layout{
 			p_id = p_id.toLowerCase();
 			
 			for (var i:uint=0; i<length; i++) {
-				if (layers[i].name == p_id.toLowerCase()) {
+				if (layers[i].id == p_id.toLowerCase()) {
 					scope.removeChild(layers[i]);
 					layers[i] = null;
 					layers.splice(i, 1);
@@ -151,16 +153,16 @@ package sweatless.layout{
 			trace("[==== LAYERS DEBUG ====]");
 			trace("Layers length:"+length);
 			for (var i:uint=0; i<length; i++) {
-				trace("	{Layer:"+Layer(layers[i]).name+", layer depth:"+ Layer(layers[i]).depth+", real stage depth:"+scope.getChildIndex(layers[i])+"}");
+				trace("	{Layer:"+Layer(layers[i]).id+", layer depth:"+ Layer(layers[i]).depth+", real stage depth:"+scope.getChildIndex(layers[i])+"}");
 			}
 			trace("[==== LAYERS DEBUG ====]");
 		}
 		
-		public function get(p_id:String):Layer{
+		public function get(p_id:String):*{
 			p_id = p_id.toLowerCase();
 			
 			for (var i:uint=0; i<length; i++) {
-				if (layers[i].name == p_id) {
+				if (layers[i].id == p_id) {
 					return layers[i];
 					break;
 				}
@@ -192,15 +194,24 @@ package sweatless.layout{
 import flash.display.Sprite;
 import flash.events.Event;
 
-internal class Layer extends Sprite{
+import sweatless.interfaces.ILayer;
+
+internal class Layer extends Sprite implements ILayer{
+	
+	private var _id : String;
 	private var index : Object = -1;
+	private var created : Boolean; 
 	
 	public function Layer(){
-		addEventListener(Event.ADDED_TO_STAGE, created);
+		addEventListener(Event.ADDED_TO_STAGE, create);
 	}
 	
-	private function created(evt:Event):void{
-		removeEventListener(Event.ADDED_TO_STAGE, created);
+	public function create(evt:Event):void{
+		if(created) return;
+		created = true;
+		
+		removeEventListener(Event.ADDED_TO_STAGE, create);
+		
 		mouseEnabled = false;
 		depth = parent.getChildIndex(this);
 	}
@@ -211,5 +222,13 @@ internal class Layer extends Sprite{
 	
 	public function set depth(p_value:Object):void{
 		index = p_value;
+	}
+
+	public function get id():String{
+		return _id;
+	}
+	
+	public function set id(p_id:String):void{
+		_id = p_id;
 	}
 }

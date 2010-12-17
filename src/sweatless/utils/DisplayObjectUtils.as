@@ -84,26 +84,27 @@ package sweatless.utils{
 		 * @return The clone of target.
 		 */
 		public static function duplicate(p_target:*):DisplayObject{
-			var clone : * = new (Object(p_target).constructor)();
+			var clone : * = DisplayObjectUtils.cloneProperties(p_target, new (Object(p_target).constructor)());
+			clone.name = p_target.name + "_copy";
 			
 			if(p_target is DisplayObjectContainer){
 				var child : Object;
 				var index : int = p_target.numChildren;
 				
-				while(index){
-					child = p_target.getChildAt(0);
-
-					if(!child) continue;
+				for(var i:uint; i<index; i++){
+					child = p_target.getChildAt(i);
+					
+					var newChild : * = DisplayObjectUtils.cloneProperties(DisplayObject(child), new (Object(child).constructor)());
+					newChild.name = child.name + "_copy";
+					clone.addChild(newChild);
+					
 					if(child is DisplayObjectContainer) duplicate(child);
-					
-					clone.addChild(DisplayObjectUtils.cloneProperties(DisplayObject(child), new (Object(child).constructor)()));
-					
-					index--;
 				}
+
 				child = null;
 			}
 			
-			return DisplayObjectUtils.cloneProperties(p_target, clone);
+			return clone;
 		}
 		
 		/**
