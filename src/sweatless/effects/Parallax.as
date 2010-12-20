@@ -90,6 +90,10 @@ package sweatless.effects{
 		}
 		
 		public function destroy():void {
+			for each(var layer:* in layers.layers){
+				get(layer.id).destroy();
+			}
+			
 			removeAll();
 		}
 		
@@ -199,5 +203,11 @@ internal class CustomLayer extends Sprite implements ILayer{
 		
 		contents.x += p_x;
 		contents.y += p_y;
+	}
+	
+	public function destroy():void{
+		DisplayObjectUtils.removeAll(contents);
+		contents && contents.stage ? removeChild(contents) : null;
+		contents = null;
 	}
 }
