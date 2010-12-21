@@ -95,7 +95,7 @@ package sweatless.text{
 		 * @param p_target (optional) this value defined to the anchor tag forces the load of that link into the targeted window.
 		 * @return the string formatted with the method.
 		 */
-		public static function href(p_str:String, p_url:String, p_target:String):String{
+		public static function href(p_str:String, p_url:String, p_target:String="_blank"):String{
 			return "<a href=\'" + p_url + "\' target=\'" + p_target + "\'>" + p_str + "</a>";
 		}
 		
@@ -113,11 +113,11 @@ package sweatless.text{
 		 * Creates an HTML span string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
-		 * @param p_style (optional) the style class name of the tag.
+		 * @param p_style the style class name of the tag.
 		 * @return the string formatted with the method.
 		 */
 		public static function span(p_str:String, p_style:String):String{
-			return "<span" + (p_style ? " class=\'" + p_style + "\'" : "") + ">" + p_str + "</span>";
+			return "<span class=\'" + p_style + "\'>" + p_str + "</span>";
 		}
 		
 		/**

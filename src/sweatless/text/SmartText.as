@@ -41,7 +41,6 @@
 
 package sweatless.text{
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -69,7 +68,7 @@ package sweatless.text{
 		 * @see TextField
 		 * @see TextFormat
 		 */
-		public function SmartText(p_format:TextFormat=null):void{
+		public function SmartText(p_format:TextFormat=null){
 			super();
 			_format = p_format || new TextFormat();
 			_field = new TextField();
