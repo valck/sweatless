@@ -48,20 +48,20 @@ package sweatless.text{
 
 	public class CSSFormat{
 		public static function getClass(p_sheet:String, p_target:String):Object{
-			var sheet : StyleSheet = getStyle(p_sheet);
+			var sheet : StyleSheet = getSheet(p_sheet);
 			
 			return sheet.getStyle(p_target);
 		}
 		
 		public static function toTextFormat(p_sheet:String, p_target:String):TextFormat{
-			var sheet : StyleSheet = getStyle(p_sheet);
+			var sheet : StyleSheet = getSheet(p_sheet);
 			
 			return sheet.transform(forceParser(sheet.getStyle(p_target)));
 		}
 		
 		public static function toTextFormatGroup(p_sheet:String):Dictionary{
 			var results : Dictionary = new Dictionary(true);
-			var sheet : StyleSheet = getStyle(p_sheet);
+			var sheet : StyleSheet = getSheet(p_sheet);
 			
 			for(var i:uint=0; i<sheet.styleNames.length; i++){
 				var style : Object = forceParser(sheet.getStyle(sheet.styleNames[i]));
@@ -71,7 +71,7 @@ package sweatless.text{
 			return results;
 		}
 		
-		private static function getStyle(p_sheet:String):StyleSheet{
+		private static function getSheet(p_sheet:String):StyleSheet{
 			var sheet : StyleSheet = new StyleSheet();
 			sheet.parseCSS(p_sheet);
 			
