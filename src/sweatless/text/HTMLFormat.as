@@ -46,7 +46,7 @@ package sweatless.text{
 	public class HTMLFormat{
 		
 		/**
-		 * Use the bold method to format and display a string in a document.
+		 * Use the bold method to format and display a HTML string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
 		 * @return the string formatted with the method.
@@ -56,7 +56,7 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Use the italic method to format and display a string in a document.
+		 * Use the italic method to format and display a HTML string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
 		 * @return the string formatted with the method.
@@ -66,7 +66,7 @@ package sweatless.text{
 		}
 				
 		/**
-		 * Use the fontColor method to format and display a string in a document.
+		 * Use the HTML fontColor method to format and display a string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
 		 * @param p_color the string hexadecimal RGB triplet with the format #rrggbb.
@@ -77,7 +77,7 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Use the fontColor method to format and display a string in a document.
+		 * Use the HTML fontSize method to format and display a string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
 		 * @param p_size an Integer representing the size of the font.
@@ -100,13 +100,15 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Creates an HTML paragraph HTML string in a document.
+		 * Creates an HTML paragraph string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
+		 * @param p_style (optional) the style class name of the tag.
+		 * 
 		 * @return the string formatted with the method.
 		 */
-		public static function paragraph(p_str:String):String{
-			return "<p>" + p_str + "</p>";
+		public static function paragraph(p_str:String, p_style:String=null):String{
+			return "<p" + (p_style ? " class=\'" + p_style + "\'" : "") + ">" + p_str + "</p>";
 		}
 		
 		/**
@@ -121,7 +123,7 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Use the underline method to format and display a string in a document.
+		 * Use the underline method to format and display a HTML string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
 		 * @return the string formatted with the method.
