@@ -74,8 +74,8 @@ package sweatless.text{
 		 * @param p_color (optional) the string hexadecimal RGB triplet with the format #rrggbb.
 		 * @return the string formatted with the method.
 		 */
-		public static function font(p_str:String, p_face:String=null, p_size:String=null, p_color:String=null):String{
-			return "<font" + (p_face ? " face=\'" + p_face + "\'" : "") + (p_size ? " size=\'" + p_size + "\'" : "") + (p_color ? " color=\'" + p_color + "\'" : "") + ">" + p_str + "</font>";;
+		public static function font(p_str:String, p_face:String=null, p_size:uint=0, p_color:String=null):String{
+			return "<font" + (p_face ? " face=\'" + p_face + "\'" : "") + (p_size > 0 ? " size=\'" + String(p_size) + "\'" : "") + (p_color ? " color=\'" + p_color + "\'" : "") + ">" + p_str + "</font>";;
 		}
 		
 		/**
