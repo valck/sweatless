@@ -66,36 +66,16 @@ package sweatless.text{
 		}
 				
 		/**
-		 * Use the HTML fontFamily method to format and display a string in a document.
+		 * Use the HTML font method to format and display a string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
-		 * @param p_face specifies the name of the font to use, you can specify a list of comma-delimited font names, in which case Flash Player selects the first available font.
+		 * @param p_face (optional) specifies the name of the font to use, you can specify a list of comma-delimited font names, in which case Flash Player selects the first available font.
+		 * @param p_size (optional) an Integer representing the size of the font.
+		 * @param p_color (optional) the string hexadecimal RGB triplet with the format #rrggbb.
 		 * @return the string formatted with the method.
 		 */
-		public static function fontFamily(p_str:String, p_face:String):String{
-			return "<font face='" + p_face + "'>" + p_str + "</font>";
-		}
-		
-		/**
-		 * Use the HTML fontColor method to format and display a string in a document.
-		 * 
-		 * @param p_str the string to be formatted.
-		 * @param p_color the string hexadecimal RGB triplet with the format #rrggbb.
-		 * @return the string formatted with the method.
-		 */
-		public static function fontColor(p_str:String, p_color:String):String{
-			return "<font color='" + p_color + "'>" + p_str + "</font>";
-		}
-		
-		/**
-		 * Use the HTML fontSize method to format and display a string in a document.
-		 * 
-		 * @param p_str the string to be formatted.
-		 * @param p_size an Integer representing the size of the font.
-		 * @return the string formatted with the method.
-		 */
-		public static function fontSize(p_str:String, p_size:uint):String{
-			return "<font size='" + p_size + "'>" + p_str + "</font>";
+		public static function font(p_str:String, p_face:String=null, p_size:String=null, p_color:String=null):String{
+			return "<font" + (p_face ? " face=\'" + p_face + "\'" : "") + (p_size ? " size=\'" + p_size + "\'" : "") + (p_color ? " color=\'" + p_color + "\'" : "") + ">" + p_str + "</font>";;
 		}
 		
 		/**
