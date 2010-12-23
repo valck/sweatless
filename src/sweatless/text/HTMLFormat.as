@@ -66,6 +66,17 @@ package sweatless.text{
 		}
 				
 		/**
+		 * Use the HTML fontFamily method to format and display a string in a document.
+		 * 
+		 * @param p_str the string to be formatted.
+		 * @param p_face specifies the name of the font to use, you can specify a list of comma-delimited font names, in which case Flash Player selects the first available font.
+		 * @return the string formatted with the method.
+		 */
+		public static function fontFamily(p_str:String, p_face:String):String{
+			return "<font face='" + p_face + "'>" + p_str + "</font>";
+		}
+		
+		/**
 		 * Use the HTML fontColor method to format and display a string in a document.
 		 * 
 		 * @param p_str the string to be formatted.
