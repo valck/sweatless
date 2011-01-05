@@ -89,7 +89,7 @@ package sweatless.navigation.primitives{
 			return listeners;
 		}
 		
-		public function removeAllEventListeners():void{
+		public function removeAllEventListeners():Boolean{
 			var i:uint = listeners.length;
 			
 			while (i) {
@@ -100,6 +100,8 @@ package sweatless.navigation.primitives{
 				
 				i--;
 			}
+			
+			return listeners.length != 0 ? false : true;
 		}
 		
 		override public function toString():String{

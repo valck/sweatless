@@ -39,12 +39,11 @@
  * 
  */
 
-package sweatless.navigation.optionals{
+package sweatless.navigation.core{
 	import br.com.stimuli.loading.BulkLoader;
 	
 	import flash.utils.Dictionary;
 	
-	import sweatless.navigation.core.Config;
 
 	public class Assets{
 		

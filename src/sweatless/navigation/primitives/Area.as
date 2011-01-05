@@ -50,15 +50,15 @@ package sweatless.navigation.primitives{
 	public class Area extends Base implements IDisplay{
 		
 		public static const READY : String = "ready";
-		public static const CLOSED: String = "closed";
+		public static const DESTROYED : String = "destroyed";
+		public static const SHOWED: String = "showed";
+		public static const HIDDEN: String = "closed";
 		
 		private var _id : String;
 		
 		public function Area(){
 			tabEnabled = false;
 			tabChildren = false;
-			
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		public function set id(p_id:String):void{
@@ -77,7 +77,7 @@ package sweatless.navigation.primitives{
 			return BulkLoader.getLoader(Config.currentAreaID);
 		}
 		
-		public function navigateTo(p_areaID:String):void{
+		public function navigateToArea(p_areaID:String):void{
 			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
 		}
 		
@@ -87,14 +87,18 @@ package sweatless.navigation.primitives{
 		
 		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
+			
+			dispatchEvent(new Event(DESTROYED));
 		}
 		
 		public function show():void{
-
+			dispatchEvent(new Event(SHOWED));
 		}
 		
 		public function hide():void{
-			dispatchEvent(new Event(CLOSED));
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
+			dispatchEvent(new Event(HIDDEN));
 		}
 	}
 }

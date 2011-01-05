@@ -70,7 +70,8 @@ package sweatless.events{
 		 * 
 		 */
 		public static function getInstance():Broadcaster{
-			if (!instance) instance = new Broadcaster();
+			instance = instance || new Broadcaster();
+			
 			return instance;
 		}
 		

@@ -48,9 +48,7 @@ package sweatless.text{
 
 	public class CSSFormat{
 		public static function getClass(p_sheet:String, p_target:String):Object{
-			var sheet : StyleSheet = getSheet(p_sheet);
-			
-			return sheet.getStyle(p_target);
+			return getSheet(p_sheet).getStyle(p_target);
 		}
 		
 		public static function toTextFormat(p_sheet:String, p_target:String):TextFormat{

@@ -88,6 +88,8 @@ package sweatless.navigation.core{
 				broadcaster.addEventListener(broadcaster.getEvent("show_" + area), hide);
 				broadcaster.addEventListener(broadcaster.getEvent("hide_" + area), unload);
 			}
+
+			Config.tracking ? Tracking.add() : null;
 			
 			if(ExternalInterface.available && Config.areas..@deeplink.length() > 0){
 				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
@@ -97,8 +99,6 @@ package sweatless.navigation.core{
 					load(null);
 				}
 			}
-			
-			Config.tracking ? Config.addAnalytics(Layers.getInstance("sweatless").get("debug")) : null;
 			
 			Config.started = true;
 		}
@@ -146,7 +146,7 @@ package sweatless.navigation.core{
 			setID(evt.type);
 			
 			if(last) {
-				last.addEventListener(Area.CLOSED, load);
+				last.addEventListener(Area.HIDDEN, load);
 				last.hide();
 			}else{
 				load(null);
@@ -155,9 +155,8 @@ package sweatless.navigation.core{
 		
 		private static function load(evt:Event):void{
 			if(last){
-				last.removeEventListener(Area.CLOSED, load);
+				last.removeEventListener(Area.HIDDEN, load);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
-				last = null;
 			}
 			
 			Config.crossdomain ? Security.loadPolicyFile(Config.crossdomain) : null;
@@ -168,7 +167,6 @@ package sweatless.navigation.core{
 			
 			var swf : String = Config.getInArea(Config.currentAreaID, "@swf");
 			var assets : String = Config.getAreaAdditionals(Config.currentAreaID, "@assets");
-			var tracking : String = Config.tracking;
 			
 			var videos : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "video");
 			var audios : Dictionary = Config.getAreaDependencies(Config.currentAreaID, "audio");
@@ -186,7 +184,6 @@ package sweatless.navigation.core{
 				for(id in audios) loader.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
 				for(id in others) loader.add(others[id], {id:id, preventCache:!cache});
 				
-				tracking ? loader.add(tracking, {id:"tracking", preventCache:!cache}) : null;
 				assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
 				loader.add(swf, {id:"swf", priority:loader.highestPriority, preventCache:!cache});
 				
@@ -207,7 +204,7 @@ package sweatless.navigation.core{
 			
 			Layers.getInstance("sweatless").get("navigation").removeChild(last);
 			
-			!StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : null;
+			!StringUtils.toBoolean(Config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
 		}
 		
 		private static function removeLoadedItens():void{

@@ -39,7 +39,7 @@
  * 
  */
 
-package sweatless.navigation{
+package sweatless.navigation.core{
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 	
@@ -51,16 +51,14 @@ package sweatless.navigation{
 	
 	import sweatless.debug.FPS;
 	import sweatless.layout.Layers;
-	import sweatless.navigation.core.Config;
-	import sweatless.navigation.core.Navigation;
 	
 	public class Sweatless extends Sprite{
 		
 		private var loader : BulkLoaderXMLPlugin;
 		private var layers : Layers;
 		
-		public function Sweatless(p_fullScreen:Boolean=true){
-			var signature : Signature = new Signature(this, p_fullScreen);
+		public function Sweatless(){
+			var signature : Signature = new Signature(this);
 			
 			stage.addEventListener(Event.RESIZE, resize);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -106,6 +104,7 @@ package sweatless.navigation{
 				Config.layers[i]["@depth"] ? layers.get(Config.layers[i]["@id"]).depth = Config.layers[i]["@depth"] : null;
 			};
 			
+			layers.add("tracking");
 			layers.add("debug");
 		}
 		
@@ -118,10 +117,9 @@ package sweatless.navigation{
 			
 			build();
 		}
-		
+				
 		public function addFPS():void{
-			var fps : FPS = new FPS();
-			layers.get("debug").addChild(fps);
+			layers.get("debug").addChild(new FPS());
 		}
 		
 		public function resize(evt:Event):void{
@@ -151,11 +149,9 @@ import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 import br.com.stimuli.string.printf;
 
 import flash.display.InteractiveObject;
-import flash.display.StageDisplayState;
 import flash.events.ContextMenuEvent;
 import flash.events.Event;
 import flash.events.EventDispatcher;
-import flash.events.FullScreenEvent;
 import flash.net.URLRequest;
 import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
@@ -167,62 +163,21 @@ internal class Signature extends EventDispatcher{
 	
 	private var menu : ContextMenu = new ContextMenu();
 	private var scope : InteractiveObject;
-	private var fullScreen : Boolean;
 	
-	public function Signature(p_scope : InteractiveObject, p_fullScreen:Boolean){
+	public function Signature(p_scope : InteractiveObject){
 		scope = p_scope;
-		fullScreen = p_fullScreen;
 		
-		add();
-	}
-	
-	private function add():void {
-			
 		menu.hideBuiltInItems();
 		
-		if(fullScreen){
-			scope.stage.addEventListener(Event.FULLSCREEN, toggle);
-			
-			var view:ContextMenuItem = new ContextMenuItem("View FullScreen" );
-			view.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goFullScreen);
-			menu.customItems.push(view);
-			
-			var exit:ContextMenuItem = new ContextMenuItem("Exit FullScreen");
-			exit.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exitFullScreen);
-			menu.customItems.push(exit);
-			
-			menu.customItems[0].enabled = true;
-			menu.customItems[1].enabled = false;
-		};
-		
-		var linkCode:ContextMenuItem = new ContextMenuItem("Built with Sweatless Framework", true);
-		linkCode.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
-		menu.customItems.push(linkCode);
+		var label : ContextMenuItem = new ContextMenuItem("Built with Sweatless Framework", true);
+		label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
+		menu.customItems.push(label);
 		
 		scope.contextMenu = menu;
 	}
 	
 	private function goto(event:ContextMenuEvent):void {
 		navigateToURL(new URLRequest("http://code.google.com/p/sweatless/"), "_blank");
-	}
-	
-	private function goFullScreen(evt:ContextMenuEvent):void {
-		scope.stage.displayState = StageDisplayState.FULL_SCREEN;
-	}
-	
-	private function exitFullScreen(evt:ContextMenuEvent):void {
-		scope.stage.displayState = StageDisplayState.NORMAL;
-	}
-	
-	private function toggle(evt:FullScreenEvent):void {
-		if(evt.fullScreen){
-			menu.customItems[0].enabled = false;
-			menu.customItems[1].enabled = true;
-		}else{
-			menu.customItems[0].enabled = true;
-			menu.customItems[1].enabled = false;
-		}
-		
 	}
 }
 

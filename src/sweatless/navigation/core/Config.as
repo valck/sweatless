@@ -40,15 +40,7 @@
  */
 
 package sweatless.navigation.core{
-	import br.com.stimuli.loading.BulkLoader;
-	
-	import com.google.analytics.AnalyticsTracker;
-	import com.google.analytics.GATracker;
-	
-	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	
-	import sweatless.utils.StringUtils;
 	
 	public final class Config{
 		
@@ -56,7 +48,6 @@ package sweatless.navigation.core{
 		private static var _source : XML;
 		private static var _currentAreaID : String;
 		
-		private static var trackerGA : AnalyticsTracker;
 		private static var parameters : Dictionary = new Dictionary();
 		
 		public static function get started():Boolean{
@@ -105,14 +96,6 @@ package sweatless.navigation.core{
 		
 		public static function getService(p_id:String):String{
 			return String(source..services.service.(@id==p_id).@url);
-		}
-		
-		public static function addAnalytics(p_scope:DisplayObject):void{
-			trackerGA = new GATracker(p_scope, String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
-		}
-		
-		public static function trackPage(p_id:String):void{
-			BulkLoader.getLoader("sweatless").hasItem("tracking") ? trackerGA.trackPageview(String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackpage.(@id==p_id).@tag)) : null;
 		}
 		
 		public static function get layers():XMLList{
