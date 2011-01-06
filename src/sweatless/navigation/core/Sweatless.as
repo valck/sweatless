@@ -105,10 +105,6 @@ package sweatless.navigation.core{
 			return _loadings;
 		}
 		
-		public static function get nav():Navigation{
-			return _navigation;
-		}
-		
 		public static function get assets():Assets{
 			return _assets;
 		}
@@ -149,7 +145,7 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, removeLoadListeners);
 			
-			nav.init();
+			_navigation.init();
 			
 			build();
 		}
