@@ -46,7 +46,7 @@ package sweatless.navigation.primitives{
 	
 	import sweatless.events.Broadcaster;
 	import sweatless.interfaces.IBase;
-	import sweatless.navigation.core.Config;
+	import sweatless.navigation.core.Sweatless;
 	
 	public class Menu extends Base implements IBase{
 		
@@ -60,14 +60,14 @@ package sweatless.navigation.primitives{
 		
 		public function Menu(p_type:String="*"){
 			type = p_type;
-			properties = Config.getMenuButtons(type);
+			properties = Sweatless.config.getMenuButtons(type);
 			broadcaster = Broadcaster.getInstance();
 			
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		private function change(evt:Event):void{
-			var changed : MenuButton = getButton(Config.currentAreaID);
+			var changed : MenuButton = getButton(Sweatless.config.currentAreaID);
 			
 			if(selected) selected.enabled();
 			

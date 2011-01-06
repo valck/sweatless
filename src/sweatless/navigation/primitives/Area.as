@@ -45,7 +45,7 @@ package sweatless.navigation.primitives{
 	import flash.events.Event;
 	
 	import sweatless.interfaces.IDisplay;
-	import sweatless.navigation.core.Config;
+	import sweatless.navigation.core.Sweatless;
 	
 	public class Area extends Base implements IDisplay{
 		
@@ -74,7 +74,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function get loader():BulkLoader{
-			return BulkLoader.getLoader(Config.currentAreaID);
+			return BulkLoader.getLoader(Sweatless.config.currentAreaID);
 		}
 		
 		public function navigateToArea(p_areaID:String):void{

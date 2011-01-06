@@ -42,79 +42,90 @@
 package sweatless.navigation.core{
 	import flash.utils.Dictionary;
 	
-	public final class Config{
+	internal final class Configuration {
 		
+		private static var _config : Configuration;
 		private static var _started : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
 		
 		private static var parameters : Dictionary = new Dictionary();
 		
-		public static function get started():Boolean{
+		public function Configuration(){
+			if(_config) throw new Error("Config already initialized.");
+		}
+		
+		public static function get instance():Configuration{
+			_config = _config || new Configuration();
+			
+			return _config;
+		}
+		
+		public function get started():Boolean{
 			return _started;
 		}
 		
-		public static function set started(p_value:Boolean):void{
+		public function set started(p_value:Boolean):void{
 			_started = p_value;
 		}
 		
-		public static function set source(p_file:XML):void{
+		public function set source(p_file:XML):void{
 			_source = p_file;
 		}
 		
-		public static function get source():XML{
+		public function get source():XML{
 			return _source;
 		}
 		
-		public static function get currentAreaID():String{
+		public function get currentAreaID():String{
 			return _currentAreaID;
 		}
 		
-		public static function set currentAreaID(p_area:String):void{
+		public function set currentAreaID(p_area:String):void{
 			_currentAreaID = p_area;
 		}
 		
-		public static function get firstArea():String{
+		public function get firstArea():String{
 			return String(source..areas.@first);
 		}
 		
-		public static function get crossdomain():String{
+		public function get crossdomain():String{
 			return String(source..crossdomain.@file);
 		}
 		
-		public static function get tracking():String{
+		public function get tracking():String{
 			return String(source..tracking.@file);
 		}
 		
-		public static function getVar(p_name:String):Object{
+		public function getVar(p_name:String):Object{
 			return parameters[p_name];
 		}
 		
-		public static function setVar(p_name:String, p_value:Object):void{
+		public function setVar(p_name:String, p_value:Object):void{
 			parameters[p_name] = p_value;
 		}
 		
-		public static function getService(p_id:String):String{
+		public function getService(p_id:String):String{
 			return String(source..services.service.(@id==p_id).@url);
 		}
 		
-		public static function get layers():XMLList{
+		public function get layers():XMLList{
 			return source..layer;
 		}
 		
-		public static function get areas():XMLList{
+		public function get areas():XMLList{
 			return source..area;
 		}
 		
-		public static function getInArea(p_id:String, p_attribute:String):String{
+		public function getInArea(p_id:String, p_attribute:String):String{
 			return String(areas.(@id==p_id)[p_attribute]);
 		}
 		
-		public static function getAreaAdditionals(p_id:String, p_attribute:String):String{
+		public function getAreaAdditionals(p_id:String, p_attribute:String):String{
 			return String(areas.(@id==p_id).additionals[p_attribute]);
 		}
 		
-		public static function getAreaDependencies(p_id:String, p_type:String):Dictionary{
+		public function getAreaDependencies(p_id:String, p_type:String):Dictionary{
 			var dependencies : Dictionary = new Dictionary();
 			var i : uint = 0;
 			
@@ -147,7 +158,7 @@ package sweatless.navigation.core{
 			return dependencies;
 		}
 		
-		public static function hasDeeplink(p_deeplink:String):Boolean{
+		public function hasDeeplink(p_deeplink:String):Boolean{
 			for(var key : String in getAllDeeplinks()){
 				if(p_deeplink == getAllDeeplinks()[key]) return true;
 			}
@@ -155,7 +166,7 @@ package sweatless.navigation.core{
 			return false;
 		}
 		
-		public static function getDeeplinkByArea(p_area:String):String{
+		public function getDeeplinkByArea(p_area:String):String{
 			for(var key : String in getAllDeeplinks()){
 				if(p_area == key) return getAllDeeplinks()[key];
 			}
@@ -163,7 +174,7 @@ package sweatless.navigation.core{
 			return getAreaAdditionals(firstArea, "@deeplink");
 		}
 		
-		public static function getAreaByDeeplink(p_deeplink:String):String{
+		public function getAreaByDeeplink(p_deeplink:String):String{
 			for(var key : String in getAllDeeplinks()){
 				if(p_deeplink == getAllDeeplinks()[key]) return key;
 			}
@@ -171,7 +182,7 @@ package sweatless.navigation.core{
 			return firstArea;
 		}
 		
-		public static function getAllDeeplinks():Dictionary{
+		public function getAllDeeplinks():Dictionary{
 			var deeplinks : Dictionary = new Dictionary();
 			
 			for(var i:uint=0; i<areas.length(); i++){
@@ -181,7 +192,7 @@ package sweatless.navigation.core{
 			return deeplinks;
 		}
 		
-		public static function getMenuButtons(p_type:String="*"):Array{
+		public function getMenuButtons(p_type:String="*"):Array{
 			var all : Boolean = p_type == "*" ? true : false;
 			var buttons : Array = new Array();
 			
@@ -197,7 +208,7 @@ package sweatless.navigation.core{
 			return buttons;
 		}
 
-		public static function getMenuTypes():Array{
+		public function getMenuTypes():Array{
 			var buttons : Array = new Array();
 			
 			for(var a:uint=0; a<source..buttons.length(); a++){

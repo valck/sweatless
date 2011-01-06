@@ -43,9 +43,8 @@ package sweatless.navigation.core{
 	import br.com.stimuli.loading.BulkLoader;
 	
 	import flash.utils.Dictionary;
-	
 
-	public class Assets{
+	internal final class Assets{
 		
 		public static const TEXT : String = "text";
 		public static const AUDIO : String = "audio";
@@ -54,12 +53,23 @@ package sweatless.navigation.core{
 		public static const OTHER : String = "other";
 		
 		private static var _source : XML;
+		private static var _assets : Assets;
+		
+		public function Assets(){
+			if(_assets) throw new Error("Assets already initialized.");
+		}
+		
+		public static function get instance():Assets{
+			_assets = _assets || new Assets();
+			
+			return _assets;
+		}
 
-		public static function getString(p_id:String, p_type:String, p_area:XML=null):String{
+		public function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
 			
 			try{
-				_source = p_area ? p_area : BulkLoader.getLoader(Config.currentAreaID).getXML("assets") ? BulkLoader.getLoader(Config.currentAreaID).getXML("assets") : null;
+				_source = p_area ? p_area : BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets") ? BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets") : null;
 			}catch(err:Error){
 				return "[id:"+p_id+" type:"+p_type+"]";
 			}
@@ -89,15 +99,15 @@ package sweatless.navigation.core{
 			return result;
 		}
 		
-		public static function get source():XML{
+		public function get source():XML{
 			return _source;
 		}
 		
-		public static function getStringGroup(p_type:String, p_area:XML=null):Dictionary{
+		public function getStringGroup(p_type:String, p_area:XML=null):Dictionary{
 			var result : Dictionary = new Dictionary();
 			var i : uint = 0;
 			
-			p_area = p_area ? p_area : BulkLoader.getLoader(Config.currentAreaID).getXML("assets");
+			p_area = p_area ? p_area : BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets");
 			
 			switch(p_type){
 				case "text":

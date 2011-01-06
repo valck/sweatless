@@ -56,6 +56,12 @@ package sweatless.navigation.core{
 		
 		private var loader : BulkLoaderXMLPlugin;
 		private var layers : Layers;
+
+		private static var _config : Configuration;
+		private static var _assets : Assets;
+		private static var _tracking : Tracking;
+		private static var _loadings : Loadings;
+		private static var _navigation : Navigation;
 		
 		public function Sweatless(){
 			var signature : Signature = new Signature(this);
@@ -65,26 +71,56 @@ package sweatless.navigation.core{
 			stage.align = StageAlign.TOP_LEFT;
 			stage.showDefaultContextMenu = false;
 			stage.stageFocusRect = false;
+
+			addWrappers();
 			
 			for(var i:String in loaderInfo.parameters){
-				Config.setVar(i, loaderInfo.parameters[i]);
+				config.setVar(i, loaderInfo.parameters[i]);
 			}
 			
 			loadConfig();
 		}
 		
 		private function loadConfig():void{
-			loader = new BulkLoaderXMLPlugin(String(Config.getVar("CONFIG")), "sweatless");
+			loader = new BulkLoaderXMLPlugin(String(config.getVar("CONFIG")), "sweatless");
 			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progress);
 			loader.addEventListener(BulkProgressEvent.COMPLETE, removeLoadListeners);
 			loader.start();
 		}
 		
+		private function addWrappers():void{
+			_loadings = Loadings.instance;
+			_config = Configuration.instance;
+			_navigation = Navigation.instance;
+			_tracking = Tracking.instance;
+			_assets = Assets.instance;
+		}
+		
+		public static function get config():Configuration{
+			return _config;
+		}
+		
+		public static function get loadings():Loadings{
+			return _loadings;
+		}
+		
+		public static function get nav():Navigation{
+			return _navigation;
+		}
+		
+		public static function get assets():Assets{
+			return _assets;
+		}
+		
+		public static function get tracking():Tracking{
+			return _tracking;
+		}
+		
 		private function ready(evt:Event):void{
 			loader.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			
-			Config.source = loader.source;
+			config.source = loader.source;
 			
 			addFonts();
 			addLayers();
@@ -99,9 +135,9 @@ package sweatless.navigation.core{
 			layers.add("loading");
 			layers.get("loading").mouseChildren = false;
 			
-			for(var i:uint=0; i<Config.layers.length(); i++) {
-				layers.add(Config.layers[i]["@id"]);
-				Config.layers[i]["@depth"] ? layers.get(Config.layers[i]["@id"]).depth = Config.layers[i]["@depth"] : null;
+			for(var i:uint=0; i<config.layers.length(); i++) {
+				layers.add(config.layers[i]["@id"]);
+				config.layers[i]["@depth"] ? layers.get(config.layers[i]["@id"]).depth = config.layers[i]["@depth"] : null;
 			};
 			
 			layers.add("tracking");
@@ -113,11 +149,11 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, progress);
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, removeLoadListeners);
 			
-			Navigation.init();
+			nav.init();
 			
 			build();
 		}
-				
+		
 		public function addFPS():void{
 			layers.get("debug").addChild(new FPS());
 		}
@@ -169,7 +205,7 @@ internal class Signature extends EventDispatcher{
 		
 		menu.hideBuiltInItems();
 		
-		var label : ContextMenuItem = new ContextMenuItem("Built with Sweatless Framework", true);
+		var label : ContextMenuItem = new ContextMenuItem("© Sweatless Framework", true);
 		label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
 		menu.customItems.push(label);
 		
