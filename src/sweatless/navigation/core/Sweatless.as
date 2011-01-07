@@ -56,14 +56,14 @@ package sweatless.navigation.core{
 		
 		private var loader : BulkLoaderXMLPlugin;
 		private var layers : Layers;
-
+		
 		private static var _config : Configuration;
 		private static var _assets : Assets;
 		private static var _tracking : Tracking;
 		private static var _loadings : Loadings;
 		private static var _navigation : Navigation;
 		
-		public function Sweatless(){
+		public function Sweatless(p_config:String=null){
 			var signature : Signature = new Signature(this);
 			
 			stage.addEventListener(Event.RESIZE, resize);
@@ -73,6 +73,8 @@ package sweatless.navigation.core{
 			stage.stageFocusRect = false;
 
 			addWrappers();
+			
+			config.setVar("CONFIG", p_config);
 			
 			for(var i:String in loaderInfo.parameters){
 				config.setVar(i, loaderInfo.parameters[i]);
