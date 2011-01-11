@@ -75,7 +75,7 @@ package sweatless.text{
 		 * @return the string formatted with the method.
 		 */
 		public static function font(p_str:String, p_face:String=null, p_size:uint=0, p_color:String=null):String{
-			return "<font" + (p_face ? " face=\'" + p_face + "\'" : "") + (p_size > 0 ? " size=\'" + String(p_size) + "\'" : "") + (p_color ? " color=\'" + p_color + "\'" : "") + ">" + p_str + "</font>";;
+			return "<font" + (p_face ? " face=\'" + FontRegister.hasAdded(p_face) ? FontRegister.getfontName(p_face) : p_face + "\'" : "") + (p_size > 0 ? " size=\'" + String(p_size) + "\'" : "") + (p_color ? " color=\'" + p_color + "\'" : "") + ">" + p_str + "</font>";;
 		}
 		
 		/**
