@@ -61,7 +61,7 @@ package sweatless.text{
 		 * @see Font
 		 * @see String
 		 */
-		public static function getFont(p_id:String):Font {
+		public static function get(p_id:String):Font {
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists.");
 			return fonts[p_id];
 		}
@@ -72,9 +72,9 @@ package sweatless.text{
 		 * @return The resulting <code>String</code> object with the font name.
 		 * @see String
 		 */
-		public static function getfontName(p_id:String):String{
+		public static function getName(p_id:String):String{
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists.");
-			return getFont(p_id).fontName;
+			return get(p_id).fontName;
 		}
 		
 		/**
@@ -82,7 +82,7 @@ package sweatless.text{
 		 * @return The resulting <code>Array</code> object.
 		 * @see Array
 		 */
-		public static function getAllFonts():Array{
+		public static function getAll():Array{
 			var results:Array = new Array();
 			for(var key:* in fonts){
 				results.push(fonts[key]);
@@ -97,7 +97,7 @@ package sweatless.text{
 		 * @see Class
 		 * @see String
 		 */
-		public static function addFont(p_class:Class, p_id:String):void{
+		public static function add(p_class:Class, p_id:String):void{
 			if(!(describeType(p_class)..factory.extendsClass[0].@type == "flash.text::Font")) throw new Error("The class " + p_class + " is not a valid Font class.");
 			if(hasAdded(p_id)) throw new Error("Font id " + p_id + " already registered.");
 			
@@ -121,11 +121,11 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Unregister a <code>Font</code>.
+		 * Remove a <code>Font</code>.
 		 * @param p_id The <code>Font</code> id (<code>String</code>).
 		 * @see String
 		 */
-		public static function removeFont(p_id:String): void{
+		public static function remove(p_id:String): void{
 			if(!hasAdded(p_id)) throw new Error("The font "+ p_id +" doesn't exists or already removed.");
 
 			fonts[p_id] = null;
@@ -133,9 +133,9 @@ package sweatless.text{
 		}
 		
 		/**
-		 * Unregister all fonts.
+		 * Remove all fonts.
 		 */
-		public static function removeAllFonts():void{
+		public static function removeAll():void{
 			for(var id:* in fonts){
 				fonts[id] = null;
 				delete fonts[id];
