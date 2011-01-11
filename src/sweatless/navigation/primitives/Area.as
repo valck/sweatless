@@ -70,7 +70,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function get assets():XML{
-			return loader.getXML("assets");
+			return loader.hasItem("assets") ? loader.getXML("assets") : null;
 		}
 		
 		public function get loader():BulkLoader{
