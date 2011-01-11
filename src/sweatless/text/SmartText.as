@@ -255,7 +255,8 @@ package sweatless.text{
 		 */
 		public function set type(p_value:String):void{
 			_field.type = p_value;
-			p_value == "input" ? _field.selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
+			p_value == "input" ? _selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
+			_field.selectable = _selectable;
 		}
 		
 		public function get type():String{
