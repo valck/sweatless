@@ -54,7 +54,7 @@ package sweatless.text{
 		private var _format : TextFormat;
 		private var _field : TextField;
 		private var _autosize : String = "left";
-		private var _selectable:Boolean;
+		private var _selectable : Boolean;
 		
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ; @";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
@@ -75,6 +75,8 @@ package sweatless.text{
 			
 			_field.embedFonts = true;
 			addChild(_field);
+			
+			selectable = false;
 			
 			update();
 		}
