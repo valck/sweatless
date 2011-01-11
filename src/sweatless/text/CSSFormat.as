@@ -78,7 +78,7 @@ package sweatless.text{
 		
 		private static function forceParser(p_style:Object):Object{
 			for (var property : String in p_style){
-				property == "fontFamily" ? p_style[property] = clean(p_style[property], "\"", "") : null;
+				property == "fontFamily" ? p_style[property] = getFamily(p_style[property]) : null;
 				property == "bold" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;
 				property == "italic" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;
 				property == "bullet" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;
@@ -89,8 +89,15 @@ package sweatless.text{
 			return p_style;
 		}
 		
-		private static function clean(p_str:String, p_search:String, p_replace:String):String{
-			return StringUtils.replace(p_str, p_search, p_replace); 
+		private static function getFamily(p_family:String):String{
+			var results : String = "";
+			var family : Array = StringUtils.replace(StringUtils.removeWhiteSpace(p_family), "\"", "").split(",");
+			
+			for(var i:uint; i<family.length; i++){
+				results += (FontRegister.hasAdded(family[i]) ? FontRegister.getName(family[i]) : family[i]) + (i<family.length-1 ? "," : "");
+			}
+			
+			return results;
 		}
 	}
 }
