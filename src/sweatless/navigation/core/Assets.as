@@ -68,35 +68,31 @@ package sweatless.navigation.core{
 		public function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
 			
-			try{
-				_source = p_area ? p_area : BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets") ? BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets") : null;
-			}catch(err:Error){
-				return "[id:"+p_id+" type:"+p_type+"]";
-			}
-			
+			_source = p_area ? p_area : BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") ? BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") : null;
+
 			switch(p_type){
 				case "text":
-					result = String(source..text.(@id==p_id));
+					result = String(_source..text.(@id==p_id));
 				break;
 	
 				case "image":
-					result = String(source..image.(@id==p_id).@url);
+					result = String(_source..image.(@id==p_id).@url);
 				break;
 				
 				case "video":
-					result = String(source..video.(@id==p_id).@url);
+					result = String(_source..video.(@id==p_id).@url);
 				break;
 				
 				case "audio":
-					result = String(source..audio.(@id==p_id).@url);
+					result = String(_source..audio.(@id==p_id).@url);
 				break;
 
 				case "other":
-					result = String(source..other.(@id==p_id).@url);
+					result = String(_source..other.(@id==p_id).@url);
 				break;
 			}
 			
-			return result;
+			return _source ? result : "[id:"+p_id+" type:"+p_type+"]";
 		}
 		
 		public function get source():XML{
@@ -107,7 +103,7 @@ package sweatless.navigation.core{
 			var result : Dictionary = new Dictionary();
 			var i : uint = 0;
 			
-			p_area = p_area ? p_area : BulkLoader.getLoader(Sweatless.config..currentAreaID).getXML("assets");
+			p_area = p_area ? p_area : BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets");
 			
 			switch(p_type){
 				case "text":
