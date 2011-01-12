@@ -50,9 +50,9 @@ package sweatless.navigation.primitives{
 	public class Area extends Base implements IDisplay{
 		
 		public static const READY : String = "ready";
-		public static const DESTROYED : String = "destroyed";
 		public static const SHOWED: String = "showed";
 		public static const HIDDEN: String = "closed";
+		public static const DESTROYED : String = "destroyed";
 		
 		private var _id : String;
 		
@@ -75,6 +75,34 @@ package sweatless.navigation.primitives{
 		
 		public function get loader():BulkLoader{
 			return BulkLoader.getLoader(Sweatless.config.currentAreaID);
+		}
+		
+		public function getAssetString(p_id:String, p_type:String):String{
+			var result : String;
+			
+			switch(p_type){
+				case "text":
+					result = String(assets..text.(@id==p_id));
+					break;
+				
+				case "image":
+					result = String(assets..image.(@id==p_id).@url);
+					break;
+				
+				case "video":
+					result = String(assets..video.(@id==p_id).@url);
+					break;
+				
+				case "audio":
+					result = String(assets..audio.(@id==p_id).@url);
+					break;
+				
+				case "other":
+					result = String(assets..other.(@id==p_id).@url);
+					break;
+			}
+			
+			return result ? result : "[id:"+p_id+" type:"+p_type+"]";
 		}
 		
 		public function navigateToArea(p_areaID:String):void{
