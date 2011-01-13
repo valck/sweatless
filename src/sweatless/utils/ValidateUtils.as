@@ -88,6 +88,50 @@ package sweatless.utils{
 			var validate:RegExp = /(\d{3}.?\d{3}.?\d{3}-?\d{2})/g;
 			return validate.test(p_value);
 		}
+		
+		
+		/**
+		 * Checks if the string is a date
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
+		public static function isDate(p_value:String):Boolean {
+			var validate:RegExp = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|(19|20)\d{2})$/;
+			return validate.test(p_value);
+		}
+		
+
+		/**
+		 * Checks if the string is a alphanumeric
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
+		public static function isAlphaNumeric(p_value:String):Boolean {
+			var validate:RegExp = /^[a-zA-Z0-9]*$/;
+			return validate.test(p_value);
+		}
+		
+
+		/**
+		 * Checks if the string is a strong password
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
+		public static function isStrongPassword(p_value:String):Boolean {
+			var validate:RegExp = /^(?=^.{8,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*$/;
+			return validate.test(p_value);
+		}
+		
+		
 
 	}
 }
