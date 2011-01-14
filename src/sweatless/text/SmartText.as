@@ -71,6 +71,7 @@ package sweatless.text{
 		public function SmartText(p_format:TextFormat=null){
 			super();
 			_format = p_format || new TextFormat();
+			
 			_field = new TextField();
 			
 			_field.embedFonts = true;
@@ -363,7 +364,6 @@ package sweatless.text{
 		 */
 		public function set text(p_text:String):void{
 			_field.htmlText = p_text;
-
 			update();
 		}
 		

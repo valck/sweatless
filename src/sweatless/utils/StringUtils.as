@@ -100,6 +100,73 @@ package sweatless.utils {
 
 			return trim(p_str).replace(/\s+/g, " ");
 		}
+		
+		/**
+		 * A method to remove special characters in a String.
+		 * @param p_str The <code>String</code> to remove the special characters.
+		 * @return The resulting <code>String</code> object.
+		 * @see String
+		 */
+		
+		public static function removeSpecialChars(p_str:String):String{
+			return p_str.replace(/[^a-zA-Z 0-9]+/g,'');
+		}
+		
+		
+		/**
+		 * A method to convert a numeric string to brazillian CPF format. (###.###.###-##)
+		 * @param p_str The <code>String</code> to format.
+		 * @return The resulting <code>String</code> object.
+		 * @see String
+		 */
+		public static function convertToCPF(p_str:String):String{
+			p_str = removeSpecialChars(p_str);
+			if(p_str.length>9){
+				p_str = p_str.replace(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/,'$1' + "." + "$2" + "." + "$3" + "-" + "$4");
+			}else if(p_str.length>6){
+				p_str = p_str.replace(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/,'$1' + "." + "$2" + "." + "$3");
+			}else if(p_str.length>3){
+				p_str = p_str.replace(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/,'$1' + "." + "$2");
+			}else{
+				p_str = p_str.replace(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/,'$1');
+			}
+			return p_str;
+		}
+		
+		/**
+		 * A method to convert a numeric string to brazillian CEP format. (######-###)
+		 * @param p_str The <code>String</code> to format.
+		 * @return The resulting <code>String</code> object.
+		 * @see String
+		 */
+		public static function convertToCEP(p_str:String):String{
+			p_str = removeSpecialChars(p_str);
+			if(p_str.length>5){
+				p_str = p_str.replace(/(\d{0,5})(\d{0,3})/,'$1' + "-" + "$2");
+			}else{
+				p_str = p_str.replace(/(\d{0,5})(\d{0,3})/,'$1');
+			}
+			return p_str;
+		}
+		
+		/**
+		 * A method to convert a numeric string to date format. (##/##/####)
+		 * @param p_str The <code>String</code> to format.
+		 * @return The resulting <code>String</code> object.
+		 * @see String
+		 */
+		public static function convertToDate(p_str:String):String{
+			p_str = removeSpecialChars(p_str);
+			if(p_str.length>4){
+				p_str = p_str.replace(/(\d{0,2})(\d{0,2})(\d{0,4})/,'$1' + "/" + "$2" + "/" + "$3");
+			}else if(p_str.length>2){
+				p_str = p_str.replace(/(\d{0,2})(\d{0,2})(\d{0,4})/,'$1' + "/" + "$2");
+			}else{
+				p_str = p_str.replace(/(\d{0,2})(\d{0,2})(\d{0,4})/,'$1');
+			}
+			return p_str;
+		}
+		
 
 		/**
 		 * A method to check if the String is empty or null.
