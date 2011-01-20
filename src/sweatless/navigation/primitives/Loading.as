@@ -46,8 +46,10 @@ package sweatless.navigation.primitives{
 	
 	public class Loading extends Base implements IDisplay{
 		
-		public static const OPEN : String = "open";
-		public static const COMPLETE : String = "complete";
+		public static const READY : String = "ready";
+		public static const SHOWED : String = "showed";
+		public static const HIDDEN : String = "hidden";
+		public static const DESTROYED : String = "destroyed";
 		
 		private var _progress : Number=0;
 		
@@ -56,11 +58,12 @@ package sweatless.navigation.primitives{
 			mouseEnabled = false;
 			
 			addEventListener(Event.ADDED_TO_STAGE, create);
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		override public function create(evt:Event=null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
+			
+			dispatchEvent(new Event(READY));
 		}
 		
 		public function get progress():Number{
@@ -72,19 +75,19 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function show():void{
-			dispatchEvent(new Event(Loading.OPEN));
+			dispatchEvent(new Event(SHOWED));
 		}
 		
 		public function hide():void{
-			dispatchEvent(new Event(Loading.COMPLETE));
-		}
-		
-		public function align():void{
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			
+			dispatchEvent(new Event(HIDDEN));
 		}
 		
 		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
+			
+			dispatchEvent(new Event(DESTROYED));
 		}
 	}
 }

@@ -66,14 +66,12 @@ package sweatless.ui{
 			background.width = bar.width = 200;
 			background.height = bar.height = 1;
 			
-			backgroundColor = 0xCCCCCC;
-			barColor = 0x999999;
+			backgroundColor = 0xFFFFFF;
+			barColor = 0xFF0000;
 			
 			bar.scaleX = 0;
 			
 			alpha = 0;
-			
-			align();
 			
 			super.create(evt);
 		}
@@ -122,10 +120,6 @@ package sweatless.ui{
 			return _height;
 		}
 
-		override public function align():void{
-			
-		}
-		
 		override public function destroy(evt:Event=null):void{
 			bar.destroy();
 			background.destroy();

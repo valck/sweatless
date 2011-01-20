@@ -53,7 +53,6 @@ package sweatless.navigation.core{
 	import flash.net.LocalConnection;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.system.Security;
 	import flash.utils.Dictionary;
 	
 	import sweatless.events.Broadcaster;
@@ -120,7 +119,7 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 			
 			if(loading){
-				loading.addEventListener(Loading.COMPLETE, loaded);
+				loading.addEventListener(Loading.HIDDEN, loaded);
 				loading.hide();
 			}else{
 				loaded(null);
@@ -129,7 +128,7 @@ package sweatless.navigation.core{
 		
 		private function loaded(evt:Event):void{
 			try{
-				loading ? loading.removeEventListener(Loading.COMPLETE, loaded) : null;
+				loading ? loading.removeEventListener(Loading.HIDDEN, loaded) : null;
 				
 				ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
@@ -158,6 +157,7 @@ package sweatless.navigation.core{
 			setID(evt.type);
 			
 			if(last) {
+				loader.remove(loader.id);
 				last.addEventListener(Area.HIDDEN, load);
 				last.hide();
 			}else{
@@ -171,8 +171,6 @@ package sweatless.navigation.core{
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
 			}
 			
-			Sweatless.config.crossdomain ? Security.loadPolicyFile(Sweatless.config.crossdomain) : null;
-			
 			var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 			var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
 			var imageContext : LoaderContext = new LoaderContext(Boolean(Sweatless.config.crossdomain), ApplicationDomain.currentDomain);
@@ -185,7 +183,7 @@ package sweatless.navigation.core{
 			var images : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "image");
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
-			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID);
+			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
 			
 			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
@@ -214,6 +212,7 @@ package sweatless.navigation.core{
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
+			trace(last, last.id);
 			Layers.getInstance("sweatless").get("navigation").removeChild(last);
 			
 			!StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
@@ -231,7 +230,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function onProgress(evt:BulkProgressEvent):void{
-			loading ? loading.progress = evt.percentLoaded : null;
+			loading ? loading.progress = evt.ratioLoaded : null;
 		}
 		
 		private function setDeeplink():void{

@@ -77,14 +77,16 @@ package sweatless.navigation.primitives{
 			return BulkLoader.getLoader(Sweatless.config.currentAreaID);
 		}
 		
-		public function getAssetString(p_id:String, p_type:String):String{
+		public function getAssetsText(p_id:String):String{
+				var result : String = String(assets..text.(@id==p_id));
+				
+				return result ? result : "[id:"+p_id+" type:text]";
+		}
+		
+		public function getAssetsPath(p_id:String, p_type:String):String{
 			var result : String;
 			
 			switch(p_type){
-				case "text":
-					result = String(assets..text.(@id==p_id));
-					break;
-				
 				case "image":
 					result = String(assets..image.(@id==p_id).@url);
 					break;

@@ -40,7 +40,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function addGA():void{
-			tracker = new GATracker(Layers.getInstance("sweatless").get("tracking"), String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
+			tracker = new GATracker(Layers.getInstance("sweatless").get("debug"), String(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@account), "AS3", StringUtils.toBoolean(BulkLoader.getLoader("sweatless").getXML("tracking")..analytics.@debug));
 			type = "analytics";
 		}
 	}
