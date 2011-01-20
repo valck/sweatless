@@ -127,7 +127,7 @@ package sweatless.utils{
 		 * @see RegExp
 		 */
 		public static function isStrongPassword(p_value:String):Boolean {
-			var validate:RegExp = /^(?=^.{8,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*$/;
+			var validate:RegExp = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 			return validate.test(p_value);
 		}
 		

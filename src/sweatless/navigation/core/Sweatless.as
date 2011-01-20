@@ -129,7 +129,9 @@ package sweatless.navigation.core{
 		private function addLayers():void{
 			layers = new Layers(this, "sweatless");
 			
+						
 			layers.add("navigation");
+			
 			layers.add("loading");
 			layers.get("loading").mouseChildren = false;
 			
