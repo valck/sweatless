@@ -157,7 +157,8 @@ package sweatless.navigation.core{
 			setID(evt.type);
 			
 			if(last) {
-				loader.remove(loader.id);
+				loader.pauseAll();
+				trace("Sweatless.config.currentAreaID", Sweatless.config.currentAreaID, loader.id, loader.name);
 				last.addEventListener(Area.HIDDEN, load);
 				last.hide();
 			}else{
@@ -184,6 +185,7 @@ package sweatless.navigation.core{
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
 			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
+			loader.maxConnectionsPerHost = 666;
 			
 			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
@@ -212,7 +214,6 @@ package sweatless.navigation.core{
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
-			trace(last, last.id);
 			Layers.getInstance("sweatless").get("navigation").removeChild(last);
 			
 			!StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
@@ -230,7 +231,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function onProgress(evt:BulkProgressEvent):void{
-			loading ? loading.progress = evt.ratioLoaded : null;
+			loading ? loading.progress = evt.percentLoaded : null;
 		}
 		
 		private function setDeeplink():void{
@@ -242,6 +243,7 @@ package sweatless.navigation.core{
 		
 		private function onChange(evt:SWFAddressEvent):void{
 			Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
+			
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Sweatless.config.currentAreaID)));
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_menu")));
 		}

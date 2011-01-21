@@ -77,13 +77,13 @@ package sweatless.navigation.primitives{
 			return BulkLoader.getLoader(Sweatless.config.currentAreaID);
 		}
 		
-		public function getAssetsText(p_id:String):String{
+		public function getAssetText(p_id:String):String{
 				var result : String = String(assets..text.(@id==p_id));
 				
 				return result ? result : "[id:"+p_id+" type:text]";
 		}
 		
-		public function getAssetsPath(p_id:String, p_type:String):String{
+		public function getAssetPath(p_id:String, p_type:String):String{
 			var result : String;
 			
 			switch(p_type){
@@ -112,6 +112,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		override public function create(evt:Event=null):void{
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			dispatchEvent(new Event(READY));
 		}
 		
@@ -126,8 +127,6 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function hide():void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			
 			dispatchEvent(new Event(HIDDEN));
 		}
 	}

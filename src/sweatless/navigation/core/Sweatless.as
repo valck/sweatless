@@ -250,6 +250,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 
 		Sweatless.config.source = source;
 		
+		maxConnectionsPerHost = 666;
 		for each (var asset:XML in source..fixed.asset) {
 			asset.@paused != undefined ? add(String(asset.@url), {id:String(asset.@id), pausedAtStart:true}) : add(String(asset.@url), {id:String(asset.@id)});
 		}
@@ -267,6 +268,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
 		
 		loader = new BulkLoader(Sweatless.config.currentAreaID, 666);
+		loader.maxConnectionsPerHost = 666;
 		
 		var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 		var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
@@ -316,11 +318,14 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		_bytesTotalCurrent = 0;
 		
 		var itemsStarted : int = 0;
-		var localWeightPercent : Number = 0;
-		var localWeightTotal : int = 0;
+		
 		var localWeightLoaded : Number = 0;
-		var localItemsTotal : int = 0;
+		var localWeightTotal : int = 0;
+		var localWeightPercent : Number = 0;
+		
 		var localItemsLoaded : int = 0;
+		var localItemsTotal : int = 0;
+		
 		var localBytesLoaded : int = 0;
 		var localBytesTotal : int = 0;
 		var localBytesTotalCurrent : int = 0;
@@ -350,6 +355,9 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		progressEvent = new BulkProgressEvent(PROGRESS);
 		progressEvent.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
 		
+		completeEvent = new BulkProgressEvent(FINISHED);
+		completeEvent.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
+		
 		_itemsLoaded = localItemsLoaded;
 		_bytesLoaded = progressEvent.bytesLoaded;
 		_bytesTotal = progressEvent.bytesTotal;
@@ -357,9 +365,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		_percentLoaded = progressEvent.percentLoaded;
 		_bytesTotalCurrent = progressEvent.bytesTotalCurrent;
 		_loadedRatio = progressEvent.ratioLoaded;
-		
-		completeEvent = new BulkProgressEvent(FINISHED);
-		completeEvent.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
 		
 		if (itemsStarted > 0 && itemsLoaded == items.length){
 			if(loading){

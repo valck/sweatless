@@ -51,7 +51,7 @@ package sweatless.navigation.primitives{
 		public static const HIDDEN : String = "hidden";
 		public static const DESTROYED : String = "destroyed";
 		
-		private var _progress : Number=0;
+		private var _progress : Number = 0;
 		
 		public function Loading(){
 			mouseChildren = false;
