@@ -154,11 +154,12 @@ package sweatless.navigation.core{
 		}
 		
 		private function hide(evt:Event):void{
+			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			loader && loader.isRunning ? loader.pauseAll() : null;
+			
 			setID(evt.type);
 			
 			if(last) {
-				loader.pauseAll();
-				trace("Sweatless.config.currentAreaID", Sweatless.config.currentAreaID, loader.id, loader.name);
 				last.addEventListener(Area.HIDDEN, load);
 				last.hide();
 			}else{
@@ -167,6 +168,8 @@ package sweatless.navigation.core{
 		}
 		
 		private function load(evt:Event):void{
+			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			
 			if(last){
 				last.removeEventListener(Area.HIDDEN, load);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
@@ -186,6 +189,7 @@ package sweatless.navigation.core{
 			
 			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
 			loader.maxConnectionsPerHost = 666;
+			loader.resumeAll();
 			
 			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
@@ -205,7 +209,7 @@ package sweatless.navigation.core{
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 				loading ? loading.show() : null;
-				
+
 				loader.sortItemsByPriority();
 				loader.start();
 			}
@@ -214,7 +218,7 @@ package sweatless.navigation.core{
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
-			Layers.getInstance("sweatless").get("navigation").removeChild(last);
+			last.stage ? Layers.getInstance("sweatless").get("navigation").removeChild(last) : null;
 			
 			!StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
 		}

@@ -59,13 +59,12 @@ package sweatless.navigation.primitives{
 			
 			addEventListener(Event.ADDED_TO_STAGE, create);
 		}
-		
+
 		override public function create(evt:Event=null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
-			
 			dispatchEvent(new Event(READY));
 		}
-		
+				
 		public function get progress():Number{
 			return _progress;
 		}
@@ -75,18 +74,17 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function show():void{
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
 			dispatchEvent(new Event(SHOWED));
 		}
 		
 		public function hide():void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			
 			dispatchEvent(new Event(HIDDEN));
 		}
 		
 		override public function destroy(evt:Event=null):void{
 			removeAllEventListeners();
-			
 			dispatchEvent(new Event(DESTROYED));
 		}
 	}

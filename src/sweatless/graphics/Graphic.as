@@ -311,7 +311,7 @@ package sweatless.graphics{
 		 * @param p_value An array of alpha values for the corresponding colors in the colors array; valid values are 0 to 1. If the value is less than 0, the default is 0. If the value is greater than 1, the default is 1. 
 		 * 
 		 */
-		public function set alphas(p_value:Array):void{			
+		public function set alphas(p_value:Array):void{
 			_fillAlphas = p_value;
 			update();
 		}

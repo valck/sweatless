@@ -54,19 +54,9 @@ package sweatless.navigation.primitives{
 		public static const HIDDEN: String = "closed";
 		public static const DESTROYED : String = "destroyed";
 		
-		private var _id : String;
-		
 		public function Area(){
 			tabEnabled = false;
 			tabChildren = false;
-		}
-		
-		public function set id(p_id:String):void{
-			_id = p_id;
-		}
-		
-		public function get id():String{
-			return _id;
 		}
 		
 		public function get assets():XML{
@@ -112,7 +102,6 @@ package sweatless.navigation.primitives{
 		}
 		
 		override public function create(evt:Event=null):void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			dispatchEvent(new Event(READY));
 		}
 		
@@ -123,6 +112,8 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function show():void{
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
 			dispatchEvent(new Event(SHOWED));
 		}
 		

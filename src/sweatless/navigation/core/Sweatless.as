@@ -252,7 +252,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		maxConnectionsPerHost = 666;
 		for each (var asset:XML in source..fixed.asset) {
-			asset.@paused != undefined ? add(String(asset.@url), {id:String(asset.@id), pausedAtStart:true}) : add(String(asset.@url), {id:String(asset.@id)});
+			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
 		}
 		
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 

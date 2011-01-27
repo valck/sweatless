@@ -53,6 +53,7 @@ package sweatless.navigation.primitives{
 		public var broadcaster : Broadcaster = Broadcaster.getInstance();
 		
 		private var listeners : Array;
+		private var _id : String;
 		
 		public function Base(){
 			listeners = new Array();
@@ -64,6 +65,14 @@ package sweatless.navigation.primitives{
 		
 		public function destroy(evt:Event=null):void{
 			throw new Error("Please, override this method.");
+		}
+		
+		public function set id(p_id:String):void{
+			_id = p_id.toLowerCase();
+		}
+		
+		public function get id():String{
+			return _id;
 		}
 		
 		override public function addEventListener(p_type:String, p_listener:Function, p_useCapture:Boolean=false, p_priority:int=0, p_useWeakReference:Boolean=false):void{
