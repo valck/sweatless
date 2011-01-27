@@ -69,7 +69,7 @@ package sweatless.navigation.core{
 			var result : String;
 			
 			_source = p_area ? p_area : BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") ? BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") : null;
-
+			
 			switch(p_type){
 				case "text":
 					result = String(_source..text.(@id==p_id));

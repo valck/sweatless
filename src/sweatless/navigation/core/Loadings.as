@@ -64,15 +64,25 @@ package sweatless.navigation.core{
 		}
 		
 		public function get(p_id:String):Loading{
+			p_id = p_id.toLowerCase();
+			
 			return loaders[p_id];
 		}
 		
-		public function add(p_loading:Class, p_id:String="default"):void{
+		public function add(p_loading:Class, p_id:String="default"):void{			
+			p_id = p_id.toLowerCase();
+			
 			if(exists(p_id)) throw new Error("The loading "+ p_id +" already added.");
-			loaders[p_id] = new p_loading();
+			
+			var l : * = new p_loading();
+			
+			l.name = l.id = p_id;
+			loaders[p_id] = l;
 		}
 
 		public function remove(p_id:String):void{
+			p_id = p_id.toLowerCase();
+			
 			loaders[p_id] = null;
 			delete loaders[p_id];
 		}

@@ -53,7 +53,6 @@ package sweatless.navigation.core{
 	import flash.net.LocalConnection;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.system.Security;
 	import flash.utils.Dictionary;
 	
 	import sweatless.events.Broadcaster;
@@ -120,7 +119,7 @@ package sweatless.navigation.core{
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 			
 			if(loading){
-				loading.addEventListener(Loading.COMPLETE, loaded);
+				loading.addEventListener(Loading.HIDDEN, loaded);
 				loading.hide();
 			}else{
 				loaded(null);
@@ -129,7 +128,7 @@ package sweatless.navigation.core{
 		
 		private function loaded(evt:Event):void{
 			try{
-				loading ? loading.removeEventListener(Loading.COMPLETE, loaded) : null;
+				loading ? loading.removeEventListener(Loading.HIDDEN, loaded) : null;
 				
 				ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
 				
@@ -155,6 +154,9 @@ package sweatless.navigation.core{
 		}
 		
 		private function hide(evt:Event):void{
+			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			loader && loader.isRunning ? loader.pauseAll() : null;
+			
 			setID(evt.type);
 			
 			if(last) {
@@ -166,12 +168,12 @@ package sweatless.navigation.core{
 		}
 		
 		private function load(evt:Event):void{
+			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			
 			if(last){
 				last.removeEventListener(Area.HIDDEN, load);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
 			}
-			
-			Sweatless.config.crossdomain ? Security.loadPolicyFile(Sweatless.config.crossdomain) : null;
 			
 			var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 			var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
@@ -185,7 +187,9 @@ package sweatless.navigation.core{
 			var images : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "image");
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
-			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID);
+			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
+			loader.maxConnectionsPerHost = 666;
+			loader.resumeAll();
 			
 			if (loader.itemsTotal > 0 && loader.isFinished){
 				loaded(null);
@@ -205,7 +209,7 @@ package sweatless.navigation.core{
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 				loading ? loading.show() : null;
-				
+
 				loader.sortItemsByPriority();
 				loader.start();
 			}
@@ -214,7 +218,7 @@ package sweatless.navigation.core{
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
-			Layers.getInstance("sweatless").get("navigation").removeChild(last);
+			last.stage ? Layers.getInstance("sweatless").get("navigation").removeChild(last) : null;
 			
 			!StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
 		}
@@ -243,6 +247,7 @@ package sweatless.navigation.core{
 		
 		private function onChange(evt:SWFAddressEvent):void{
 			Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
+			
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Sweatless.config.currentAreaID)));
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_menu")));
 		}

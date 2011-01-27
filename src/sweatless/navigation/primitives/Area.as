@@ -54,19 +54,9 @@ package sweatless.navigation.primitives{
 		public static const HIDDEN: String = "closed";
 		public static const DESTROYED : String = "destroyed";
 		
-		private var _id : String;
-		
 		public function Area(){
 			tabEnabled = false;
 			tabChildren = false;
-		}
-		
-		public function set id(p_id:String):void{
-			_id = p_id;
-		}
-		
-		public function get id():String{
-			return _id;
 		}
 		
 		public function get assets():XML{
@@ -77,14 +67,16 @@ package sweatless.navigation.primitives{
 			return BulkLoader.getLoader(Sweatless.config.currentAreaID);
 		}
 		
-		public function getAssetString(p_id:String, p_type:String):String{
+		public function getAssetText(p_id:String):String{
+				var result : String = String(assets..text.(@id==p_id));
+				
+				return result ? result : "[id:"+p_id+" type:text]";
+		}
+		
+		public function getAssetPath(p_id:String, p_type:String):String{
 			var result : String;
 			
 			switch(p_type){
-				case "text":
-					result = String(assets..text.(@id==p_id));
-					break;
-				
 				case "image":
 					result = String(assets..image.(@id==p_id).@url);
 					break;
@@ -120,12 +112,12 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function show():void{
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
 			dispatchEvent(new Event(SHOWED));
 		}
 		
 		public function hide():void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			
 			dispatchEvent(new Event(HIDDEN));
 		}
 	}

@@ -113,15 +113,12 @@ package sweatless.layout{
 		}
 
 		public function add(p_id:String, p_custom:Object=null):void{
-			
 			p_id = p_id.toLowerCase();
-			
 			if(get(p_id)) throw new Error("The layer " + p_id + " already exists.");
 						
-			var layer:* = p_custom ? new p_custom() : new Layer();
+			var layer : * = p_custom ? new p_custom() : new Layer();
 			
-			layer.name = p_id.toLowerCase();
-			layer.id = p_id.toLowerCase();
+			layer.name = layer.id = p_id;
 			scope.addChild(layer);
 			layers.push(layer);
 			
@@ -132,7 +129,7 @@ package sweatless.layout{
 			p_id = p_id.toLowerCase();
 			
 			for (var i:uint=0; i<length; i++) {
-				if (layers[i].id == p_id.toLowerCase()) {
+				if (layers[i].id == p_id) {
 					scope.removeChild(layers[i]);
 					layers[i] = null;
 					layers.splice(i, 1);
