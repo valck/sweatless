@@ -299,7 +299,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	private function onComplete(evt:Event):void{
-		loading.removeEventListener(Loading.HIDDEN, onComplete);
+		loading ? loading.removeEventListener(Loading.HIDDEN, onComplete) : null;
 		dispatchEvent(completeEvent);
 	}
 	
@@ -309,7 +309,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	override public function get items():Array{
-		return ArrayUtils.merge(_items, loader.items);
+		return loader ? ArrayUtils.merge(_items, loader.items) : _items;
 	}
 	
 	override public function _onProgress(evt : Event=null):void{
@@ -366,7 +366,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		_bytesTotalCurrent = progressEvent.bytesTotalCurrent;
 		_loadedRatio = progressEvent.ratioLoaded;
 		
-		if (itemsStarted > 0 && itemsLoaded == items.length){
+		if (itemsStarted > 0 && itemsLoaded == itemsTotal-1){
 			if(loading){
 				loading.addEventListener(Loading.HIDDEN, onComplete);
 				loading.hide();

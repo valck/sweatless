@@ -40,6 +40,7 @@
  */
 
 package sweatless.events{
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	
@@ -52,6 +53,8 @@ package sweatless.events{
 		
 		private static var instance : Broadcaster;
 		private static var registeredEvents : Dictionary = new Dictionary();
+		
+		public static var debugMode:Boolean = false; 
 		
 		/**
 		 * 
@@ -98,6 +101,8 @@ package sweatless.events{
 		public function setEvent(p_event:String):void{
 			if(hasEvent(p_event)) throw new Error("The event "+ toUppercase(p_event) +" already registered.");
 			registeredEvents[toUppercase(p_event)] = addEvent(toUppercase(p_event), toLowercase(p_event));
+			
+			debugLog("setEvent", p_event);
 		}
 
 		/**
@@ -126,6 +131,8 @@ package sweatless.events{
 				registeredEvents[toUppercase(p_event)] = null;
 				delete registeredEvents[toUppercase(p_event)];
 			}
+			
+			debugLog("clearEvent", p_event);
 		}
 
 		/**
@@ -138,6 +145,30 @@ package sweatless.events{
                 registeredEvents[key] = null;
                 delete registeredEvents[key];
             }
+			
+			debugLog("clearEvent", "All Events");
+		}
+		
+		override public function dispatchEvent(event:Event):Boolean{
+			debugLog("dispatchEvent", event.type);
+			
+			return super.dispatchEvent(event);
+		}
+		
+		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void{
+			debugLog("addEventListener", type);
+			
+			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		
+		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
+			debugLog("removeEventListener", type);
+			
+			super.removeEventListener(type, listener, useCapture);
+		}
+		
+		private function debugLog(type:String, event:String):void{
+			if(debugMode) trace("Broadcaster : " + type + " -> " + event);
 		}
 
 		private function addEvent(p_upper : String, p_lower : String):*{
