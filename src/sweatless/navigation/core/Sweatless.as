@@ -258,14 +258,21 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 		loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 		loading ? loading.show() : null;
-		
-		ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 ? SWFAddress.addEventListener(SWFAddressEvent.INIT, ready) : prepared();
+
+		if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
+			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
+		}else if(Sweatless.config.firstArea){
+			ready();
+		}else{
+			prepared();
+		}
+	
 	}
 	
-	private function ready(evt:Event):void{
-		SWFAddress.removeEventListener(SWFAddressEvent.INIT, ready);
+	private function ready(evt:Event=null):void{
+		evt ? SWFAddress.removeEventListener(SWFAddressEvent.INIT, ready) : null;
 		
-		Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
+		Sweatless.config.currentAreaID = evt ? Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) : Sweatless.config.firstArea;
 		
 		loader = new BulkLoader(Sweatless.config.currentAreaID, 666);
 		loader.maxConnectionsPerHost = 666;
@@ -366,7 +373,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		_bytesTotalCurrent = progressEvent.bytesTotalCurrent;
 		_loadedRatio = progressEvent.ratioLoaded;
 		
-		if (itemsStarted > 0 && itemsLoaded == itemsTotal-1){
+		if (itemsStarted != 0 && localItemsLoaded == items.length){
 			if(loading){
 				loading.addEventListener(Loading.HIDDEN, onComplete);
 				loading.hide();
