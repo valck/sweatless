@@ -146,6 +146,8 @@ package sweatless.display{
 		 * 
 		 */
 		public function set source(p_value:MovieClip):void{
+			if(_source) removeChild(_source);
+			
 			if(!p_value) return;
 			
 			_source = p_value;
