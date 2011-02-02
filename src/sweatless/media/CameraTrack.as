@@ -40,12 +40,19 @@
  */
 
 package sweatless.media{
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.ActivityEvent;
 	import flash.events.Event;
 	import flash.events.StatusEvent;
+	import flash.events.TimerEvent;
+	import flash.filters.ColorMatrixFilter;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.media.Camera;
 	import flash.media.Video;
+	import flash.utils.Timer;
 	
 	import sweatless.utils.BitmapUtils;
 	
@@ -62,31 +69,60 @@ package sweatless.media{
 		public static const FOUND : String = "found";
 		
 		private var index : uint;
+		private var timer : Timer;
+		
+		private var image : Bitmap;
+		private var bitmap : BitmapData;
+		
+		private var matrix : Matrix;
+		private var filter : ColorMatrixFilter;
 		
 		private var camera : Camera;
 		private var video : Video;
-		
-		public function CameraTrack(p_width:int=320, p_height:int=240){
-			video = new Video(p_width, p_height);
-			addChild(video);
-			
-			addEventListener(Event.ADDED_TO_STAGE, start);
-		}
 		
 		/*
 		Camera automatic detection methods
 		Tries to find the correct camera driver by simply testing all cameras and checking the activityLevel and the output bitmap
 		*/
-		private function start(evt:Event):void{
-			removeEventListener(Event.ADDED_TO_STAGE, start);
+		public function CameraTrack(p_width:int=320, p_height:int=240, p_asBitmap:Boolean=false){
+			video = new Video(p_width, p_height);
+			
+			if(p_asBitmap){
+				image = new Bitmap();
+				addChild(image);
+				
+				addEventListener(CameraTrack.FOUND, asBitmap)
+			}else{
+				addChild(video);
+			}
 			
 			index = 0;
 			
 			tryNext();
 		}
 		
-		public function get track():Video{
-			return video;
+		private function asBitmap(evt:Event):void{
+			removeEventListener(CameraTrack.FOUND, asBitmap);
+			
+			bitmap = new BitmapData(width, height, false, 0);
+			
+			matrix = new Matrix(1, 0, 0, 1, 0, 0);
+
+			image.bitmapData = bitmap;
+			image.smoothing = smoothing;
+			
+			timer = new Timer(1000 / fps);
+			timer.addEventListener(TimerEvent.TIMER, render);
+			timer.start();
+		}
+		
+		public function get track():*{
+			return video.stage ? video : image;
+		}
+		
+		public function set colorMatrix(p_filter:Array):void{
+			filter = new ColorMatrixFilter();
+			filter.matrix = p_filter;
 		}
 		
 		public function get deblocking():int{
@@ -190,6 +226,18 @@ package sweatless.media{
 			return video.width;
 		}
 		
+		private function render(evt:TimerEvent):void{
+			timer.delay = fps;
+			
+			bitmap.lock();
+			bitmap.draw (video, matrix, null, "normal", null, smoothing);
+			
+			if(filter) bitmap.applyFilter(bitmap, bitmap.rect, new Point(), filter);
+			bitmap.unlock();
+			
+			dispatchEvent(new Event(Event.RENDER));
+		}
+		
 		private function tryNext():void{
 			if(index > availableCameras.length){
 				notify(NOT_FOUND);
@@ -247,8 +295,18 @@ package sweatless.media{
 		public function destroy():void{
 			video.clear();
 			video.attachCamera(null);
-			video ? removeChild(video) : null;
+			video && video.stage ? removeChild(video) : null;
 			video = null;
+			
+			if(timer){
+				timer.removeEventListener(TimerEvent.TIMER, render);
+				timer.stop();
+				
+				filter = null;
+				
+				removeChild(image);
+				image = null;
+			}
 			
 			camera = null;
 		}
