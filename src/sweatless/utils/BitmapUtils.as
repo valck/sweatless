@@ -42,10 +42,12 @@
 package sweatless.utils {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.BitmapDataChannel;
 	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.PixelSnapping;
 	import flash.display.StageQuality;
+	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -71,36 +73,28 @@ package sweatless.utils {
 		 * @see flash.display.BitmapData
 		 * @see flash.display.Bitmap
 		 */
-		public static function convertToBitmap( p_target:DisplayObject, p_margin:int=5, p_smoothing:Boolean=true, p_remove:Boolean=true, p_crop:Rectangle=null ):Bitmap {
+		public static function convertToBitmap(p_target:DisplayObject, p_margin:int=5, p_smoothing:Boolean=true, p_remove:Boolean=true, p_crop:Rectangle=null):Bitmap{
 			var qualityStage:String;
 
-			if ( p_target.stage ) {
-				qualityStage=p_target.stage.quality;
-				p_target.stage.quality=StageQuality.BEST;
+			if(p_target.stage) {
+				qualityStage = p_target.stage.quality;
+				p_target.stage.quality = StageQuality.BEST;
 			}
+			
+			if(!p_crop) p_crop = new Rectangle(0, 0, p_target.width, p_target.height);
 
-			if ( !p_crop ) {
-				p_crop=new Rectangle( 0, 0, p_target.width, p_target.height );
-			}
+			var targetToDraw : BitmapData = new BitmapData(p_crop.width + p_margin, p_crop.height + p_margin, true, 0x00000000);
+			targetToDraw.draw(p_target, new Matrix( 1, 0, 0, 1, -p_crop.x, -p_crop.y ), null, null, null, true);
 
-			var targetToDraw:BitmapData = new BitmapData( p_crop.width + p_margin, p_crop.height + p_margin, true, 0x00000000 );
-			targetToDraw.draw( p_target, new Matrix( 1, 0, 0, 1, -p_crop.x, -p_crop.y ), null, null, null, true );
-
-			var targetDrawed:Bitmap = new Bitmap( targetToDraw, PixelSnapping.ALWAYS, true );
-			if ( p_target.stage ) {
-				p_target.stage.quality=qualityStage;
-			}
+			var targetDrawed : Bitmap = new Bitmap(targetToDraw, PixelSnapping.ALWAYS, true);
+			if(p_target.stage) p_target.stage.quality = qualityStage;
 
 			targetDrawed.name=p_target.name;
 			targetDrawed.x=p_target.x;
 			targetDrawed.y=p_target.y;
 			targetDrawed.smoothing=p_smoothing;
 
-			if ( p_remove ) {
-				if ( p_target.stage ) {
-					p_target.parent.removeChild( p_target );
-				};
-			}
+			if(p_remove && p_target.stage) p_target.parent.removeChild(p_target);
 
 			return targetDrawed;
 		}
@@ -111,7 +105,7 @@ package sweatless.utils {
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see BitmapData
 		 */
-		public static function isEmptyBitmapData( p_bmp:BitmapData ):Boolean {
+		public static function isEmptyBitmapData(p_bmp:BitmapData):Boolean {
 			var width:int = p_bmp.width;
 			var height:int = p_bmp.height;
 
@@ -136,107 +130,85 @@ package sweatless.utils {
 			return true;
 		}
 		
-		/**
-		 * Check the Hit Test of two DisplayObjects with accuracy level.
-		 * @param p_target The <code>DisplayObject</code> to check.
-		 * @param p_target2 The <code>DisplayObject</code> to check.
-		 * @param p_accuracy The accuracy<code>Number</code> to check.
-		 * @return The resulting <code>Boolean</code> object.
-		 * @see DisplayObject
-		 * @see Number
-		 */
-		public static function specialHitTestObject( p_target:DisplayObject, p_target2:DisplayObject, p_accuracy:Number=1 ):Boolean {
-			return specialIntersectionRectangle( p_target, p_target2, p_accuracy ).width != 0;
+		public static function hitTest(p_target:Bitmap, p_other:Bitmap, p_accuracy:Number=1):Boolean{
+			return specialIntersectionRectangle(p_target, p_other, p_accuracy).width != 0;
 		}
-		
-		/**
-		 * Check the intersection of two DisplayObjects.
-		 * @param p_target The <code>DisplayObject</code> to check.
-		 * @param p_target2 The <code>DisplayObject</code> to check.
-		 * @return The resulting <code>Rectangle</code> object.
-		 * @see DisplayObject
-		 * @see Rectangle
-		 */
-		public static function intersectionRectangle( p_target:DisplayObject, p_target2:DisplayObject ):Rectangle {
-			if ( !p_target.root || !p_target2.root || !p_target.hitTestObject( p_target2 )) {
-				return new Rectangle();
-			}
 
-			var bounds1:Rectangle = p_target.getBounds( p_target.root );
-			var bounds2:Rectangle = p_target2.getBounds( p_target2.root );
+		public static function intersectionRectangle(p_target:Bitmap, p_other:Bitmap):Rectangle{
+			if(!p_target.root || !p_other.root || !p_target.hitTestObject(p_other)) return new Rectangle();
 
-			var intersection:Rectangle = new Rectangle();
-			intersection.x=Math.max( bounds1.x, bounds2.x );
-			intersection.y=Math.max( bounds1.y, bounds2.y );
-			intersection.width=Math.min(( bounds1.x + bounds1.width ) - intersection.x, ( bounds2.x + bounds2.width ) - intersection.x );
-			intersection.height=Math.min(( bounds1.y + bounds1.height ) - intersection.y, ( bounds2.y + bounds2.height ) - intersection.y );
+			var target : Rectangle = p_target.getBounds(p_target.root);
+			var other : Rectangle = p_other.getBounds(p_other.root);
+
+			var intersection : Rectangle = new Rectangle();
+			intersection.x = Math.max(target.x, other.x);
+			intersection.y = Math.max(target.y, other.y);
+			intersection.width = Math.min((target.x + target.width) - intersection.x, (other.x + other.width) - intersection.x);
+			intersection.height = Math.min((target.y + target.height) - intersection.y, (other.y + other.height) - intersection.y);
 
 			return intersection;
 		}
 		
-		/**
-		 * Check the intersection of two DisplayObjects with accuracy level.
-		 * @param p_target The <code>DisplayObject</code> to check.
-		 * @param p_target2 The <code>DisplayObject</code> to check.
-		 * @param p_accuracy The accuracy<code>Number</code> to check.
-		 * @return The resulting <code>Rectangle</code> object.
-		 * @see DisplayObject
-		 * @see Rectangle
-		 */
-		public static function specialIntersectionRectangle( p_target:DisplayObject, p_target2:DisplayObject, p_accuracy:Number=1 ):Rectangle {
-			if ( p_accuracy <= 0 ) {
-				throw new Error( "ArgumentError: Error #5001: Invalid value for accuracy", 5001 );
+		public static function specialIntersectionRectangle(p_target:Bitmap, p_other:Bitmap, p_accuracy:Number=1):Rectangle{
+			if(p_accuracy <= 0) throw new Error( "Invalid value for accuracy.");
+			if(!p_target.hitTestObject(p_other)) return new Rectangle();
+
+			var rect : Rectangle = intersectionRectangle(p_target, p_other);
+			if(rect.width * p_accuracy < 1 || rect.height * p_accuracy < 1) return new Rectangle();
+
+			var bitmap : BitmapData = new BitmapData(rect.width * p_accuracy, rect.height * p_accuracy, false, 0x000000);
+			bitmap.draw(p_target, getDrawMatrix(p_target, rect, p_accuracy), new ColorTransform(1, 1, 1, 1, 255, -255, -255, 255));
+			bitmap.draw(p_other, getDrawMatrix(p_other, rect, p_accuracy), new ColorTransform(1, 1, 1, 1, 255, 255, 255, 255), BlendMode.DIFFERENCE);
+
+			var intersection : Rectangle = bitmap.getColorBoundsRect(0xFFFFFFFF, 0xFF00FFFF);
+
+			bitmap.dispose();
+
+			if (p_accuracy != 1) {
+				intersection.x /= p_accuracy;
+				intersection.y /= p_accuracy;
+				intersection.width /= p_accuracy;
+				intersection.height /= p_accuracy;
 			}
 
-			if ( !p_target.hitTestObject( p_target2 )) {
-				return new Rectangle();
-			}
-
-			var hitRectangle:Rectangle = intersectionRectangle( p_target, p_target2 );
-			if ( hitRectangle.width * p_accuracy < 1 || hitRectangle.height * p_accuracy < 1 ) {
-				return new Rectangle();
-			}
-
-			var bitmapData:BitmapData = new BitmapData( hitRectangle.width * p_accuracy, hitRectangle.height * p_accuracy, false, 0x000000 );
-
-			bitmapData.draw( p_target, BitmapUtils.getDrawMatrix( p_target, hitRectangle, p_accuracy ), new ColorTransform( 1, 1, 1, 1, 255, -255, -255, 255 ));
-			bitmapData.draw( p_target2, BitmapUtils.getDrawMatrix( p_target2, hitRectangle, p_accuracy ), new ColorTransform( 1, 1, 1, 1, 255, 255, 255, 255 ), BlendMode.DIFFERENCE );
-
-			var intersection:Rectangle = bitmapData.getColorBoundsRect( 0xFFFFFFFF, 0xFF00FFFF );
-
-			bitmapData.dispose();
-
-			if ( p_accuracy != 1 ) {
-				intersection.x/=p_accuracy;
-				intersection.y/=p_accuracy;
-				intersection.width/=p_accuracy;
-				intersection.height/=p_accuracy;
-			}
-
-			intersection.x+=hitRectangle.x;
-			intersection.y+=hitRectangle.y;
+			intersection.x += rect.x;
+			intersection.y += rect.y;
 
 			return intersection;
 		}
 
-		private static function getDrawMatrix( p_target:DisplayObject, hitRectangle:Rectangle, accuracy:Number ):Matrix {
-			var localToGlobal:Point;;
-			var matrix:Matrix;
+		public static function getDrawMatrix(p_target:Bitmap, p_hit:Rectangle, p_accuracy:Number):Matrix{
+			var localToGlobal : Point;;
+			var matrix : Matrix;
 
-			var rootConcatenatedMatrix:Matrix = p_target.root.transform.concatenatedMatrix;
+			var rootConcatenatedMatrix : Matrix = p_target.root.transform.concatenatedMatrix;
 
-			localToGlobal=p_target.localToGlobal( new Point());
-			matrix=p_target.transform.concatenatedMatrix;
-			matrix.tx=localToGlobal.x - hitRectangle.x;
-			matrix.ty=localToGlobal.y - hitRectangle.y;
+			localToGlobal = p_target.localToGlobal(new Point());
+			
+			matrix = p_target.transform.concatenatedMatrix;
+			matrix.tx = localToGlobal.x - p_hit.x;
+			matrix.ty = localToGlobal.y - p_hit.y;
 
-			matrix.a=matrix.a / rootConcatenatedMatrix.a;
-			matrix.d=matrix.d / rootConcatenatedMatrix.d;
-			if ( accuracy != 1 ) {
-				matrix.scale( accuracy, accuracy );
-			}
+			matrix.a = matrix.a / rootConcatenatedMatrix.a;
+			matrix.d = matrix.d / rootConcatenatedMatrix.d;
+			
+			if(p_accuracy != 1) matrix.scale(p_accuracy, p_accuracy);
 
 			return matrix;
+		}
+		
+		public static function comparePixels(p_target:BitmapData, p_other:BitmapData, p_accuracy:Number=1):Boolean{
+			var pixels : Number = 0;
+			var commonPixels : Number = 0;
+			
+			xAxis:for(var x:int=0; x<p_target.width; x++) {
+				yAxis:for(var y:int=0; y<p_target.height; y++) {
+					pixels++;
+					p_target.getPixel(y,x) == p_other.getPixel(y,x) ? commonPixels++ : null;
+				}
+			}
+
+			return commonPixels/pixels >= p_accuracy ? true : false;
 		}
 
 	}
