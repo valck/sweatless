@@ -224,13 +224,13 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	
 	namespace lazy_loader = "http://code.google.com/p/bulk-loader/"
 		
+	private var count : uint;
 	private var source : XML;
 	private var loader : BulkLoader;
 	private var loading : Loading;
-	private var progressEvent : BulkProgressEvent;
-	private var completeEvent : BulkProgressEvent;
 	
 	public function BulkLoaderXMLPlugin(url:*, name:String){
+		count = 0;
 		super (url, name, 666);
 	}
 	
@@ -266,6 +266,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 			prepared();
 		}
 	
+		addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 	}
 	
 	private function ready(evt:Event=null):void{
@@ -300,19 +301,39 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		loader.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
 		loader.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
-		prepared();
 		loader.start();
+		prepared();
 	}
 	
-	private function onComplete(evt:Event):void{
-		loading ? loading.removeEventListener(Loading.HIDDEN, onComplete) : null;
-		dispatchEvent(completeEvent);
+	private function _onComplete(evt:Event):void{
+		loading ? loading.removeEventListener(Loading.HIDDEN, _onComplete) : null;
+		
+		var complete : BulkProgressEvent = new BulkProgressEvent(FINISHED);
+		complete.setInfo(_bytesLoaded, _bytesTotal, _bytesTotalCurrent, _itemsLoaded, _itemsTotal, _weightPercent);
+		
+		if(loader && count == 1){
+			dispatchEvent(complete);
+		}else if(loader && count == 0){
+			count++;
+		}else{
+			dispatchEvent(complete)
+		}
 	}
 	
 	private function removeProgress(evt:Event):void{
-		loader.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
-		loader.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
-		onComplete(null);
+		removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+		
+		if(loader && count == 1){
+			loader.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+			loader.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+		}
+		
+		if(loading){
+			loading.addEventListener(Loading.HIDDEN, _onComplete);
+			loading.hide();
+		}else{
+			_onComplete(null);
+		}
 	}
 	
 	override public function get items():Array{
@@ -320,10 +341,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	override public function _onProgress(evt : Event=null):void{
-		_bytesLoaded = 0;
-		_bytesTotal = 0; 
-		_bytesTotalCurrent = 0;
-		
 		var itemsStarted : int = 0;
 		
 		var localWeightLoaded : Number = 0;
@@ -342,7 +359,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 			
 			if(!item || item.bytesTotal == -1 || item.bytesTotal == 0) continue;
 			
-			localItemsTotal ++;
+			localItemsTotal++;
 			localWeightTotal += item.weight;
 			
 			if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED || item.status == LoadingItem.STATUS_STOPPED){
@@ -350,7 +367,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 				localBytesTotalCurrent += item._bytesTotal;
 				
 				item._bytesTotal > 0 ? localWeightLoaded += (item._bytesLoaded / item._bytesTotal) * item.weight : null;
-				item.status == LoadingItem.STATUS_FINISHED ? localItemsLoaded ++ : null;
+				item.status == LoadingItem.STATUS_FINISHED ? localItemsLoaded++ : null;
 				
 				itemsStarted ++;
 			}
@@ -359,27 +376,21 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		itemsStarted != localItemsTotal ? localBytesTotal = Number.POSITIVE_INFINITY : localBytesTotal = localBytesTotalCurrent;
 		localWeightPercent = localWeightLoaded / localWeightTotal;
 		
-		progressEvent = new BulkProgressEvent(PROGRESS);
-		progressEvent.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
+		var progress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
+		progress.setInfo(localBytesLoaded, localBytesTotal, localBytesTotalCurrent, localItemsLoaded, localItemsTotal, localWeightPercent);
 		
-		completeEvent = new BulkProgressEvent(FINISHED);
-		completeEvent.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
+		_itemsLoaded = progress.itemsLoaded;
+		_itemsTotal = progress.itemsTotal;
 		
-		_itemsLoaded = localItemsLoaded;
-		_bytesLoaded = progressEvent.bytesLoaded;
-		_bytesTotal = progressEvent.bytesTotal;
-		_weightPercent = progressEvent.weightPercent;
-		_percentLoaded = progressEvent.percentLoaded;
-		_bytesTotalCurrent = progressEvent.bytesTotalCurrent;
-		_loadedRatio = progressEvent.ratioLoaded;
+		_bytesLoaded = progress.bytesLoaded;
+		_bytesTotal = progress.bytesTotal;
+		_bytesTotalCurrent = progress.bytesTotalCurrent;
 		
-		if (itemsStarted != 0 && localItemsLoaded == items.length){
-			if(loading){
-				loading.addEventListener(Loading.HIDDEN, onComplete);
-				loading.hide();
-			}
-		}else{
-			dispatchEvent(progressEvent);
-		}
+		_weightPercent = progress.weightPercent;
+		_percentLoaded = progress.percentLoaded;
+		
+		_loadedRatio = progress.ratioLoaded;
+		
+		dispatchEvent(progress);
 	}
 }
