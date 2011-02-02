@@ -137,7 +137,6 @@ package sweatless.navigation.core{
 		private function removeLoadListeners(evt:Event):void{
 			loader.removeEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
 			loader.removeEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
-			
 			_navigation.init();
 			
 			build();
@@ -258,7 +257,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 		loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 		loading ? loading.show() : null;
-
+		
 		if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
 			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
 		}else if(Sweatless.config.firstArea){
@@ -313,6 +312,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	private function removeProgress(evt:Event):void{
 		loader.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		loader.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+		onComplete(null);
 	}
 	
 	override public function get items():Array{
@@ -377,8 +377,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 			if(loading){
 				loading.addEventListener(Loading.HIDDEN, onComplete);
 				loading.hide();
-			}else{
-				onComplete(null);
 			}
 		}else{
 			dispatchEvent(progressEvent);
