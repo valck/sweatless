@@ -176,6 +176,8 @@ package sweatless.media{
 				properties[String(prop)] = String(p_object[prop]);
 			}
 			
+			if(!p_object) return;
+			
 			if(!p_object["cuePoints"]) return;
 			
 			_cuepoints = new Dictionary();

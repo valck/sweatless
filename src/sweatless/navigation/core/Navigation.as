@@ -143,6 +143,9 @@ package sweatless.navigation.core{
 				align(current, Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@halign"), Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@valign"), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@width")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 				
 				last = current;
+				
+				last.addEventListener(Area.HIDDEN, hideComplete);
+				
 			}catch(e:Error){
 				trace(e.getStackTrace());
 			}
@@ -153,13 +156,21 @@ package sweatless.navigation.core{
 			current.show();
 		}
 		
+		
+		private function hideComplete(evt:Event=null ):void{
+			last.removeEventListener(Area.HIDDEN, load);
+			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
+			last = null;
+		}
+		
 		private function hide(evt:Event):void{
 			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
 			loader && loader.isRunning ? loader.pauseAll() : null;
 			
 			setID(evt.type);
-			
+						
 			if(last) {
+				last.removeEventListener(Area.HIDDEN, hideComplete);
 				last.addEventListener(Area.HIDDEN, load);
 				last.hide();
 			}else{
