@@ -73,7 +73,7 @@ package sweatless.utils{
 		public static function toArray(p_source : Dictionary):Array{
 			var result : Array = new Array();
 			for (var i : * in p_source){
-				result.push(i);
+				result.push(p_source[i]);
 				
 			}
 			return result;
