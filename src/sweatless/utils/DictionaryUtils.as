@@ -63,5 +63,20 @@ package sweatless.utils{
 			return result;
 		}
 
+		/**
+		 * Return a <code>Array</code> of a <code>Dictionary</code> item.
+		 * @param p_source The <code>Dictionary</code> object.
+		 * @return The resulting <code>Array</code>.
+		 * @see Array
+		 * @see Dictionary
+		 */
+		public static function toArray(p_source : Dictionary):Array{
+			var result : Array = new Array();
+			for (var i : * in p_source){
+				result.push(i);
+				
+			}
+			return result;
+		}
 	}
 }
