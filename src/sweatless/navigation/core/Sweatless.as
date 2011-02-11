@@ -258,7 +258,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
 		loading ? loading.show() : null;
 		
-		if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
+		if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
 			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
 		}else if(Sweatless.config.firstArea){
 			ready();

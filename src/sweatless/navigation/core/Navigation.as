@@ -102,13 +102,11 @@ package sweatless.navigation.core{
 
 			Sweatless.config.tracking ? Sweatless.tracking.add() : null;
 			
-			if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
+			if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
 				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
-			}else{
-				if(Sweatless.config.firstArea){
-					Sweatless.config.currentAreaID = Sweatless.config.firstArea;
-					load(null);
-				}
+			}else if(Sweatless.config.firstArea){
+				Sweatless.config.currentAreaID = Sweatless.config.firstArea;
+				load(null);
 			}
 			
 			Sweatless.config.started = true;
