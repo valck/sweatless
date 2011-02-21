@@ -55,6 +55,7 @@ package sweatless.media{
 
 	public class SoundTrack extends EventDispatcher{
 		
+		public static const COMPLETE : String = "complete";
 		public static const CUEPOINT : String = "cuepoint";
 
 		private var _playing : Boolean;
@@ -248,6 +249,7 @@ package sweatless.media{
 				channel.removeEventListener(Event.SOUND_COMPLETE, looping);
 				isLooping = false;
 				stop();	
+				dispatchEvent(new Event(COMPLETE));
 			}
 		}
 					
