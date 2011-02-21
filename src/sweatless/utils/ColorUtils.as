@@ -55,15 +55,15 @@ package sweatless.utils{
 		 * Tints the target <code>DisplayObject</code> with the given color. 
 		 * @param p_target The target <code>DisplayObject</code> to be tinted.
 		 * @param p_color The hexadecimal color value the target <code>DisplayObject</code> should be tinted.
+		 * @default is 4.294967295E9 for remove the colorTransform.
 		 * @see flash.display.DisplayObject
 		 */
-		public static function setColor(p_target:DisplayObject, p_color:uint, p_remove:Boolean=false):void{
+		public static function setColor(p_target:DisplayObject, p_color:uint=4.294967295E9):void{
 			var colorT : ColorTransform = new ColorTransform();
 			colorT.color = p_color;
 			
-			(p_target).transform.colorTransform = !p_remove ? colorT : new ColorTransform();
+			(p_target).transform.colorTransform = p_color != 4.294967295E9 ? colorT : new ColorTransform();
 		}
-		
 		
 		/**
 		 * Lighten the target color value with the given amount. 
