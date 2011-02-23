@@ -130,53 +130,6 @@ package sweatless.utils {
 			return true;
 		}
 		
-		public static function hitTest(p_target:Bitmap, p_other:Bitmap, p_accuracy:Number=1):Boolean{
-			return specialIntersectionRectangle(p_target, p_other, p_accuracy).width != 0;
-		}
-
-		public static function intersectionRectangle(p_target:Bitmap, p_other:Bitmap):Rectangle{
-			if(!p_target.root || !p_other.root || !p_target.hitTestObject(p_other)) return new Rectangle();
-
-			var target : Rectangle = p_target.getBounds(p_target.root);
-			var other : Rectangle = p_other.getBounds(p_other.root);
-
-			var intersection : Rectangle = new Rectangle();
-			intersection.x = Math.max(target.x, other.x);
-			intersection.y = Math.max(target.y, other.y);
-			intersection.width = Math.min((target.x + target.width) - intersection.x, (other.x + other.width) - intersection.x);
-			intersection.height = Math.min((target.y + target.height) - intersection.y, (other.y + other.height) - intersection.y);
-
-			return intersection;
-		}
-		
-		public static function specialIntersectionRectangle(p_target:Bitmap, p_other:Bitmap, p_accuracy:Number=1):Rectangle{
-			if(p_accuracy <= 0) throw new Error( "Invalid value for accuracy.");
-			if(!p_target.hitTestObject(p_other)) return new Rectangle();
-
-			var rect : Rectangle = intersectionRectangle(p_target, p_other);
-			if(rect.width * p_accuracy < 1 || rect.height * p_accuracy < 1) return new Rectangle();
-
-			var bitmap : BitmapData = new BitmapData(rect.width * p_accuracy, rect.height * p_accuracy, false, 0x000000);
-			bitmap.draw(p_target, getDrawMatrix(p_target, rect, p_accuracy), new ColorTransform(1, 1, 1, 1, 255, -255, -255, 255));
-			bitmap.draw(p_other, getDrawMatrix(p_other, rect, p_accuracy), new ColorTransform(1, 1, 1, 1, 255, 255, 255, 255), BlendMode.DIFFERENCE);
-
-			var intersection : Rectangle = bitmap.getColorBoundsRect(0xFFFFFFFF, 0xFF00FFFF);
-
-			bitmap.dispose();
-
-			if (p_accuracy != 1) {
-				intersection.x /= p_accuracy;
-				intersection.y /= p_accuracy;
-				intersection.width /= p_accuracy;
-				intersection.height /= p_accuracy;
-			}
-
-			intersection.x += rect.x;
-			intersection.y += rect.y;
-
-			return intersection;
-		}
-
 		public static function getDrawMatrix(p_target:Bitmap, p_hit:Rectangle, p_accuracy:Number):Matrix{
 			var localToGlobal : Point;;
 			var matrix : Matrix;

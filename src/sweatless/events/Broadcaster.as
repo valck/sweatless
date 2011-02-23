@@ -44,6 +44,8 @@ package sweatless.events{
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	
+	import sweatless.debug.Logger;
+	
 	/**
 	 * 
 	 * The <code>Broadcaster</code> is a very useful dynamic singleton for management events. It's a better and more fast way to centralize events.
@@ -51,10 +53,10 @@ package sweatless.events{
 	 */
 	public dynamic class Broadcaster extends EventDispatcher{
 		
+		private static var debug : Boolean; 
+		private static var logger : Logger; 
 		private static var instance : Broadcaster;
 		private static var registeredEvents : Dictionary = new Dictionary();
-		
-		public static var debugMode:Boolean = false; 
 		
 		/**
 		 * 
@@ -63,6 +65,7 @@ package sweatless.events{
 		 */
 		public function Broadcaster(){
 			if(instance) throw new Error("Broadcaster already initialized.");
+			logger = new Logger(Broadcaster);
 		}
 		
 		/**
@@ -88,6 +91,7 @@ package sweatless.events{
 		 */
 		public function getEvent(p_event:String):String{
 			if(!hasEvent(p_event)) throw new Error("The event "+ toUppercase(p_event) +" doesn't exists.");
+			log("getEvent:", p_event);
 			return registeredEvents[toUppercase(p_event)];
 		}
 		
@@ -101,8 +105,7 @@ package sweatless.events{
 		public function setEvent(p_event:String):void{
 			if(hasEvent(p_event)) throw new Error("The event "+ toUppercase(p_event) +" already registered.");
 			registeredEvents[toUppercase(p_event)] = addEvent(toUppercase(p_event), toLowercase(p_event));
-			
-			debugLog("setEvent", p_event);
+			log("setEvent:", p_event);
 		}
 
 		/**
@@ -131,8 +134,7 @@ package sweatless.events{
 				registeredEvents[toUppercase(p_event)] = null;
 				delete registeredEvents[toUppercase(p_event)];
 			}
-			
-			debugLog("clearEvent", p_event);
+			log("clearEvent:", p_event);
 		}
 
 		/**
@@ -145,30 +147,19 @@ package sweatless.events{
                 registeredEvents[key] = null;
                 delete registeredEvents[key];
             }
-			
-			debugLog("clearEvent", "All Events");
+			log("clearAllEvents", "");
 		}
 		
-		override public function dispatchEvent(event:Event):Boolean{
-			debugLog("dispatchEvent", event.type);
-			
-			return super.dispatchEvent(event);
+		public static function get debugMode():Boolean{
+			return debug;
 		}
 		
-		override public function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void{
-			debugLog("addEventListener", type);
-			
-			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		public static function set debugMode(p_value:Boolean):void{
+			debug = p_value;
 		}
-		
-		override public function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void{
-			debugLog("removeEventListener", type);
-			
-			super.removeEventListener(type, listener, useCapture);
-		}
-		
-		private function debugLog(type:String, event:String):void{
-			if(debugMode) trace("Broadcaster : " + type + " -> " + event);
+
+		private function log(type:String, event:String):void{
+			debug ? logger.log(Logger.DEBUG, type, event) : null;
 		}
 
 		private function addEvent(p_upper : String, p_lower : String):*{

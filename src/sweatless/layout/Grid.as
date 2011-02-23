@@ -18,7 +18,7 @@ package sweatless.layout{
 			_columns = p_columns;
 			_rows = p_rows;
 			
-			if(p_data && p_data.length>length) throw new Error("The length of data is different a total length.");
+			if(p_data && p_data.length>length) throw new Error("The length of data is different of total length.");
 			
 			for (var i:uint=0; i<length; i++){
 				var row : uint;
