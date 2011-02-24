@@ -102,8 +102,8 @@ package sweatless.navigation.core{
 
 			Sweatless.config.tracking ? Sweatless.tracking.add() : null;
 			
-			if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
-				SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
+			if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
+				 SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
 			}else if(Sweatless.config.firstArea){
 				Sweatless.config.currentAreaID = Sweatless.config.firstArea;
 				load(null);
@@ -156,6 +156,7 @@ package sweatless.navigation.core{
 			loader && loader.isRunning ? loader.pauseAll() : null;
 			
 			setID(evt.type);
+			Sweatless.config.firstArea == "" ? Sweatless.config.firstArea = Sweatless.config.currentAreaID : null;
 			
 			if(last) {
 				last.addEventListener(Area.HIDDEN, load);
@@ -245,6 +246,7 @@ package sweatless.navigation.core{
 		
 		private function onChange(evt:SWFAddressEvent):void{
 			Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
+			if(Sweatless.config.currentAreaID == "") return;
 			
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+Sweatless.config.currentAreaID)));
 			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_menu")));

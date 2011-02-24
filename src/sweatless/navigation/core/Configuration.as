@@ -48,6 +48,7 @@ package sweatless.navigation.core{
 		private static var _started : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
+		private static var _firstArea : String = "";
 		
 		private static var parameters : Dictionary = new Dictionary();
 		
@@ -86,7 +87,11 @@ package sweatless.navigation.core{
 		}
 		
 		public function get firstArea():String{
-			return String(source..areas.@first);
+			return String(source..areas.@first) != "" ? String(source..areas.@first) : _firstArea;
+		}
+		
+		public function set firstArea(p_areaID:String):void{
+			_firstArea = p_areaID;
 		}
 		
 		public function get crossdomain():String{
