@@ -44,7 +44,7 @@ package sweatless.debug{
 			log(Logger.INFO, p_message);
 		}
 		
-		public function warn(p_message:String):void{	
+		public function warning(p_message:String):void{	
 			log(Logger.WARNING, p_message);
 		}
 		
