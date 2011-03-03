@@ -41,6 +41,7 @@
 
 package sweatless.navigation.core{
 	
+	import flash.display.DisplayObjectContainer;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	
@@ -102,7 +103,7 @@ package sweatless.navigation.core{
 
 			Sweatless.config.tracking ? Sweatless.tracking.add() : null;
 			
-			if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0){
+			if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0){
 				 SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
 			}else if(Sweatless.config.firstArea){
 				Sweatless.config.currentAreaID = Sweatless.config.firstArea;
@@ -128,12 +129,12 @@ package sweatless.navigation.core{
 			try{
 				loading ? loading.removeEventListener(Loading.HIDDEN, loaded) : null;
 				
-				ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 ? setDeeplink() : null;
+				ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 ? setDeeplink() : null;
 				
 				current = Area(loader.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
 				current.id = Sweatless.config.currentAreaID;
 				
-				Layers.getInstance("sweatless").get("navigation").addChild(current);
+				DisplayObjectContainer(Layers.getInstance("sweatless").get("navigation")).addChild(current);
 				
 				current.addEventListener(Area.READY, show);
 				current.create();
@@ -152,7 +153,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function hide(evt:Event):void{
-			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			loading && loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).removeChild(loading) : null;
 			loader && loader.isRunning ? loader.pauseAll() : null;
 			
 			setID(evt.type);
@@ -167,7 +168,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function load(evt:Event):void{
-			loading && loading.stage ? Layers.getInstance("sweatless").get("loading").removeChild(loading) : null;
+			loading && loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).removeChild(loading) : null;
 			
 			if(last){
 				last.removeEventListener(Area.HIDDEN, load);
@@ -206,7 +207,7 @@ package sweatless.navigation.core{
 				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
-				loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
+				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
 				loading ? loading.show() : null;
 
 				loader.sortItemsByPriority();
@@ -217,7 +218,7 @@ package sweatless.navigation.core{
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
-			last.stage ? Layers.getInstance("sweatless").get("navigation").removeChild(last) : null;
+			last.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("navigation")).removeChild(last) : null;
 			
 			!StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(last.id, "@cache")) ? removeLoadedItens() : last = null;
 		}

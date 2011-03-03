@@ -40,6 +40,7 @@
  */
 
 package sweatless.navigation.core{
+	import flash.display.DisplayObjectContainer;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 	
@@ -130,7 +131,7 @@ package sweatless.navigation.core{
 		private function addExternalLayers():void{
 			for(var i:uint=0; i<config.layers.length(); i++) {
 				layers.add(config.layers[i]["@id"]);
-				config.layers[i]["@depth"] ? layers.get(config.layers[i]["@id"]).depth = config.layers[i]["@depth"] : null;
+				config.layers[i]["@depth"] ? layers.swapDepth(config.layers[i]["@id"], config.layers[i]["@depth"]) : null;
 			};
 		}
 		
@@ -143,7 +144,7 @@ package sweatless.navigation.core{
 		}
 		
 		public function addFPS():void{
-			layers.get("debug").addChild(new FPS());
+			DisplayObjectContainer(layers.get("debug")).addChild(new FPS());
 		}
 		
 		public function resize(evt:Event):void{
@@ -168,6 +169,7 @@ package sweatless.navigation.core{
 	}
 }
 
+import flash.display.DisplayObjectContainer;
 import br.com.stimuli.loading.BulkLoader;
 import br.com.stimuli.loading.BulkProgressEvent;
 import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
@@ -234,7 +236,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		super (url, name, 666);
 	}
 	
-	lazy_loader override function _lazyParseLoader(p_data:String):void{
+	public override function _lazyParseLoader(p_data:String):void{
 		var substitutions : Object = new Object();
 		
 		for each (var variable:* in new XML(p_data)..globals.variable){
@@ -243,7 +245,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		source = new XML(printf(StringUtils.replace(StringUtils.replace(p_data, "{", "%("), "}", ")s"), substitutions));
 		
-		source..fixed.asset == undefined ? add(lazy_loader::_lazyTheURL, new Object()) : null;
+		source..fixed.asset == undefined ? add(_lazyTheURL, new Object()) : null;
 		source..tracking.@file != undefined ? add(String(source..tracking.@file), {id:String("tracking")}) : null;
 		source..crossdomain.@file != undefined ? Security.loadPolicyFile(source..crossdomain.@file) : null;
 
@@ -255,17 +257,17 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		}
 		
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
-		loading && !loading.stage ? Layers.getInstance("sweatless").get("loading").addChild(loading) : null;
+		loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
 		loading ? loading.show() : null;
 		
-		if(ExternalInterface.available && Sweatless.config.areas..@deeplink.length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
+		if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
 			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
 		}else if(Sweatless.config.firstArea){
 			ready();
 		}else{
 			prepared();
 		}
-	
+
 		addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 	}
 	
