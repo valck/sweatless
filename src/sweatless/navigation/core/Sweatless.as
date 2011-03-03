@@ -64,7 +64,7 @@ package sweatless.navigation.core{
 		private static var _navigation : Navigation;
 		
 		public function Sweatless(p_config:String=null){
-			var signature : Signature = new Signature(this);
+			new Signature(this);
 			
 			stage.addEventListener(Event.RESIZE, resize);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -222,7 +222,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	public static const PROGRESS : String = "progress";
 	public static const FINISHED : String = "finished";
 	
-	namespace lazy_loader = "http://code.google.com/p/bulk-loader/"
+	namespace lazy_loader = "http://code.google.com/p/bulk-loader/";
 		
 	private var count : uint;
 	private var source : XML;
@@ -316,7 +316,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		}else if(loader && count == 0){
 			count++;
 		}else{
-			dispatchEvent(complete)
+			dispatchEvent(complete);
 		}
 	}
 	

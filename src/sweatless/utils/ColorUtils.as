@@ -124,7 +124,6 @@ package sweatless.utils{
 		}
 	}
 }
-import flash.utils.getQualifiedClassName;
 
 /**
  *	The RGB class is used to get red, green and blue values with the ColorUtils class.

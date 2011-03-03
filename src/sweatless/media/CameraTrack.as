@@ -91,7 +91,7 @@ package sweatless.media{
 				image = new Bitmap();
 				addChild(image);
 				
-				addEventListener(CameraTrack.FOUND, asBitmap)
+				addEventListener(CameraTrack.FOUND, asBitmap);
 			}else{
 				addChild(video);
 			}

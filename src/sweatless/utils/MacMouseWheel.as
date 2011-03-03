@@ -41,7 +41,6 @@
 
 package sweatless.utils {
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;

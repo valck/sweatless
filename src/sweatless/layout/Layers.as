@@ -43,7 +43,6 @@ package sweatless.layout{
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 	
-	import sweatless.interfaces.ILayer;
 	import sweatless.utils.DictionaryUtils;
 	
 	public final class Layers{

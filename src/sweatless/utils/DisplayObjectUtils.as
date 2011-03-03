@@ -40,11 +40,9 @@
  */
 
 package sweatless.utils{
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.utils.describeType;

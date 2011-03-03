@@ -45,9 +45,7 @@ package sweatless.effects{
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.geom.Matrix;
-	import flash.utils.setInterval;
 	
 	import sweatless.utils.BitmapUtils;
 	import sweatless.utils.NumberUtils;

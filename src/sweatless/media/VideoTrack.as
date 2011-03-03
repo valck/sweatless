@@ -246,14 +246,14 @@ package sweatless.media{
 			var transform : SoundTransform;
 			
 			if(!isMute){
-				isMute = true
+				isMute = true;
 				
 				transform = new SoundTransform(0, currentPan);
 				transform.volume = 0;
 				
 				stream.soundTransform = transform;				
 			}else{
-				isMute = false
+				isMute = false;
 				
 				transform = new SoundTransform(currentVolume, currentPan);
 				transform.volume = currentVolume;

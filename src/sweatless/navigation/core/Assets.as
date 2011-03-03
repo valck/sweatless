@@ -107,7 +107,7 @@ package sweatless.navigation.core{
 			
 			switch(p_type){
 				case "text":
-					for(i=0; i<p_area..text.length(); i++){
+					for(i=0; i<XMLList(p_area..text).length(); i++){
 						result[String(p_area..text[i].@id)] = String(p_area..text[i].@url);
 					}
 				break;

@@ -40,7 +40,6 @@
  */
 
 package sweatless.interfaces{
-	import flash.events.Event;
 
 	public interface ILayer{
 		function get depth():Object;

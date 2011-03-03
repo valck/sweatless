@@ -47,7 +47,6 @@ package sweatless.ui
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import sweatless.utils.MacMouseWheel;
@@ -127,7 +126,7 @@ package sweatless.ui
 			if(value<0) value = 0;
 			if(value>1) value = 1;
 			var scrollLimits:Rectangle = getLimits();
-			if(scrollMode == MODE_VERTICAL) scrollDragger.y = scrollLimits.y + value*scrollLimits.height
+			if(scrollMode == MODE_VERTICAL) scrollDragger.y = scrollLimits.y + value*scrollLimits.height;
 				else scrollDragger.x = scrollLimits.x + value*scrollLimits.width;
 			refreshScroll();
 		}

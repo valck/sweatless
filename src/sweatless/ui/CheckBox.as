@@ -45,7 +45,6 @@ package sweatless.ui{
 	import flash.events.MouseEvent;
 	
 	import sweatless.graphics.SmartRectangle;
-	import sweatless.interfaces.IButton;
 
 	public class CheckBox extends Sprite{
 		

@@ -59,6 +59,7 @@ package sweatless.utils{
 			var result : int = 0;
 			for (var key:* in p_item) {
 				result++;
+				key = null;
 			}
 			return result;
 		}

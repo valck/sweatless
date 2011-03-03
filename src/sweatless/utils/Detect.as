@@ -190,22 +190,22 @@ package sweatless.utils{
 			
 			switch(b){
 				case 'Win64':
-					userPlatform = 'Windows 64'
+					userPlatform = 'Windows 64';
 					break;
 				case 'Win32':
-					userPlatform = 'Windows 32'
+					userPlatform = 'Windows 32';
 					break;
 				case 'Linux i686':
-					userPlatform = 'Linux'
+					userPlatform = 'Linux';
 					break;
 				case 'MacPPC':
-					userPlatform = 'Mac PPC'
+					userPlatform = 'Mac PPC';
 					break;
 				case 'MacIntel':
-					userPlatform = 'Mac Intel'
+					userPlatform = 'Mac Intel';
 					break;
 				case 'iPhone':
-					userPlatform = 'iPhone'
+					userPlatform = 'iPhone';
 					break;
 			}
 

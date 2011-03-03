@@ -76,7 +76,6 @@ package sweatless.media{
 		private var object : DisplayObject;
 		
 		private var cuePoints : Dictionary;
-		private var lastCuePoint : String;
 
 		public function SoundTrack(){
 		}
@@ -172,10 +171,6 @@ package sweatless.media{
 		}
 		
 		private function dispatchCuePoints(evt : TimerEvent):void {
-			var total : Number = Math.floor(length/1000);
-			var totalMinutes : Number = Math.floor(total/60);
-			var totalSeconds : Number = Math.floor(total-(totalMinutes*60));
-			
 			var current : Number = Math.floor(channel.position/1000);
 			var currentMinute : Number = Math.floor(current/60);
 			var currentSecond : Number = Math.floor(current-(currentMinute*60));
@@ -332,7 +327,7 @@ package sweatless.media{
 			var transform : SoundTransform;
 			
 			if(!isMute){
-	            isMute = true
+	            isMute = true;
 
 	            transform = new SoundTransform(0, currentPan);
 	
@@ -341,7 +336,7 @@ package sweatless.media{
 				
 				currentVolume = transform.volume;
    			}else{
-	            isMute = false
+	            isMute = false;
 
 	            transform = new SoundTransform(currentVolume, currentPan);
 	

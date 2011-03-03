@@ -130,7 +130,7 @@ package sweatless.layout {
 						init(pEvt);
 						place(object, new RuleSet(object, rest[0], rest[1] || new Object()));
 						object.removeEventListener(Event.ADDED_TO_STAGE, placeCb);
-					}
+					};
 					object.addEventListener(Event.ADDED_TO_STAGE, placeCb);
 					return;
 				}
@@ -288,7 +288,7 @@ internal class RuleSet {
 			x = Math.max(min_x, x);
 		if(rounded)
 			x = Math.round(x);
-		return x
+		return x;
 	}
 
 	public function constrainY(y : Number) : Number {
