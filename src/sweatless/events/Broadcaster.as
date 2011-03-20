@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.events{
+package sweatless.events {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	
@@ -78,6 +79,27 @@ package sweatless.events{
 			instance = instance || new Broadcaster();
 			
 			return instance;
+		}
+		
+		/** 
+		 * @copy EventDispatcher#addEventListener
+		 */
+		public static function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void {
+			getInstance().addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+		
+		/** 
+		 * @copy EventDispatcher#removeEventListener
+		 */
+		public static function removeEventListener(type : String, listener : Function, useCapture : Boolean = false) : void {
+			getInstance().removeEventListener(type, listener, useCapture);
+		}
+		
+		/** 
+		 * @copy EventDispatcher#dispatchEvent
+		 */
+		public static function dispatchEvent(event : Event) : Boolean {
+			return getInstance().dispatchEvent(event);
 		}
 		
 		/**

@@ -313,17 +313,15 @@ package sweatless.media{
 			pan = 0;
 		}
 		
-		private function onCuePoint(p_object:Object):void {
-			//trace(p_object.name + "\t" + p_object.time);
-			
+		private function onCuePoint(p_object:Object):void {			
 			if(!_cuepoints) _cuepoints = new Dictionary();
 			if(!_cuepoints[p_object.name]) _cuepoints[p_object.name] = p_object.time;
 			
 			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
 		}
 		
-		public function get cuepoints():Vector.<CuePoint>{
-			var result:Vector.<CuePoint> = new Vector.<CuePoint>;
+		public function get cuepoints():Array{
+			var result:Array = [];
 			if(!_cuepoints) return result;
 			for(var prop:String in _cuepoints) result.push(new CuePoint(prop, _cuepoints[prop].time));
 			return result.sort(cuePointSort);
