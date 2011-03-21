@@ -39,9 +39,11 @@
  * 
  */
 package sweatless.utils {
-	
+
 	import flash.display.DisplayObject;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
+	
 	
 	/**
 	 * The <code>TransformUtils</code> class have support methods to apply advanced transforms to
@@ -80,5 +82,41 @@ package sweatless.utils {
 			object.y = point.y - distY*scale;
 			object.scaleX = object.scaleY = scale;
 		}
+				
+		/**
+		 * Flip horizontally or vertically a <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> to flip.
+		 * @param p_horizontal Flip horizontally.
+		 */
+		public static function flip(p_target:DisplayObject, p_horizontal:Boolean=true):void{
+			var matrix : Matrix = p_target.transform.matrix;
+			
+			matrix.transformPoint(new Point(p_target.width/2, p_target.height/2));
+			
+			if(p_horizontal){
+				matrix.a = -1 * matrix.a;
+				matrix.tx = matrix.a>0 ? p_target.width + p_target.x : p_target.x - p_target.width;
+			}else {
+				matrix.d = -1 * matrix.d;
+				matrix.ty = matrix.d>0 ? p_target.height + p_target.y : p_target.y - p_target.height;
+			}
+			
+			p_target.transform.matrix = matrix;
+		}
+		
+		/**
+		 * Flip horizontally or vertically a <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> to skew.
+		 * @param p_x The <code>Number</code> of x property of p_target.
+		 * @param p_y The <code>Number</code> of y property of p_target.
+		 */
+		public static function skew(p_target:DisplayObject, p_x:Number, p_y:Number):void{
+			var matrix : Matrix = new Matrix();
+			matrix.b = p_y * Math.PI/180;
+			matrix.c = p_x * Math.PI/180;
+			matrix.concat(p_target.transform.matrix);
+			p_target.transform.matrix = matrix;
+		}
+		
 	}
 }
