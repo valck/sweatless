@@ -55,11 +55,12 @@ package sweatless.navigation.core{
 	
 	public class Sweatless extends Sprite{
 		
-		private var loader : BulkLoaderXMLPlugin;
+		private var queue : BulkLoaderXMLPlugin;
 		private var layers : Layers;
 		
 		private static var _config : Configuration;
 		private static var _assets : Assets;
+		private static var _loader : FileLoader;
 		private static var _tracking : Tracking;
 		private static var _loadings : Loadings;
 		private static var _navigation : Navigation;
@@ -80,6 +81,7 @@ package sweatless.navigation.core{
 			_navigation = Navigation.instance;
 			_tracking = Tracking.instance;
 			_assets = Assets.instance;
+			_loader = FileLoader.instance;
 			
 			layers.add("navigation");
 			layers.add("loading");
@@ -109,21 +111,25 @@ package sweatless.navigation.core{
 			return _assets;
 		}
 		
+		public static function get loader():FileLoader{
+			return _loader;
+		}
+		
 		public static function get tracking():Tracking{
 			return _tracking;
 		}
 		
 		private function loadConfig():void{
-			loader = new BulkLoaderXMLPlugin(String(config.getVar("CONFIG")), "sweatless");
+			queue = new BulkLoaderXMLPlugin(String(config.getVar("CONFIG")), "sweatless");
 			
-			loader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
-			loader.addEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
-			loader.addEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
-			loader.start();
+			queue.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
+			queue.addEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
+			queue.addEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
+			queue.start();
 		}
 		
 		private function ready(evt:Event):void{
-			loader.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
+			queue.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
 			
 			addExternalLayers();
 		}
@@ -136,8 +142,8 @@ package sweatless.navigation.core{
 		}
 		
 		private function removeLoadListeners(evt:Event):void{
-			loader.removeEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
-			loader.removeEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
+			queue.removeEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
+			queue.removeEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
 			_navigation.init();
 			
 			build();
@@ -169,6 +175,7 @@ package sweatless.navigation.core{
 	}
 }
 
+import flash.events.ErrorEvent;
 import flash.display.DisplayObjectContainer;
 import br.com.stimuli.loading.BulkLoader;
 import br.com.stimuli.loading.BulkProgressEvent;
@@ -300,11 +307,16 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
 		loader.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
 		
+		loader.addEventListener(BulkLoader.ERROR, onError);
 		loader.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
 		loader.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
 		loader.start();
 		prepared();
+	}
+	
+	private function onError(evt:ErrorEvent) : void {
+		throw new Error("BulkLoader error occured on"+String(evt.target), evt.errorID);
 	}
 	
 	private function _onComplete(evt:Event):void{
@@ -326,6 +338,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
 		if(loader && count == 1){
+			loader.removeEventListener(BulkLoader.ERROR, onError);
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
 		}

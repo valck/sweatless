@@ -39,87 +39,34 @@
  * 
  */
 
-package sweatless.navigation.primitives {
+package sweatless.navigation.core {
 
 	import br.com.stimuli.loading.BulkLoader;
 
-	import sweatless.interfaces.IDisplay;
-	import sweatless.navigation.core.Sweatless;
-
-	import flash.events.Event;
-	
-	public class Area extends Base implements IDisplay{
+	internal final class FileLoader{
 		
-		public static const READY : String = "ready";
-		public static const SHOWED: String = "showed";
-		public static const HIDDEN: String = "closed";
-		public static const DESTROYED : String = "destroyed";
+		private static var _loader : FileLoader;
 		
-		public function Area(){
-			tabEnabled = false;
-			tabChildren = false;
+		public function FileLoader(){
+			if(_loader) throw new Error("FileLoader already initialized.");
 		}
 		
-		public function get assets():XML{
-			return loader.hasItem("assets") ? loader.getXML("assets") : null;
-		}
-		
-		public function get loader():BulkLoader{
-			return Sweatless.loader.current();
-		}
-		
-		public function getAssetText(p_id:String):String{
-				var result : String = String(assets..text.(@id==p_id));
-				
-				return result ? result : "[id:"+p_id+" type:text]";
-		}
-		
-		public function getAssetPath(p_id:String, p_type:String):String{
-			var result : String;
+		public static function get instance():FileLoader{
+			_loader = _loader || new FileLoader();
 			
-			switch(p_type){
-				case "image":
-					result = String(assets..image.(@id==p_id).@url);
-					break;
-				
-				case "video":
-					result = String(assets..video.(@id==p_id).@url);
-					break;
-				
-				case "audio":
-					result = String(assets..audio.(@id==p_id).@url);
-					break;
-				
-				case "other":
-					result = String(assets..other.(@id==p_id).@url);
-					break;
-			}
-			
-			return result ? result : "[id:"+p_id+" type:"+p_type+"]";
+			return _loader;
 		}
 		
-		public function navigateToArea(p_areaID:String):void{
-			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
-		}
+		public function searchLoaderByItem(p_itemID:String):BulkLoader{
+			return BulkLoader.whichLoaderHasItem(p_itemID);
+		};
 		
-		override public function create(evt:Event=null):void{
-			dispatchEvent(new Event(READY));
-		}
+		public function get(p_areaID:String="sweatless"):BulkLoader{
+		     return BulkLoader.getLoader(p_areaID) ? BulkLoader.getLoader(p_areaID) : BulkLoader.getLoader("sweatless");
+		};
 		
-		override public function destroy(evt:Event=null):void{
-			removeAllEventListeners();
-			
-			dispatchEvent(new Event(DESTROYED));
-		}
-		
-		public function show():void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			
-			dispatchEvent(new Event(SHOWED));
-		}
-		
-		public function hide():void{
-			dispatchEvent(new Event(HIDDEN));
-		}
+		public function current():BulkLoader{
+		     return BulkLoader.getLoader(Sweatless.config.currentAreaID);
+		};
 	}
 }

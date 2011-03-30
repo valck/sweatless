@@ -39,15 +39,23 @@
  * 
  */
 
-package sweatless.navigation.core{
-	
-	import flash.display.DisplayObjectContainer;
+package sweatless.navigation.core {
+
+	import flash.events.ErrorEvent;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
-	
+
+	import sweatless.events.Broadcaster;
+	import sweatless.layout.Align;
+	import sweatless.layout.Layers;
+	import sweatless.navigation.primitives.Area;
+	import sweatless.navigation.primitives.Loading;
+	import sweatless.utils.StringUtils;
+
 	import com.asual.swfaddress.SWFAddress;
 	import com.asual.swfaddress.SWFAddressEvent;
-	
+
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
 	import flash.media.SoundLoaderContext;
@@ -56,12 +64,6 @@ package sweatless.navigation.core{
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	
-	import sweatless.events.Broadcaster;
-	import sweatless.layout.Align;
-	import sweatless.layout.Layers;
-	import sweatless.navigation.primitives.Area;
-	import sweatless.navigation.primitives.Loading;
-	import sweatless.utils.StringUtils;
 	
 	internal final class Navigation{
 		
@@ -114,6 +116,7 @@ package sweatless.navigation.core{
 		}
 		
 		private function onLoadComplete(evt:Event):void{
+			loader.removeEventListener(BulkLoader.ERROR, onError);
 			loader.removeEventListener(BulkProgressEvent.PROGRESS, onProgress);
 			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 			
@@ -203,6 +206,7 @@ package sweatless.navigation.core{
 				assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
 				loader.add(swf, {id:"swf", priority:loader.highestPriority, preventCache:!cache});
 				
+				loader.addEventListener(BulkLoader.ERROR, onError);
 				loader.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
 				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
@@ -214,7 +218,7 @@ package sweatless.navigation.core{
 				loader.start();
 			}
 		}
-		
+
 		private function unload(evt:Event):void{
 			Align.remove(last, Number(Sweatless.config.getAreaAdditionals(last.id, "@width")), Number(Sweatless.config.getAreaAdditionals(last.id, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 			
@@ -232,6 +236,10 @@ package sweatless.navigation.core{
 			} catch(e:Error){
 				
 			}
+		}
+		
+		private function onError(evt:ErrorEvent) : void {
+			throw new Error("BulkLoader error occured on"+String(evt.target), evt.errorID);
 		}
 		
 		private function onProgress(evt:BulkProgressEvent):void{
