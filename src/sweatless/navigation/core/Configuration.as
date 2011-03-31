@@ -46,6 +46,7 @@ package sweatless.navigation.core{
 		
 		private static var _config : Configuration;
 		private static var _started : Boolean;
+		private static var _debug : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
 		private static var _firstArea : String = "";
@@ -68,6 +69,14 @@ package sweatless.navigation.core{
 		
 		public function set started(p_value:Boolean):void{
 			_started = p_value;
+		}
+		
+		public function get debug():Boolean{
+			return _debug;
+		}
+		
+		public function set debug(p_value:Boolean):void{
+			_debug = p_value;
 		}
 		
 		public function set source(p_file:XML):void{

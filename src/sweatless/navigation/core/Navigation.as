@@ -70,7 +70,7 @@ package sweatless.navigation.core {
 		private static var _nav : Navigation;
 		
 		private static var loading : Loading;
-		private static var loader : BulkLoader;
+		private static var queue : BulkLoader;
 		private static var broadcaster : Broadcaster;
 		
 		private static var current : Area;
@@ -116,9 +116,9 @@ package sweatless.navigation.core {
 		}
 		
 		private function onLoadComplete(evt:Event):void{
-			loader.removeEventListener(BulkLoader.ERROR, onError);
-			loader.removeEventListener(BulkProgressEvent.PROGRESS, onProgress);
-			loader.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
+			queue.removeEventListener(BulkLoader.ERROR, onError);
+			queue.removeEventListener(BulkProgressEvent.PROGRESS, onProgress);
+			queue.removeEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 			
 			if(loading){
 				loading.addEventListener(Loading.HIDDEN, loaded);
@@ -134,7 +134,7 @@ package sweatless.navigation.core {
 				
 				ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 ? setDeeplink() : null;
 				
-				current = Area(loader.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
+				current = Area(queue.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
 				current.id = Sweatless.config.currentAreaID;
 				
 				DisplayObjectContainer(Layers.getInstance("sweatless").get("navigation")).addChild(current);
@@ -157,7 +157,7 @@ package sweatless.navigation.core {
 		
 		private function hide(evt:Event):void{
 			loading && loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).removeChild(loading) : null;
-			loader && loader.isRunning ? loader.pauseAll() : null;
+			queue && queue.isRunning ? queue.pauseAll() : null;
 			
 			setID(evt.type);
 			Sweatless.config.firstArea == "" ? Sweatless.config.firstArea = Sweatless.config.currentAreaID : null;
@@ -190,32 +190,32 @@ package sweatless.navigation.core {
 			var images : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "image");
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
-			loader = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
-			loader.maxConnectionsPerHost = 666;
-			loader.resumeAll();
+			queue = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
+			queue.maxConnectionsPerHost = 666;
+			queue.resumeAll();
 			
-			if (loader.itemsTotal > 0 && loader.isFinished){
+			if (queue.itemsTotal > 0 && queue.isFinished){
 				loaded(null);
 			}else{
 				var id : *;
-				for(id in videos) loader.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
-				for(id in images) loader.add(images[id], {id:id, context:imageContext, preventCache:!cache});
-				for(id in audios) loader.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
-				for(id in others) loader.add(others[id], {id:id, preventCache:!cache});
+				for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
+				for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
+				for(id in audios) queue.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
+				for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 				
-				assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
-				loader.add(swf, {id:"swf", priority:loader.highestPriority, preventCache:!cache});
+				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
+				queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache});
 				
-				loader.addEventListener(BulkLoader.ERROR, onError);
-				loader.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
-				loader.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
+				queue.addEventListener(BulkLoader.ERROR, onError);
+				queue.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
+				queue.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
 				loading ? loading.show() : null;
 
-				loader.sortItemsByPriority();
-				loader.start();
+				queue.sortItemsByPriority();
+				queue.start();
 			}
 		}
 
@@ -228,7 +228,7 @@ package sweatless.navigation.core {
 		}
 		
 		private function removeLoadedItens():void{
-			loader.removeAll();
+			queue.removeAll();
 			
 			try{
 				new LocalConnection().connect("clear_gc");
@@ -239,7 +239,7 @@ package sweatless.navigation.core {
 		}
 		
 		private function onError(evt:ErrorEvent) : void {
-			throw new Error("BulkLoader error occured on"+String(evt.target), evt.errorID);
+			throw new Error("BulkLoader error occured:\n"+evt, evt.errorID);
 		}
 		
 		private function onProgress(evt:BulkProgressEvent):void{

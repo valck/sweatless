@@ -40,6 +40,7 @@
  */
 
 package sweatless.navigation.core{
+	import sweatless.utils.StringUtils;
 	import flash.display.DisplayObjectContainer;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
@@ -120,6 +121,8 @@ package sweatless.navigation.core{
 		}
 		
 		private function loadConfig():void{
+			config.debug = StringUtils.toBoolean(String(config.getVar("DEBUG")));
+			
 			queue = new BulkLoaderXMLPlugin(String(config.getVar("CONFIG")), "sweatless");
 			
 			queue.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
@@ -316,7 +319,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
-		throw new Error("BulkLoader error occured on"+String(evt.target), evt.errorID);
+		throw new Error("BulkLoader error occured:\n"+evt, evt.errorID);
 	}
 	
 	private function _onComplete(evt:Event):void{

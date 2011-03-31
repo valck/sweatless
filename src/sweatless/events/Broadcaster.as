@@ -40,11 +40,12 @@
  */
 
 package sweatless.events {
+
+	import sweatless.debug.Logger;
+
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
-	
-	import sweatless.debug.Logger;
 	
 	/**
 	 * 
@@ -53,7 +54,7 @@ package sweatless.events {
 	 */
 	public dynamic class Broadcaster extends EventDispatcher{
 		
-		private static var debug : Boolean; 
+		private static var debugMode : Boolean; 
 		private static var logger : Logger; 
 		private static var instance : Broadcaster;
 		private static var registeredEvents : Dictionary = new Dictionary();
@@ -81,11 +82,21 @@ package sweatless.events {
 			return instance;
 		}
 		
+		
+		public static function get debug():Boolean {
+			return debugMode;
+		}
+
+		public static function set debug(p_value:Boolean):void{
+			debugMode = p_value;
+		}
+		
 		/** 
 		 * @copy EventDispatcher#addEventListener
 		 */
 		public static function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void {
 			getInstance().addEventListener(type, listener, useCapture, priority, useWeakReference);
+			getInstance().log("addEventListener:", type);
 		}
 		
 		/** 
@@ -93,13 +104,15 @@ package sweatless.events {
 		 */
 		public static function removeEventListener(type : String, listener : Function, useCapture : Boolean = false) : void {
 			getInstance().removeEventListener(type, listener, useCapture);
+			getInstance().log("removeEventListener:", type);
 		}
 		
 		/** 
 		 * @copy EventDispatcher#dispatchEvent
 		 */
-		public static function dispatchEvent(event : Event) : Boolean {
-			return getInstance().dispatchEvent(event);
+		public static function dispatchEvent(p_event : Event) : Boolean {
+			getInstance().log("dispatchEvent:", p_event.type);
+			return getInstance().dispatchEvent(p_event);
 		}
 		
 		/**
@@ -112,7 +125,7 @@ package sweatless.events {
 		 */
 		public function getEvent(p_event:String):String{
 			if(!hasEvent(p_event)) throw new Error("The event "+ toUppercase(p_event) +" doesn't exists.");
-			log("getEvent:", p_event);
+			getInstance().log("getEvent:", p_event);
 			return registeredEvents[toUppercase(p_event)];
 		}
 		
@@ -171,16 +184,8 @@ package sweatless.events {
 			log("clearAllEvents", "");
 		}
 		
-		public static function get debugMode():Boolean{
-			return debug;
-		}
-		
-		public static function set debugMode(p_value:Boolean):void{
-			debug = p_value;
-		}
-
 		private function log(type:String, event:String):void{
-			debug ? logger.log(Logger.DEBUG, type, event) : null;
+			debugMode ? logger.log(Logger.DEBUG, type, event) : null;
 		}
 
 		private function addEvent(p_upper : String, p_lower : String):*{
