@@ -319,7 +319,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
-		throw new Error("BulkLoader error occured:\n"+evt, evt.errorID);
+		throw new Error("BulkLoader error occured:\n"+evt);
 	}
 	
 	private function _onComplete(evt:Event):void{
