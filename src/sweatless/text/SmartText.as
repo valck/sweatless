@@ -82,6 +82,7 @@ package sweatless.text {
 			addChild(_field);
 			
 			selectable = false;
+			type = "dynamic";
 			
 			update();
 		}
