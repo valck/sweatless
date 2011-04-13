@@ -39,10 +39,11 @@
  * 
  */
 
-package sweatless.data{
-    import flash.events.NetStatusEvent;
-    import flash.net.SharedObject;
-    import flash.net.SharedObjectFlushStatus;
+package sweatless.data {
+
+	import flash.events.NetStatusEvent;
+	import flash.net.SharedObject;
+	import flash.net.SharedObjectFlushStatus;
  
 	/**
 	 * 

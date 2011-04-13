@@ -39,11 +39,12 @@
  * 
  */
 
-package sweatless.layout{
+package sweatless.layout {
+
+	import sweatless.utils.DictionaryUtils;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
-	
-	import sweatless.utils.DictionaryUtils;
 	
 	public final class Layers{
 
@@ -189,10 +190,10 @@ package sweatless.layout{
 	}
 }
 
+import sweatless.interfaces.ILayer;
+
 import flash.display.Sprite;
 import flash.events.Event;
-
-import sweatless.interfaces.ILayer;
 
 internal class Layer extends Sprite implements ILayer{
 	

@@ -40,6 +40,7 @@
  */
 
 package sweatless.utils {
+
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;

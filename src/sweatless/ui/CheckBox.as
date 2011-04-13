@@ -39,12 +39,13 @@
  * 
  */
 
-package sweatless.ui{
+package sweatless.ui {
+
+	import sweatless.graphics.SmartRectangle;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
-	import sweatless.graphics.SmartRectangle;
 
 	public class CheckBox extends Sprite{
 		

@@ -39,20 +39,21 @@
  * 
  */
 
-package sweatless.navigation.core{
-	import sweatless.utils.StringUtils;
-	import flash.display.DisplayObjectContainer;
+package sweatless.navigation.core {
+
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
-	
+
+	import sweatless.debug.FPS;
+	import sweatless.layout.Layers;
+	import sweatless.utils.StringUtils;
+
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-	
-	import sweatless.debug.FPS;
-	import sweatless.layout.Layers;
 	
 	public class Sweatless extends Sprite{
 		
@@ -178,19 +179,25 @@ package sweatless.navigation.core{
 	}
 }
 
-import flash.events.ErrorEvent;
-import flash.display.DisplayObjectContainer;
 import br.com.stimuli.loading.BulkLoader;
 import br.com.stimuli.loading.BulkProgressEvent;
 import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 import br.com.stimuli.loading.loadingtypes.LoadingItem;
 import br.com.stimuli.string.printf;
 
+import sweatless.layout.Layers;
+import sweatless.navigation.core.Sweatless;
+import sweatless.navigation.primitives.Loading;
+import sweatless.utils.ArrayUtils;
+import sweatless.utils.StringUtils;
+
 import com.asual.swfaddress.SWFAddress;
 import com.asual.swfaddress.SWFAddressEvent;
 
+import flash.display.DisplayObjectContainer;
 import flash.display.InteractiveObject;
 import flash.events.ContextMenuEvent;
+import flash.events.ErrorEvent;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.external.ExternalInterface;
@@ -203,12 +210,6 @@ import flash.system.Security;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 import flash.utils.Dictionary;
-
-import sweatless.layout.Layers;
-import sweatless.navigation.core.Sweatless;
-import sweatless.navigation.primitives.Loading;
-import sweatless.utils.ArrayUtils;
-import sweatless.utils.StringUtils;
 
 internal class Signature extends EventDispatcher{
 	

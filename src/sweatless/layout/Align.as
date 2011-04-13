@@ -41,11 +41,12 @@
  */
 
 package sweatless.layout {
+
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;
-	import flash.utils.Dictionary;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	public class Align {
 		public static const NONE : int = 0;

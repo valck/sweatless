@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.text{
+package sweatless.text {
+
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -61,6 +62,9 @@ package sweatless.text{
 		public static const RESTRICT_NUMBER : String = "0-9";
 		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
 		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
+		
+		public static const SMOOTHING_ALIAS : String = "advanced";
+		public static const NORMAL_ALIAS : String = "normal";
 		
 		/**
 		 * The constructor method to create the <code>SmartText</code>.

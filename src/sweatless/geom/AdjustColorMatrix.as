@@ -40,6 +40,7 @@
  */
  
  package sweatless.geom {
+
 	import flash.filters.ColorMatrixFilter;
 	public class AdjustColorMatrix {
 		private var array : Array;

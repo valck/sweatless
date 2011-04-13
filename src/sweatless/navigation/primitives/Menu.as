@@ -39,14 +39,15 @@
  * 
  */
 
-package sweatless.navigation.primitives{
-	
-	import flash.events.Event;
-	import flash.utils.getQualifiedSuperclassName;
-	
+package sweatless.navigation.primitives {
+
 	import sweatless.events.Broadcaster;
 	import sweatless.interfaces.IBase;
 	import sweatless.navigation.core.Sweatless;
+
+	import flash.events.Event;
+	import flash.utils.getQualifiedSuperclassName;
+	
 	
 	public class Menu extends Base implements IBase{
 		

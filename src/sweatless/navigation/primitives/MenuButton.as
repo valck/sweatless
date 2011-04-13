@@ -39,15 +39,15 @@
  * 
  */
 
-package sweatless.navigation.primitives{
+package sweatless.navigation.primitives {
+
+	import sweatless.events.CustomEvent;
+	import sweatless.interfaces.IButton;
+
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	
-	import sweatless.events.Broadcaster;
-	import sweatless.events.CustomEvent;
-	import sweatless.interfaces.IButton;
 	
 	public class MenuButton extends Base implements IButton{
 		
@@ -60,8 +60,6 @@ package sweatless.navigation.primitives{
 		
 		private function check(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, check);
-			
-			broadcaster = Broadcaster.getInstance();
 			
 			if(!area) throw new Error("Please, set a area for this button, before add to stage");
 		}
@@ -107,7 +105,7 @@ package sweatless.navigation.primitives{
 		}
 		
 		public function getProperty(p_id:String):*{
-			return data[p_id];
+			return data[p_id] == undefined ? null : data[p_id];
 		}
 		
 		public function setProperty(p_id:String, p_value:*):void{

@@ -39,7 +39,10 @@
  * 
  */
 
-package sweatless.media{
+package sweatless.media {
+
+	import sweatless.events.CustomEvent;
+
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -50,8 +53,6 @@ package sweatless.media{
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
-	
-	import sweatless.events.CustomEvent;
 
 	public class SoundTrack extends EventDispatcher{
 		

@@ -41,7 +41,6 @@
 
 package sweatless.navigation.core {
 
-	import flash.events.ErrorEvent;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
 
@@ -56,6 +55,7 @@ package sweatless.navigation.core {
 	import com.asual.swfaddress.SWFAddressEvent;
 
 	import flash.display.DisplayObjectContainer;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
 	import flash.media.SoundLoaderContext;
@@ -145,9 +145,17 @@ package sweatless.navigation.core {
 				align(current, Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@halign"), Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@valign"), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@width")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@height")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@top")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@bottom")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@right")), Number(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@left")));
 				
 				last = current;
+				last.addEventListener(Area.HIDDEN, hideSolo);
 			}catch(e:Error){
 				trace(e.getStackTrace());
 			}
+		}
+		
+		private function hideSolo(evt:Event):void{
+			last.removeEventListener(Area.HIDDEN, hideSolo);
+			last.removeEventListener(Area.HIDDEN, load);
+			
+			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
 		}
 		
 		private function show(evt:Event):void{
@@ -175,6 +183,7 @@ package sweatless.navigation.core {
 			
 			if(last){
 				last.removeEventListener(Area.HIDDEN, load);
+				last.removeEventListener(Area.HIDDEN, hideSolo);
 				broadcaster.dispatchEvent(new Event(broadcaster.getEvent("hide_" + last.id)));
 			}
 			
@@ -213,7 +222,7 @@ package sweatless.navigation.core {
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
 				loading ? loading.show() : null;
-
+				
 				queue.sortItemsByPriority();
 				queue.start();
 			}

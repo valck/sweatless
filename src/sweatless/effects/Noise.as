@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.effects{
+package sweatless.effects {
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;

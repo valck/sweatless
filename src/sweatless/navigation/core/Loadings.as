@@ -39,11 +39,12 @@
  * 
  */
 
-package sweatless.navigation.core{
-	import flash.utils.Dictionary;
-	
+package sweatless.navigation.core {
+
 	import sweatless.navigation.primitives.Loading;
 	import sweatless.utils.DictionaryUtils;
+
+	import flash.utils.Dictionary;
 
 	internal final class Loadings{
 		private static var _loadings : Loadings;

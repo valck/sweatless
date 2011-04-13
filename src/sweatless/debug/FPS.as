@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.debug{
+package sweatless.debug {
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;

@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.interfaces{
+package sweatless.interfaces {
+
 	import flash.events.MouseEvent;
 
 	public interface IButton extends IBase{

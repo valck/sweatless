@@ -39,7 +39,10 @@
  * 
  */
 
-package sweatless.media{
+package sweatless.media {
+
+	import sweatless.utils.BitmapUtils;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -53,8 +56,6 @@ package sweatless.media{
 	import flash.media.Camera;
 	import flash.media.Video;
 	import flash.utils.Timer;
-	
-	import sweatless.utils.BitmapUtils;
 	
 	/**
 	 * 

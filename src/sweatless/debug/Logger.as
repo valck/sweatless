@@ -39,12 +39,13 @@
  * 
  */
 
-package sweatless.debug{
+package sweatless.debug {
+
+	import sweatless.utils.StringUtils;
+
 	import flash.external.ExternalInterface;
 	import flash.system.Capabilities;
 	import flash.utils.getQualifiedClassName;
-	
-	import sweatless.utils.StringUtils;
 
 	public final class Logger{
 		

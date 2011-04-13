@@ -39,9 +39,8 @@
  * 
  */
 
-package sweatless.navigation.core{
-	import br.com.stimuli.loading.BulkLoader;
-	
+package sweatless.navigation.core {
+
 	import flash.utils.Dictionary;
 
 	internal final class Assets{
@@ -68,7 +67,7 @@ package sweatless.navigation.core{
 		public function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
 			
-			_source = p_area ? p_area : BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") ? BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets") : null;
+			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			
 			switch(p_type){
 				case "text":
@@ -103,7 +102,7 @@ package sweatless.navigation.core{
 			var result : Dictionary = new Dictionary();
 			var i : uint = 0;
 			
-			p_area = p_area ? p_area : BulkLoader.getLoader(Sweatless.config.currentAreaID).getXML("assets");
+			p_area = p_area ? p_area : Sweatless.loader.current().getXML("assets");
 			
 			switch(p_type){
 				case "text":

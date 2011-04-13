@@ -40,15 +40,16 @@
  * 
  */
 
-package sweatless.effects{
+package sweatless.effects {
+
+	import sweatless.utils.BitmapUtils;
+	import sweatless.utils.NumberUtils;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Matrix;
-	
-	import sweatless.utils.BitmapUtils;
-	import sweatless.utils.NumberUtils;
 	
 	/**
 	 * 

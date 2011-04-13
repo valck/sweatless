@@ -1,13 +1,14 @@
-package sweatless.navigation.core{
+package sweatless.navigation.core {
+
 	import br.com.stimuli.loading.BulkLoader;
-	
-	import com.google.analytics.AnalyticsTracker;
-	import com.google.analytics.GATracker;
-	
-	import flash.external.ExternalInterface;
-	
+
 	import sweatless.layout.Layers;
 	import sweatless.utils.StringUtils;
+
+	import com.google.analytics.AnalyticsTracker;
+	import com.google.analytics.GATracker;
+
+	import flash.external.ExternalInterface;
 
 	internal final class Tracking{
 		

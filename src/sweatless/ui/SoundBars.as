@@ -39,13 +39,14 @@
  * 
  */
 
-package sweatless.ui{
+package sweatless.ui {
+
+	import sweatless.graphics.SmartRectangle;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.media.SoundMixer;
 	import flash.utils.ByteArray;
-	
-	import sweatless.graphics.SmartRectangle;
 	
 	
 	public class SoundBars extends Sprite{

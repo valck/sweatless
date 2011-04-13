@@ -39,13 +39,14 @@
  * 
  */
 
-package sweatless.effects{
+package sweatless.effects {
+
+	import sweatless.layout.Layers;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
-	import sweatless.layout.Layers;
 	
 	public class Parallax extends Sprite {
 		private var middle : Point;
@@ -134,13 +135,14 @@ package sweatless.effects{
 		}
 	}
 }
+
+import sweatless.interfaces.ILayer;
+import sweatless.utils.DisplayObjectUtils;
+
 import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-
-import sweatless.interfaces.ILayer;
-import sweatless.utils.DisplayObjectUtils;
 
 internal class CustomLayer extends Sprite implements ILayer{
 	private var contents : Sprite;

@@ -39,7 +39,10 @@
  * 
  */
 
-package sweatless.media{
+package sweatless.media {
+
+	import sweatless.events.CustomEvent;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -49,8 +52,6 @@ package sweatless.media{
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.utils.Dictionary;
-	
-	import sweatless.events.CustomEvent;
 	
 	public class VideoTrack extends Sprite{
 		

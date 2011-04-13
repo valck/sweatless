@@ -39,8 +39,10 @@
  * 
  */
 
-package sweatless.graphics{
+package sweatless.graphics {
+
 	import sweatless.utils.NumberUtils;
+
 	import flash.geom.Point;
 	
 	/**

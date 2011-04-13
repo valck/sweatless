@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.events{
+package sweatless.events {
+
 	import flash.events.Event;
 	
 	/**

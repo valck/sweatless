@@ -39,13 +39,14 @@
  * 
  */
 
-package sweatless.navigation.primitives{
+package sweatless.navigation.primitives {
+
+	import sweatless.events.Broadcaster;
+	import sweatless.interfaces.IBase;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
-	
-	import sweatless.events.Broadcaster;
-	import sweatless.interfaces.IBase;
 	
 	internal class Base extends Sprite implements IBase{
 		

@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.navigation.core{
+package sweatless.navigation.core {
+
 	import flash.utils.Dictionary;
 	
 	internal final class Configuration {

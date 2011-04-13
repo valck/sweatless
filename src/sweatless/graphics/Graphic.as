@@ -39,12 +39,13 @@
  * 
  */
 
-package sweatless.graphics{
+package sweatless.graphics {
+
+	import sweatless.utils.NumberUtils;
+
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.geom.Matrix;
-	
-	import sweatless.utils.NumberUtils;
 	
 	/**
 	 *

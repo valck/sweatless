@@ -39,8 +39,10 @@
  * 
  */
 
-package sweatless.ui
-{
+package sweatless.ui {
+
+	import sweatless.utils.MacMouseWheel;
+
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -48,8 +50,6 @@ package sweatless.ui
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	
-	import sweatless.utils.MacMouseWheel;
 	
 
 	public class ScrollBar extends EventDispatcher

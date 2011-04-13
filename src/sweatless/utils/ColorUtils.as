@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.utils{
+package sweatless.utils {
+
 	import flash.display.DisplayObject;
 	import flash.geom.ColorTransform;
 

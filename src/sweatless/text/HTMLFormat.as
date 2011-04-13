@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.text{
+package sweatless.text {
+
 	import sweatless.utils.StringUtils;
 
 	/**

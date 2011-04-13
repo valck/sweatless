@@ -39,7 +39,8 @@
  * 
  */
 
-package sweatless.display{
+package sweatless.display {
+
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;

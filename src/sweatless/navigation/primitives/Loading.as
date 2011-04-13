@@ -39,10 +39,11 @@
  * 
  */
 
-package sweatless.navigation.primitives{
-	import flash.events.Event;
-	
+package sweatless.navigation.primitives {
+
 	import sweatless.interfaces.IDisplay;
+
+	import flash.events.Event;
 	
 	public class Loading extends Base implements IDisplay{
 		
