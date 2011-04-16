@@ -77,12 +77,12 @@ package sweatless.graphics{
 		}
 		
 		/**
-		 * Sets the both rounded corners of rectangle.
+		 * Sets the all rounded corners of rectangle.
 		 * 
 		 * @param p_value The size of the ellipse used to draw the rounded corners (in pixels). 
 		 * 
 		 */
-		public function set bothCorners(p_value:Number):void{
+		public function set allCorners(p_value:Number):void{
 			TLCorner = p_value;
 			TRCorner = p_value;
 			BLCorner = p_value;

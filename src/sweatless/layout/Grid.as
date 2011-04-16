@@ -76,7 +76,7 @@ package sweatless.layout {
 				}else{
 					row = uint(i%_rows);
 					column = Math.floor(i/_rows);
-					
+
 					position.x = column;
 					position.y = row;
 				}

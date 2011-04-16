@@ -79,7 +79,7 @@ package sweatless.navigation.primitives {
 			dispatchEvent(new Event(Menu.CHANGE));
 		}
 		
-		private function getButton(p_area:String):MenuButton{
+		protected function getButton(p_area:String):MenuButton{
 			for(var i:uint=0; i<buttons.length; i++){
 				if(buttons[i].area == p_area && buttons[i].type == type) return buttons[i];
 			}
