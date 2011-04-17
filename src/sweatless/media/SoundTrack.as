@@ -260,7 +260,7 @@ package sweatless.media {
 			channel.stop();
 		}
 					
-		public function pause():void {
+		public function pauseToggle():void {
 			if(!sound) return;
 			
 			_position = channel.position;
@@ -278,6 +278,36 @@ package sweatless.media {
                 channel.stop();
                 isPlaying = false;
             }
+			
+			volume = currentVolume;
+        }
+		
+		public function pause():void {
+			if(!sound) return;
+			if(isPlaying) return;
+			
+			_position = channel.position;
+			
+			timer.addEventListener(TimerEvent.TIMER, dispatchCuePoints);
+			timer.start();
+			
+            channel = sound.play(_position);
+            isPlaying = true;
+			
+			volume = currentVolume;
+        }
+		
+		public function resume():void {
+			if(!sound) return;
+			if(!isPlaying) return;
+			
+			_position = channel.position;
+			
+			timer.removeEventListener(TimerEvent.TIMER, dispatchCuePoints);
+			timer.reset();
+			
+            channel.stop();
+            isPlaying = false;
 			
 			volume = currentVolume;
         }
@@ -324,7 +354,7 @@ package sweatless.media {
 			return currentVolume;
 		}
 		
-        public function mute():void {
+        public function muteToggle():void {
 			var transform : SoundTransform;
 			
 			if(!isMute){
@@ -344,6 +374,32 @@ package sweatless.media {
 	            transform.volume = currentVolume;
 	            channel.soundTransform = transform;
    			}
+        }
+
+        public function mute():void {
+			if(isMute) return;
+			var transform : SoundTransform;
+			
+            isMute = true;
+
+            transform = new SoundTransform(0, currentPan);
+
+            transform.volume = 0;
+            channel.soundTransform = transform;
+			
+			currentVolume = transform.volume;
+        }
+
+        public function unmute():void {
+			if(!isMute) return;
+			var transform : SoundTransform;
+			
+            isMute = false;
+
+            transform = new SoundTransform(currentVolume, currentPan);
+
+            transform.volume = currentVolume;
+            channel.soundTransform = transform;
         }
 
         private function move(evt:MouseEvent):void {

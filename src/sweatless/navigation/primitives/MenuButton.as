@@ -158,7 +158,6 @@ package sweatless.navigation.primitives {
 		}
 		
 		override public function destroy(evt:Event=null):void{
-			removeListeners();
 			removeAllEventListeners();
 		}
 		

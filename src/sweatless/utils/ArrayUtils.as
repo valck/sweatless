@@ -88,6 +88,18 @@ package sweatless.utils{
 		}
 		
 		/**
+		 * Finds element in <code>Array</code> and returns <code>Boolean</code> value 
+		 * @param p_array The <code>Array</code> where the duplicates should be removed.
+		 */
+		public static function search(p_value:Object, p_array:Array):Boolean {
+			var results:Boolean;
+			for(var i:uint=0; i<p_array.length; i++) {
+				results = (p_array[i]==p_value) ? true : false;
+			}
+			return results;
+		}
+				
+		/**
 		 * Returns a new merged <code>Array</code>. 
 		 * @param p_array The <code>Array</code> to be used as reference.
 		 * @return A random valid index.

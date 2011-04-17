@@ -207,7 +207,7 @@ package sweatless.media {
 			stream.pause();
 		}
 		
-		public function pause():void {
+		public function pauseToggle():void {
 			if(!isPlaying) {
 				isPlaying = true;
 				stream.addEventListener(NetStatusEvent.NET_STATUS, status);
@@ -217,6 +217,22 @@ package sweatless.media {
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
 				stream.pause();
 			}
+		}
+		
+		public function pause():void {
+			if(!isPlaying) return;
+
+			isPlaying = false;
+			stream.removeEventListener(NetStatusEvent.NET_STATUS, status);
+			stream.pause();
+		}
+		
+		public function resume():void {
+			if(isPlaying) return;
+			
+			isPlaying = true;
+			stream.addEventListener(NetStatusEvent.NET_STATUS, status);
+			stream.resume();
 		}
 		
 		public function set pan(p_pan:Number):void {
@@ -243,7 +259,7 @@ package sweatless.media {
 			return currentVolume;
 		}
 		
-		public function mute():void {
+		public function muteToggle():void {
 			var transform : SoundTransform;
 			
 			if(!isMute){
@@ -261,6 +277,32 @@ package sweatless.media {
 				
 				stream.soundTransform = transform;
 			}
+		}
+		
+		public function mute():void {
+			if(isMute) return;
+
+			var transform : SoundTransform;
+			
+			isMute = true;
+			
+			transform = new SoundTransform(0, currentPan);
+			transform.volume = 0;
+			
+			stream.soundTransform = transform;				
+		}
+		
+		public function unmute():void {
+			if(!isMute) return;
+			
+			var transform : SoundTransform;
+
+			isMute = false;
+			
+			transform = new SoundTransform(currentVolume, currentPan);
+			transform.volume = currentVolume;
+			
+			stream.soundTransform = transform;
 		}
 		
 		private function status(evt:NetStatusEvent):void{
