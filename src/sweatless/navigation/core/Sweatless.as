@@ -45,6 +45,7 @@ package sweatless.navigation.core {
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 
 	import sweatless.debug.FPS;
+	import sweatless.events.Broadcaster;
 	import sweatless.layout.Layers;
 	import sweatless.utils.StringUtils;
 
@@ -60,6 +61,7 @@ package sweatless.navigation.core {
 		private var queue : BulkLoaderXMLPlugin;
 		private var layers : Layers;
 		
+		private static var broadcaster : Broadcaster = Broadcaster.getInstance();
 		private static var _config : Configuration;
 		private static var _assets : Assets;
 		private static var _loader : FileLoader;
@@ -119,6 +121,10 @@ package sweatless.navigation.core {
 		
 		public static function get tracking():Tracking{
 			return _tracking;
+		}
+		
+		public static function navigateTo(p_areaID:String):void{
+			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
 		}
 		
 		private function loadConfig():void{
