@@ -232,7 +232,7 @@ internal class Signature extends EventDispatcher{
 	}
 	
 	private function goto(evt:ContextMenuEvent):void {
-		navigateToURL(new URLRequest("http://code.google.com/p/sweatless/"), "_blank");
+		navigateToURL(new URLRequest("http://www.sweatless.as"), "_blank");
 	}
 }
 
