@@ -48,7 +48,7 @@ package sweatless.interfaces {
 		function removeListeners():void;
 		function out(evt:MouseEvent):void;
 		function over(evt:MouseEvent):void;
-		function enabled():void;
-		function disabled():void;
+		function enable():void;
+		function disable():void;
 	}
 }

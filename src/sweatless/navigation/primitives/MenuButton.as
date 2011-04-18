@@ -116,29 +116,38 @@ package sweatless.navigation.primitives {
 			throw new Error("Please, override this method.");
 		}
 		
-		public final function addListeners():void{
+		private function addClick():void{
+			addEventListener(MouseEvent.CLICK, click);
+		}
+		
+		private function removeClick():void{
+			removeEventListener(MouseEvent.CLICK, click);
+		}
+		
+		public function addListeners():void{
 			buttonMode = true;
 			
-			addEventListener(MouseEvent.CLICK, click);
 			addEventListener(MouseEvent.ROLL_OVER, over);
 			addEventListener(MouseEvent.ROLL_OUT, out);
+			
+			addClick();
 		}
 		
-		public final function removeListeners():void{
+		public function removeListeners():void{
 			buttonMode = false;
 			
-			removeEventListener(MouseEvent.CLICK, click);
 			removeEventListener(MouseEvent.ROLL_OVER, over);
 			removeEventListener(MouseEvent.ROLL_OUT, out);
+			removeClick();
 		}
 		
-		public function enabled():void{
+		public function enable():void{
 			clicked ? clicked = false : null;
 			
 			addListeners();
 		}
 		
-		public function disabled():void{
+		public function disable():void{
 			!clicked ? clicked = true : null;
 			
 			removeListeners();

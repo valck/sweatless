@@ -218,7 +218,7 @@ internal class Signature extends EventDispatcher{
 	public function Signature(p_scope : InteractiveObject){
 		menu.hideBuiltInItems();
 		
-		var label : ContextMenuItem = new ContextMenuItem("© Sweatless Framework", true);
+		var label : ContextMenuItem = new ContextMenuItem("Build with Sweatless Framework", true);
 		label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
 		menu.customItems.push(label);
 		

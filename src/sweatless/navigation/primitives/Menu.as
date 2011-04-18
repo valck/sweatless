@@ -70,11 +70,11 @@ package sweatless.navigation.primitives {
 		private function change(evt:Event):void{
 			var changed : MenuButton = getButton(Sweatless.config.currentAreaID);
 			
-			if(selected) selected.enabled();
+			if(selected) selected.enable();
 			
 			selected = changed;
 			
-			if(selected) selected.disabled();
+			if(selected) selected.disable();
 			
 			dispatchEvent(new Event(Menu.CHANGE));
 		}
