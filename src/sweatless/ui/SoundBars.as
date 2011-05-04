@@ -59,6 +59,7 @@ package sweatless.ui {
 		private var amplitude : Number;
 		
 		public function SoundBars(){
+			
 		}
 		
 		public function create(p_amount:uint, p_width:Number, p_amplitude:Number=30):void{
