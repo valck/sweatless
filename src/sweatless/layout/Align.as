@@ -33,7 +33,7 @@
  *
  * http://creativecommons.org/licenses/by-sa/3.0/legalcode
  *
- * http://code.google.com/p/sweatless/
+ * http://www.sweatless.as/
  *
  * Original class by Gringo team (http://www.gringo.nu/) and Pedro Moraes (http://pedromoraes.net/)
  * Thanks a lot guys!

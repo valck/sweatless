@@ -33,7 +33,7 @@
  * 
  * http://creativecommons.org/licenses/by-sa/3.0/legalcode
  * 
- * http://code.google.com/p/sweatless/
+ * http://www.sweatless.as/
  * 
  * @author Valério Oliveira (valck)
  * 
