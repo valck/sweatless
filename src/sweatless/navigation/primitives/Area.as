@@ -98,10 +98,6 @@ package sweatless.navigation.primitives {
 			return result ? result : "[id:"+p_id+" type:"+p_type+"]";
 		}
 		
-		public function navigateToArea(p_areaID:String):void{
-			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
-		}
-		
 		override public function create(evt:Event=null):void{
 			dispatchEvent(new Event(READY));
 		}
