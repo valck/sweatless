@@ -245,7 +245,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 	private var count : uint;
 	private var source : XML;
-	private var loader : BulkLoader;
+	private var queue : BulkLoader;
 	private var loading : Loading;
 	
 	public function BulkLoaderXMLPlugin(url:*, name:String){
@@ -256,7 +256,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	public override function _lazyParseLoader(p_data:String):void{
 		var substitutions : Object = new Object();
 		
-		for each (var variable:* in new XML(p_data)..globals.variable){
+		for each (var variable:* in new XML(p_data)..variables.variable){
 			substitutions[String(variable.@name)] = String(variable.@value);
 		}
 		
@@ -293,8 +293,8 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		Sweatless.config.currentAreaID = evt ? Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) : Sweatless.config.firstArea;
 		
-		loader = new BulkLoader(Sweatless.config.currentAreaID, 666);
-		loader.maxConnectionsPerHost = 666;
+		queue = new BulkLoader(Sweatless.config.currentAreaID, 666);
+		queue.maxConnectionsPerHost = 666;
 		
 		var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 		var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
@@ -306,22 +306,24 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var videos : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "video");
 		var audios : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "audio");
 		var images : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "image");
+		var swfs : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "swf");		
 		var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 		
 		var id : *;
-		for(id in videos) loader.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
-		for(id in images) loader.add(images[id], {id:id, context:imageContext, preventCache:!cache});
-		for(id in audios) loader.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
-		for(id in others) loader.add(others[id], {id:id, preventCache:!cache});
+		for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
+		for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
+		for(id in audios) queue.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
+		for(id in swfs) queue.add(swfs[id], {id:id, preventCache:!cache});		
+		for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 		
-		assets ? loader.add(assets, {id:"assets", preventCache:!cache}) : null;
-		loader.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
+		assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
+		queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
 		
-		loader.addEventListener(BulkLoader.ERROR, onError);
-		loader.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
-		loader.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+		queue.addEventListener(BulkLoader.ERROR, onError);
+		queue.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+		queue.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
-		loader.start();
+		queue.start();
 		prepared();
 	}
 	
@@ -335,9 +337,9 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var complete : BulkProgressEvent = new BulkProgressEvent(FINISHED);
 		complete.setInfo(_bytesLoaded, _bytesTotal, _bytesTotalCurrent, _itemsLoaded, _itemsTotal, _weightPercent);
 		
-		if(loader && count == 1){
+		if(queue && count == 1){
 			dispatchEvent(complete);
-		}else if(loader && count == 0){
+		}else if(queue && count == 0){
 			count++;
 		}else{
 			dispatchEvent(complete);
@@ -347,10 +349,10 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	private function removeProgress(evt:Event):void{
 		removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
-		if(loader && count == 1){
-			loader.removeEventListener(BulkLoader.ERROR, onError);
-			loader.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
-			loader.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+		if(queue && count == 1){
+			queue.removeEventListener(BulkLoader.ERROR, onError);
+			queue.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+			queue.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
 		}
 		
 		if(loading){
@@ -362,7 +364,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	override public function get items():Array{
-		return loader ? ArrayUtils.merge(_items, loader.items) : _items;
+		return queue ? ArrayUtils.merge(_items, queue.items) : _items;
 	}
 	
 	override public function _onProgress(evt : Event=null):void{
