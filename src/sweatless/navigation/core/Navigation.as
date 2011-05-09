@@ -188,6 +188,7 @@ package sweatless.navigation.core {
 			var videos : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "video");
 			var audios : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "audio");
 			var images : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "image");
+			var swfs : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "swf");
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
 			queue = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
@@ -201,6 +202,7 @@ package sweatless.navigation.core {
 				for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
 				for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
 				for(id in audios) queue.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
+				for(id in swfs) queue.add(swfs[id], {id:id, preventCache:!cache});
 				for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 				
 				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;

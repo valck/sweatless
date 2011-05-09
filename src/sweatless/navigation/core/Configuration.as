@@ -163,6 +163,12 @@ package sweatless.navigation.core {
 					}
 					break;
 				
+				case "swf":
+					for(i=0; i<areas.(@id==p_id).dependencies..swf.length(); i++){
+						dependencies[String(areas.(@id==p_id).dependencies..swf[i].@id)] = String(areas.(@id==p_id).dependencies..swf[i].@url);
+					}
+					break;
+				
 				case "other":
 					for(i=0; i<areas.(@id==p_id).dependencies..other.length(); i++){
 						dependencies[String(areas.(@id==p_id).dependencies..other[i].@id)] = String(areas.(@id==p_id).dependencies..other[i].@url);
