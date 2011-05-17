@@ -54,7 +54,7 @@ package sweatless.text {
 	public class SmartText extends Sprite{
 		private var _format : TextFormat;
 		private var _field : TextField;
-		private var _autosize : String = "left";
+		private var _autosize : String;
 		private var _selectable : Boolean;
 		
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ; @";
@@ -81,6 +81,7 @@ package sweatless.text {
 			_field.embedFonts = true;
 			addChild(_field);
 			
+			autoSize = "left";
 			selectable = false;
 			type = "dynamic";
 			
