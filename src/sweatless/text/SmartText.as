@@ -42,6 +42,7 @@
 package sweatless.text {
 
 	import flash.display.Sprite;
+	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -52,6 +53,7 @@ package sweatless.text {
 	 * @see TextFormat
 	 */
 	public class SmartText extends Sprite{
+		private var _css : StyleSheet;
 		private var _format : TextFormat;
 		private var _field : TextField;
 		private var _autosize : String;
@@ -89,9 +91,12 @@ package sweatless.text {
 		}
 		
 		private function update():void{
-			_field.setTextFormat(_format);
+			if(!_css){
+				_field.setTextFormat(_format);
+				
+				_field.defaultTextFormat = _format;
+			}
 			
-			_field.defaultTextFormat = _format;
 			_field.autoSize = _autosize;
 		}
 		
@@ -129,6 +134,19 @@ package sweatless.text {
 			return _field.length;
 		}
 		
+		
+		/**
+		 * Applies styles defined by a style sheet to a text field object.
+		 * @see StyleSheet
+		 */
+		public function get css() : StyleSheet {
+			return _css;
+		}
+
+		public function set css(p_css:StyleSheet):void{
+			_css = p_css;
+			_field.styleSheet = _css;
+		}
 		
 		/**
 		 * Applies the text formatting that the format parameter specifies to the specified text in a text field.
@@ -386,6 +404,5 @@ package sweatless.text {
 			removeChild(_field);
 			_field = null;
 		}
-		
 	}
 }	
