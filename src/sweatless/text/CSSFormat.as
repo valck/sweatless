@@ -52,15 +52,31 @@ package sweatless.text {
 			return getSheet(p_sheet).getStyle(p_target);
 		}
 		
-		public static function toTextFormat(p_sheet:String, p_target:String):TextFormat{
-			var sheet : StyleSheet = getSheet(p_sheet);
+		public static function toTextFormat(p_sheet:*, p_target:String):TextFormat{
+			var sheet : StyleSheet;
+			
+			if(p_sheet is String){
+				sheet = getSheet(p_sheet);
+			}else if (p_sheet is StyleSheet){
+				sheet = p_sheet;
+			}else{
+				throw new Error("This method supports only style sheet, but receive this {"+p_sheet+"}");
+			}
 			
 			return sheet.transform(forceParser(sheet.getStyle(p_target)));
 		}
 		
-		public static function toTextFormatGroup(p_sheet:String):Dictionary{
+		public static function toTextFormatGroup(p_sheet:*):Dictionary{
 			var results : Dictionary = new Dictionary(true);
-			var sheet : StyleSheet = getSheet(p_sheet);
+			var sheet : StyleSheet;
+			
+			if(p_sheet is String){
+				sheet = getSheet(p_sheet);
+			}else if (p_sheet is StyleSheet){
+				sheet = p_sheet;
+			}else{
+				throw new Error("This method supports only style sheet, but receive this {"+p_sheet+"}");
+			}
 			
 			for(var i:uint=0; i<sheet.styleNames.length; i++){
 				var style : Object = forceParser(sheet.getStyle(sheet.styleNames[i]));
