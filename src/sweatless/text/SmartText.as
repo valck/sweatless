@@ -146,6 +146,7 @@ package sweatless.text {
 		public function set css(p_css:StyleSheet):void{
 			_css = p_css;
 			_field.styleSheet = _css;
+			_field.mouseEnabled = true;
 		}
 		
 		/**
@@ -282,7 +283,7 @@ package sweatless.text {
 		 */
 		public function set type(p_value:String):void{
 			_field.type = p_value;
-			p_value == "input" ? _selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
+			p_value == "input" || _css ? _selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
 			_field.selectable = _selectable;
 		}
 		
@@ -400,6 +401,7 @@ package sweatless.text {
 		 */
 		public function destroy():void{
 			_format = null;
+			_css = null;
 			
 			removeChild(_field);
 			_field = null;
