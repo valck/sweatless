@@ -95,7 +95,7 @@ package sweatless.text {
 		
 		private static function forceParser(p_style:Object):Object{
 			for (var property : String in p_style){
-				property == "fontFamily" ? p_style[property] = getFamily(p_style[property]) : null;
+				property == "fontFamily" || property == "font-family" ? p_style[property] = getFamily(p_style[property]) : null;
 				property == "bold" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;
 				property == "italic" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;
 				property == "bullet" ? p_style[property] = StringUtils.toBoolean(p_style[property]) : null;

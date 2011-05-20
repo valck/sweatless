@@ -59,6 +59,7 @@ package sweatless.utils {
 		 * @param p_clone The target to clone.
 		 * @return The clone object with the target properties.
 		 * @see Stage
+		 * @deprecated
 		 */
 		public static function cloneProperties(p_target:DisplayObject, p_clone:DisplayObject):DisplayObject{
 			var description : XML = describeType(p_target);
@@ -154,6 +155,15 @@ package sweatless.utils {
 			p_new = cloneProperties(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
+		}
+		
+		        
+		public static function traceContents(p_source:*):void {
+			trace("parent class:", p_source.parent, ", parent name:", p_source.parent.name, "~ child class:", p_source, ", child name:", p_source.name, " - total childs:", p_source.numChildren);
+			
+			for (var i : uint = 0; i<p_source.numChildren; i++) {
+				if(p_source.getChildAt(i) is DisplayObjectContainer) traceContents(p_source.getChildAt(i));
+			}
 		}
 	}
 }
