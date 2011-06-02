@@ -89,9 +89,13 @@ package sweatless.navigation.core {
 				case "other":
 					result = String(_source..other.(@id==p_id).@url);
 				break;
+
+				case "swf":
+					result = String(_source..swf.(@id==p_id).@url);
+				break;
 			}
 			
-			return _source ? result : "[id:"+p_id+" type:"+p_type+"]";
+			return _source ? result : "Asset id "+p_id+" and type "+p_type.toUpperCase()+" not found.";
 		}
 		
 		public function get source():XML{

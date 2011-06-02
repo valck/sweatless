@@ -35,11 +35,10 @@
  *
  * http://www.sweatless.as/
  *
- * Original class by Gringo team (http://www.gringo.nu/) and Pedro Moraes (http://pedromoraes.net/)
- * Thanks a lot guys!
+ * Original class by Pedro Moraes (http://pedromoraes.net/)
+ * Thanks a lot dudes!
  *
  */
-
 package sweatless.layout {
 
 	import flash.display.DisplayObject;
@@ -50,37 +49,27 @@ package sweatless.layout {
 
 	public class Align {
 		public static const NONE : int = 0;
-
 		public static const TOP : int = 1;
-
 		public static const MIDDLE : int = 2;
-
 		public static const BOTTOM : int = 4;
-
 		public static const LEFT : int = 8;
-
 		public static const CENTER : int = 16;
-
 		public static const RIGHT : int = 32;
-
 		private static const H : String = 'h';
-
 		private static const V : String = 'v';
-
 		private static var targets : Dictionary = new Dictionary(true);
-
 		private static var stage : Stage;
 
 		public static function add(object : *, anchors : uint, params : Object = null) : void {
-			if(object is Array) {
-				for each(var obj : Object in object) {
+			if (object is Array) {
+				for each (var obj : Object in object) {
 					add(obj, anchors, params);
 				}
 			} else {
 				targets[object] = new RuleSet(object, anchors, params || new Object());
 
-				if(!stage) {
-					if(object.stage) {
+				if (!stage) {
+					if (object.stage) {
 						stage = object.stage;
 						init();
 					} else {
@@ -93,7 +82,7 @@ package sweatless.layout {
 		}
 
 		public static function remove(object : *, ... rest : Array) : void {
-			if(object is Array) {
+			if (object is Array) {
 				object.forEach(remove);
 			} else {
 				delete targets[object];
@@ -101,9 +90,9 @@ package sweatless.layout {
 		}
 
 		private static function getValue(value : *, axis : String) : Number {
-			if(value == undefined) {
+			if (value == undefined) {
 				return 0;
-			} else if(typeof value == 'string' && String(value).indexOf('%') > -1) {
+			} else if (typeof value == 'string' && String(value).indexOf('%') > -1) {
 				switch(axis) {
 					case V:
 						return stage.stageHeight * parseInt(value) / 100;
@@ -115,7 +104,7 @@ package sweatless.layout {
 		}
 
 		public static function getStageBox() : Rectangle {
-			if(!stage) {
+			if (!stage) {
 				return null;
 			} else {
 				return new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
@@ -123,8 +112,8 @@ package sweatless.layout {
 		}
 
 		public static function place(object : DisplayObject, ... rest : Array) : void {
-			if(!stage) {
-				if(object.stage) {
+			if (!stage) {
+				if (object.stage) {
 					stage = object.stage;
 				} else {
 					var placeCb : Function = function(pEvt : Event) : void {
@@ -139,7 +128,7 @@ package sweatless.layout {
 
 			var ruleSet : RuleSet;
 
-			if(rest[0] is RuleSet) {
+			if (rest[0] is RuleSet) {
 				ruleSet = rest[0];
 			} else {
 				ruleSet = new RuleSet(object, rest[0], rest[1] || new Object());
@@ -155,10 +144,10 @@ package sweatless.layout {
 			var x : Number = boundingBox.x + getValue(ruleSet.margin_left, H) - getValue(ruleSet.margin_right, H);
 			var y : Number = boundingBox.y + getValue(ruleSet.margin_top, V) - getValue(ruleSet.margin_bottom, V);
 
-			if(ruleSet.resizeH) {
+			if (ruleSet.resizeH) {
 				object.width = getValue(ruleSet.width, H);
 			}
-			if(ruleSet.resizeV) {
+			if (ruleSet.resizeV) {
 				object.height = getValue(ruleSet.height, V);
 			}
 
@@ -193,18 +182,18 @@ package sweatless.layout {
 
 		public static function debug() : String {
 			var msg : String = "Align targets : ";
-			for(var object : * in targets) {
+			for (var object : * in targets) {
 				msg += '[ Object ' + object + ' ' + targets[object] + ' ], ';
 			}
 			return msg.substring(0, msg.length - 2);
 		}
 
 		private static function init(event : Event = null) : void {
-			if(!stage) {
+			if (!stage) {
 				stage = event.currentTarget.stage;
 			}
 
-			for(var object : * in targets) {
+			for (var object : * in targets) {
 				object.removeEventListener(Event.ADDED_TO_STAGE, init);
 			}
 
@@ -214,11 +203,10 @@ package sweatless.layout {
 		}
 
 		private static function arrange(event : Event = null) : void {
-			for(var object : * in targets) {
+			for (var object : * in targets) {
 				place(object, targets[object]);
 			}
 		}
-
 	}
 }
 
@@ -228,85 +216,69 @@ import flash.display.DisplayObject;
 import flash.geom.Rectangle;
 
 internal class RuleSet {
-
 	public var h : int = 0;
-
 	public var v : int = 0;
-
 	public var width : * = 0;
-
 	public var height : * = 0;
-
 	public var margin_bottom : * = 0;
-
 	public var margin_top : * = 0;
-
 	public var margin_left : * = 0;
-
 	public var margin_right : * = 0;
-
 	public var max_x : Number;
-
 	public var max_y : Number;
-
 	public var min_y : Number;
-
 	public var min_x : Number;
-
 	public var resizeH : Boolean;
-
 	public var resizeV : Boolean;
-
 	public var box : Rectangle;
-
 	public var rounded : Boolean = true;
 
 	public function RuleSet(object : DisplayObject, anchors : int, params : Object) {
 		v = match(anchors, Align.TOP, Align.MIDDLE, Align.BOTTOM);
 		h = match(anchors, Align.LEFT, Align.CENTER, Align.RIGHT);
 
-		for(var prop : String in params) {
+		for (var prop : String in params) {
 			this[prop] = params[prop];
 		}
 
-		if(!params.ignore_dimensions) {
+		if (!params.ignore_dimensions) {
 			width = (params.width == undefined) ? object.width : params.width;
 			height = (params.height == undefined) ? object.height : params.height;
 		}
 
-		if(width) {
+		if (width) {
 			resizeH = String(width).indexOf('%') > -1;
 		}
-		if(height) {
+		if (height) {
 			resizeV = String(height).indexOf('%') > -1;
 		}
 	}
 
 	public function constrainX(x : Number) : Number {
-		if(!isNaN(max_x))
+		if (!isNaN(max_x))
 			x = Math.min(max_x, x);
-		if(!isNaN(min_x))
+		if (!isNaN(min_x))
 			x = Math.max(min_x, x);
-		if(rounded)
+		if (rounded)
 			x = Math.round(x);
 		return x;
 	}
 
 	public function constrainY(y : Number) : Number {
-		if(!isNaN(max_y))
+		if (!isNaN(max_y))
 			y = Math.min(max_y, y);
-		if(!isNaN(min_y))
+		if (!isNaN(min_y))
 			y = Math.max(min_y, y);
-		if(rounded)
+		if (rounded)
 			y = Math.round(y);
 		return y;
 	}
 
 	public function toString() : String {
 		var msg : String = '(Rules ';
-		if(h)
+		if (h)
 			msg += getAnchorDescription(h) + ' ';
-		if(v)
+		if (v)
 			msg += getAnchorDescription(v) + ' ';
 		msg += ')';
 		return msg;
@@ -332,12 +304,11 @@ internal class RuleSet {
 
 	private function match(value : int, ... options : Array) : int {
 		var option : int;
-		while(option = options.pop()) {
-			if((value & option) == option) {
+		while (option = options.pop()) {
+			if ((value & option) == option) {
 				return option;
 			}
 		}
 		return 0;
 	}
-
 }

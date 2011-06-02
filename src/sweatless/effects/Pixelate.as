@@ -42,18 +42,18 @@
 
 package sweatless.effects {
 
-	import sweatless.utils.BitmapUtils;
 	import sweatless.utils.NumberUtils;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.geom.Matrix;
 	
 	/**
 	 * 
-	 * @see BitmapData
+	 * The Pixelate class is a easily way to creates a pixelated effect.
+	 * 
+	 * @see BitmapData()
 	 * 
 	 */
 	public class Pixelate{
@@ -62,32 +62,58 @@ package sweatless.effects {
 		private var clone : BitmapData;
 		private var pixelated : BitmapData;
 		
-		private var amount : Number;
+		private var _size : Number;
 		
 		public function Pixelate(){
+		
 		}
 		
-		public function create(p_source:DisplayObject, p_amount:Number=0):void{
-			var scope : DisplayObjectContainer = p_source.parent;
-			var bmp : Bitmap = BitmapUtils.convertToBitmap(p_source, 0, false);
+		/**
+		 * Sets the source to apply the effect and return a new bitmap.
+		 *  
+		 * @param p_scope The source.
+		 * @param p_size The initial size of pixels of the effect.
+		 * @return Bitmap
+		 * 
+		 * @see Bitmap
+		 * 
+		 */
+		public function create(p_source:DisplayObject, p_size:Number=1):Bitmap{
+			source = getBitmapData(p_source);
+			clone = getBitmapData(p_source);
 			
-			source = bmp.bitmapData;
-			clone = BitmapUtils.convertToBitmap(p_source, 0).bitmapData;
-			
-			scope.addChild(bmp);
-			
-			amount = p_amount;
+			size = p_size;
+
+			return new Bitmap(source);
 		}
 		
-		public function get pixelize():Number{
-			return amount;
+		/**
+		 *
+		 * Sets/Get a size of pixels of the effect.
+		 *   
+		 * @return Number
+		 * @default 1
+		 * 
+		 */
+		public function get size():Number{
+			return _size;
 		}
 		
-		public function set pixelize(p_value:Number):void{
-			amount = p_value;
-			amount>0 || amount<source.width/2 ? processing() : null;
+		public function set size(p_value:Number):void{
+			if(p_value<=0 || p_value>source.width/2){
+				throw new Error("The value must be above 0 and below of overall half of width of the source.");
+			}else{
+				_size = p_value;
+				render();
+			}
 		}
 		
+		/**
+		 * Destroy the dependencies of effect.
+		 * 
+		 * @see BitmapData#dispose()
+		 * 
+		 */
 		public function destroy():void{
 			source.dispose();
 			clone.dispose();
@@ -96,12 +122,17 @@ package sweatless.effects {
 			source = null;
 			clone = null;
 			pixelated = null;
-			
-			amount = 0;
 		}
 		
-		private function processing():void{
-			var scale : Number = 1 / amount;
+		private function getBitmapData(p_target:DisplayObject):BitmapData{
+		    var bmp : BitmapData = new BitmapData(p_target.width, p_target.height);
+			bmp.draw(p_target);
+
+			return bmp;
+		};
+		
+		private function render():void{
+			var scale : Number = 1 / _size;
 			var width : int = (scale * source.width) > 0 || (scale * source.width) < 2880 ? NumberUtils.isZero(int(scale * source.width)) ? 1 : (scale * source.width) > 2880 ? 2880 : (scale * source.width) : 1;
 			var height : int = (scale * source.height) > 0 || (scale * source.height) < 2880 ? NumberUtils.isZero(int(scale * source.height)) ? 1 : (scale * source.height) > 2880 ? 2880 : (scale * source.height) : 1;
 			

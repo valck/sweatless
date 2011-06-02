@@ -71,7 +71,7 @@ package sweatless.navigation.primitives {
 		public function getAssetText(p_id:String):String{
 				var result : String = String(assets..text.(@id==p_id));
 				
-				return result ? result : "[id:"+p_id+" type:text]";
+				return result ? result : "Text asset id "+p_id+" not found.";
 		}
 		
 		public function getAssetPath(p_id:String, p_type:String):String{
@@ -93,9 +93,13 @@ package sweatless.navigation.primitives {
 				case "other":
 					result = String(assets..other.(@id==p_id).@url);
 					break;
+				
+				case "swf":
+					result = String(assets..swf.(@id==p_id).@url);
+					break;
 			}
 			
-			return result ? result : "[id:"+p_id+" type:"+p_type+"]";
+			return result ? result : "Asset id "+p_id+" and type "+p_type.toUpperCase()+" not found.";
 		}
 		
 		override public function create(evt:Event=null):void{

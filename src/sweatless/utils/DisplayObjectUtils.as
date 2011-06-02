@@ -156,14 +156,5 @@ package sweatless.utils {
 			p_old.parent.removeChild(p_old);
 			p_old = null;
 		}
-		
-		        
-		public static function traceContents(p_source:*):void {
-			trace("parent class:", p_source.parent, ", parent name:", p_source.parent.name, "~ child class:", p_source, ", child name:", p_source.name, " - total childs:", p_source.numChildren);
-			
-			for (var i : uint = 0; i<p_source.numChildren; i++) {
-				if(p_source.getChildAt(i) is DisplayObjectContainer) traceContents(p_source.getChildAt(i));
-			}
-		}
 	}
 }

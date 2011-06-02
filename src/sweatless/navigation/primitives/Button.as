@@ -38,7 +38,6 @@
  * @author Valério Oliveira (valck)
  * 
  */
-
 package sweatless.navigation.primitives {
 
 	import sweatless.events.CustomEvent;
@@ -49,17 +48,17 @@ package sweatless.navigation.primitives {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
-	public class MenuButton extends Base implements IButton{
+	public class Button extends Base implements IButton{
 		
 		private var clicked : Boolean;
 		
-		public function MenuButton(){
-			addEventListener(Event.ADDED_TO_STAGE, check);
+		public function Button(){
+			addEventListener(Event.ADDED, check);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		private function check(evt:Event):void{
-			removeEventListener(Event.ADDED_TO_STAGE, check);
+			removeEventListener(Event.ADDED, check);
 			
 			if(!area) throw new Error("Please, set a area for this button, before add to stage");
 		}
@@ -125,6 +124,7 @@ package sweatless.navigation.primitives {
 		}
 		
 		public function addListeners():void{
+			if(clicked) return;
 			buttonMode = true;
 			
 			addEventListener(MouseEvent.ROLL_OVER, over);
@@ -163,7 +163,7 @@ package sweatless.navigation.primitives {
 		
 		private function click(evt:MouseEvent):void{
 			external ? navigateToURL(new URLRequest(external), target) : broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+area))) : null;
-			broadcaster.dispatchEvent(new CustomEvent(broadcaster.getEvent("change_menu"), area));
+			broadcaster.hasEvent("show_"+area) ? broadcaster.dispatchEvent(new CustomEvent(broadcaster.getEvent("change_menu"), area)) : null;
 		}
 		
 		override public function destroy(evt:Event=null):void{

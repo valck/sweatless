@@ -80,7 +80,6 @@ package sweatless.text {
 			
 			_field = new TextField();
 			
-			_field.embedFonts = true;
 			addChild(_field);
 			
 			autoSize = "left";
@@ -90,13 +89,9 @@ package sweatless.text {
 			update();
 		}
 		
-		private function update():void{
-			if(!_css){
-				_field.setTextFormat(_format);
-				
-				_field.defaultTextFormat = _format;
-			}
-			
+		private function update(p_begin:int = -1, p_end:int = -1):void{
+			if(!_css) _field.setTextFormat(_format, p_begin, p_end);
+			_field.embedFonts = _format.font ? true : false;
 			_field.autoSize = _autosize;
 		}
 		
@@ -134,6 +129,18 @@ package sweatless.text {
 			return _field.length;
 		}
 		
+		/**
+		 * Specifies whether this object receives mouse messages..
+		 */
+		override public function set mouseEnabled(p_value:Boolean):void{
+		    super.mouseEnabled = false;
+		    super.mouseChildren = p_value; 
+		    _field.mouseEnabled = p_value;
+		};
+		
+		override public function get mouseEnabled():Boolean{
+		    return _field.mouseEnabled;
+		};
 		
 		/**
 		 * Applies styles defined by a style sheet to a text field object.
@@ -147,6 +154,30 @@ package sweatless.text {
 			_css = p_css;
 			_field.styleSheet = _css;
 			_field.mouseEnabled = true;
+		}
+		
+		/**
+		 * Thismethod changes the text formatting applied to a range of characters or to the entire body of text in a text field. To apply the properties of format to all text in the text field, do not specify values for beginIndex and endIndex. 
+		 * To apply the properties of the format to a range of text, specify values for the beginIndex and the endIndex parameters. 
+		 * You can use the length property to determine the index values.
+		 * 
+		 * @see TextFormat
+		 */
+		public function setTextFormat(p_format:TextFormat, p_begin:int = -1, p_end:int = -1):void{
+			_field.setTextFormat(p_format, p_begin, p_end);
+			
+			update(p_begin, p_end);
+		}
+		
+		/**
+		 * Returns a TextFormat object that contains formatting information for the range of text that the beginIndex and endIndex parameters specify. 
+		 * Only properties that are common to the entire text specified are set in the resulting TextFormat object. 
+		 * Any property that is mixed, meaning that it has different values at different points in the text, has a value of null.
+		 * 
+		 * @see TextFormat
+		 */
+		public function getTextFormat(p_begin:int = -1, p_end:int = -1):TextFormat{
+			return _field.getTextFormat(p_begin, p_end);
 		}
 		
 		/**

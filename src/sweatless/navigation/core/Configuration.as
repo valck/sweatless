@@ -129,7 +129,11 @@ package sweatless.navigation.core {
 		}
 		
 		public function get areas():XMLList{
-			return source..area;
+			return source..areas.area;
+		}
+		
+		public function get buttons():XMLList{
+			return source..buttons.group;
 		}
 		
 		public function getInArea(p_id:String, p_attribute:String):String{
@@ -213,27 +217,17 @@ package sweatless.navigation.core {
 			return deeplinks;
 		}
 		
-		public function getMenuButtons(p_type:String="*"):Array{
+		public function getButtonsGroup(p_type:String="*"):Array{
 			var all : Boolean = p_type == "*" ? true : false;
 			var buttons : Array = new Array();
 			
-			for(var a:uint=0; a<uint(all ? source..button.length() : source..buttons.(@type==p_type).button.length()); a++){
+			for(var a:uint=0; a<uint(all ? source..button.length() : source..group.(@type==p_type).button.length()); a++){
 				var attributes : Object = new Object();
-				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..buttons.(@type==p_type).button[a].@*.length()); b++){
-					all ? attributes[String(source..button[a].@*[b].name())] = String(source..button[a].@*[b]) : attributes[String(source..buttons.(@type==p_type)..button[a].@*[b].name())] = String(source..buttons.(@type==p_type)..button[a].@*[b]);
+				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..group.(@type==p_type).button[a].@*.length()); b++){
+					all ? attributes[String(source..button[a].@*[b].name())] = String(source..button[a].@*[b]) : attributes[String(source..group.(@type==p_type)..button[a].@*[b].name())] = String(source..group.(@type==p_type)..button[a].@*[b]);
 				}
 				
 				buttons.push(attributes);
-			}
-			
-			return buttons;
-		}
-
-		public function getMenuTypes():Array{
-			var buttons : Array = new Array();
-			
-			for(var a:uint=0; a<source..buttons.length(); a++){
-				buttons.push(source..buttons[a]);
 			}
 			
 			return buttons;

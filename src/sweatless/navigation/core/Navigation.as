@@ -86,7 +86,7 @@ package sweatless.navigation.core {
 			return _nav;
 		}
 		
-		public function init():void{
+		public function addConfig():void{
 			if(Sweatless.config.started) throw new Error("Navigation already initialized.");
 			
 			broadcaster = Broadcaster.getInstance();
@@ -104,6 +104,10 @@ package sweatless.navigation.core {
 			}
 
 			Sweatless.config.tracking ? Sweatless.tracking.add() : null;
+		}
+		
+		public function start():void {
+			if(Sweatless.config.started) throw new Error("Navigation already initialized.");
 			
 			if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0){
 				 SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
@@ -113,7 +117,7 @@ package sweatless.navigation.core {
 			}
 			
 			Sweatless.config.started = true;
-		}
+		};
 		
 		private function onLoadComplete(evt:Event):void{
 			queue.removeEventListener(BulkLoader.ERROR, onError);
@@ -183,7 +187,7 @@ package sweatless.navigation.core {
 			var imageContext : LoaderContext = new LoaderContext(Boolean(Sweatless.config.crossdomain), ApplicationDomain.currentDomain);
 			
 			var swf : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf");
-			var assets : String = Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@assets");
+			var assets : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@assets");
 			
 			var videos : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "video");
 			var audios : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "audio");
@@ -268,13 +272,27 @@ package sweatless.navigation.core {
 		}
 		
 		private function align(p_area:Area, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
-			p_hanchor = !p_hanchor ? "NONE" : p_hanchor.toUpperCase();
-			p_vanchor = !p_vanchor ? "NONE" : p_vanchor.toUpperCase();
+			p_vanchor = !p_vanchor ? "TOP" : p_vanchor.toUpperCase();
+			p_hanchor = !p_hanchor ? "LEFT" : p_hanchor.toUpperCase();
 			
-			p_top = !p_top ? 0 : p_top;
-			p_bottom = !p_bottom ? 0 : p_bottom;
-			p_right = !p_right ? 0 : p_right;
-			p_left = !p_left ? 0 : p_left;
+			switch(p_vanchor){
+				case "MIDDLE":
+					p_top = p_height == 0 ? (-(p_area.height/2)+p_top) : p_top;
+					break;
+				case "BOTTOM":
+					p_top = p_height == 0 ? (-(p_area.height)+p_top) : p_top;
+					break;
+				default:
+			}
+			
+			switch(p_hanchor){
+				case "CENTER":
+					p_left = p_width == 0 ? (((-p_area.width)/2)+p_left) : p_left;
+					break;
+				case "RIGHT":
+					p_left = p_width == 0 ? ((-p_area.width)+p_left) : p_left;
+					break;
+			}
 			
 			Align.add(p_area, Align[p_hanchor] + Align[p_vanchor], {width:p_width, height:p_height, margin_bottom:p_bottom, margin_top:p_top, margin_left:p_left, margin_right:p_right});
 		}

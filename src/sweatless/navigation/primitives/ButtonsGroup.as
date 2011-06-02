@@ -41,15 +41,15 @@
 
 package sweatless.navigation.primitives {
 
+	import flash.events.Event;
+	import flash.utils.getQualifiedSuperclassName;
 	import sweatless.events.Broadcaster;
 	import sweatless.interfaces.IBase;
 	import sweatless.navigation.core.Sweatless;
 
-	import flash.events.Event;
-	import flash.utils.getQualifiedSuperclassName;
 	
 	
-	public class Menu extends Base implements IBase{
+	public class ButtonsGroup extends Base implements IBase{
 		
 		public static const CHANGE : String = "change";
 		
@@ -57,18 +57,18 @@ package sweatless.navigation.primitives {
 		private var properties : Array;
 		private var buttons : Array;
 		
-		protected var selected : MenuButton;
+		protected var selected : Button;
 		
-		public function Menu(p_type:String="*"){
+		public function ButtonsGroup(p_type:String="*"){
 			type = p_type;
-			properties = Sweatless.config.getMenuButtons(type);
+			properties = Sweatless.config.getButtonsGroup(type);
 			broadcaster = Broadcaster.getInstance();
 			
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 		}
 		
 		private function change(evt:Event):void{
-			var changed : MenuButton = getButton(Sweatless.config.currentAreaID);
+			var changed : Button = getButton(Sweatless.config.currentAreaID);
 			
 			if(selected) selected.enable();
 			
@@ -76,22 +76,22 @@ package sweatless.navigation.primitives {
 			
 			if(selected) selected.disable();
 			
-			dispatchEvent(new Event(Menu.CHANGE));
+			dispatchEvent(new Event(ButtonsGroup.CHANGE));
 		}
 		
-		protected function getButton(p_area:String):MenuButton{
+		protected function getButton(p_area:String):Button{
 			for(var i:uint=0; i<buttons.length; i++){
 				if(buttons[i].area == p_area && buttons[i].type == type) return buttons[i];
 			}
-			return null; 
+			return null;
 		}
 		
 		protected final function getButtons(p_skin:Class):Array{
 			buttons = new Array();
-			if(getQualifiedSuperclassName(p_skin) != (new MenuButton).toString()) throw new Error("Please, extends MenuButton Class");
+			if(getQualifiedSuperclassName(p_skin) != (new Button).toString()) throw new Error("Please, extends MenuButton Class");
 			
 			for(var i:uint=0; i<properties.length; i++){
-				var button : MenuButton = new p_skin();
+				var button : Button = new p_skin();
 				
 				for (var prop:* in properties[i]){
 					button.setProperty(prop, properties[i][prop]);

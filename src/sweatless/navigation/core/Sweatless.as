@@ -69,6 +69,9 @@ package sweatless.navigation.core {
 		private static var _loadings : Loadings;
 		private static var _navigation : Navigation;
 		
+		public static const READY : String = "ready";
+		public static const SHOWED: String = "showed";
+		
 		public function Sweatless(p_config:String=null){
 			new Signature(this);
 			
@@ -132,14 +135,14 @@ package sweatless.navigation.core {
 			
 			queue = new BulkLoaderXMLPlugin(String(config.getVar("CONFIG")), "sweatless");
 			
-			queue.addEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
+			queue.addEventListener(LazyBulkLoader.LAZY_COMPLETE, configLoaded);
 			queue.addEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
 			queue.addEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
 			queue.start();
 		}
 		
-		private function ready(evt:Event):void{
-			queue.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, ready);
+		private function configLoaded(evt:Event):void{
+			queue.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, configLoaded);
 			
 			addExternalLayers();
 		}
@@ -154,17 +157,44 @@ package sweatless.navigation.core {
 		private function removeLoadListeners(evt:Event):void{
 			queue.removeEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
 			queue.removeEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
-			_navigation.init();
 			
-			build();
+			_navigation.addConfig();
+			
+			addEventListener(READY, show);
+			addEventListener(SHOWED, startNavigation);
+			
+			create();
+		}
+		
+		private function startNavigation(evt:Event):void{
+			removeEventListener(SHOWED, startNavigation);
+			
+			_navigation.start();
 		}
 		
 		public function addFPS():void{
 			DisplayObjectContainer(layers.get("debug")).addChild(new FPS());
 		}
 		
-		public function resize(evt:Event):void{
+		public function resize(evt:Event=null):void{
 			scrollRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+		}
+		/*
+		 * 
+		 * @depracated
+		 * 
+		 */
+		public function build():void{
+		}
+		
+		public function create(evt:Event=null):void{
+			dispatchEvent(new Event(READY));
+		}
+
+		public function show(evt:Event=null):void{
+			removeEventListener(READY, show);
+			
+			dispatchEvent(new Event(SHOWED));
 		}
 		
 		public function addFonts():void{
@@ -176,10 +206,6 @@ package sweatless.navigation.core {
 		}
 		
 		public function progress(evt:BulkProgressEvent):void{
-			throw new Error("Please, override this method.");			
-		}
-		
-		public function build():void{
 			throw new Error("Please, override this method.");			
 		}
 	}
@@ -301,7 +327,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var imageContext : LoaderContext = new LoaderContext(Boolean(Sweatless.config.crossdomain), ApplicationDomain.currentDomain);
 		
 		var swf : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf");
-		var assets : String = Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@assets");
+		var assets : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@assets");
 		
 		var videos : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "video");
 		var audios : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "audio");
