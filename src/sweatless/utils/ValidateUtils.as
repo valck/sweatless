@@ -49,7 +49,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a url
+		 * Checks if the string is a url value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -63,7 +63,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a email
+		 * Checks if the string is a email value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -77,7 +77,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a cpf
+		 * Checks if the string is a cpf value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -91,7 +91,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a date
+		 * Checks if the string is a date value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -105,7 +105,7 @@ package sweatless.utils{
 		
 
 		/**
-		 * Checks if the string is a alphanumeric
+		 * Checks if the string is a alphanumeric value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -117,9 +117,20 @@ package sweatless.utils{
 			return validate.test(p_value);
 		}
 		
-
 		/**
-		 * Checks if the string is a strong password
+		 * Checks if the string is a numeric value.
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * @see String
+		 * @see Boolean
+		 * @see RegExp
+		 */
+		public static function isNumeric(p_value:String):Boolean {
+			var validate:RegExp = /^[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?$/;
+			return validate.test(p_value);
+		}
+		/**
+		 * Checks if the string is a strong password value.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String

@@ -69,7 +69,7 @@ package sweatless.utils {
 			}
 			
 			for each (var property:XML in description.accessor){
-				property.@access == "readwrite" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
+				property.@access == "readwrite" && property.@access == "write-only" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
 			}
 			
 			return p_clone;
@@ -146,8 +146,8 @@ package sweatless.utils {
 		 * @param p_new The <code>DisplayObject</code> to add.
 		 * @param p_old The <code>DisplayObject</code> to remove.
 		 */
-		public static function replace(p_new:DisplayObject, p_old:DisplayObject):void{
-			if (p_old.parent == null) return;
+		public static function replace(p_new:DisplayObject, p_old:DisplayObject):DisplayObject{
+			if (p_old.parent == null) return null;
 			
 			p_old.parent.addChild(p_new);
 			p_old.parent.swapChildren(p_new, p_old);
@@ -155,6 +155,7 @@ package sweatless.utils {
 			p_new = cloneProperties(p_old, p_new);
 			p_old.parent.removeChild(p_old);
 			p_old = null;
+			return p_new;
 		}
 	}
 }

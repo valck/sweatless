@@ -109,7 +109,8 @@ package sweatless.effects {
 		}
 		
 		/**
-		 * Destroy the dependencies of effect.
+		 * 
+		 * Destroy the all dependencies of effect.
 		 * 
 		 * @see BitmapData#dispose()
 		 * 

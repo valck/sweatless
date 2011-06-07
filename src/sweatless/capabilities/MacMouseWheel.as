@@ -39,7 +39,7 @@
  *
  */
 
-package sweatless.utils {
+package sweatless.capabilities {
 
 	import flash.display.DisplayObject;
 	import flash.display.Stage;

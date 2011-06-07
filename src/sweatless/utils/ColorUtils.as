@@ -99,7 +99,16 @@ package sweatless.utils {
 			
 			return getHex(color.r, color.g, color.b);
 		}
-		
+
+		/**
+		 * Converts a Hexadecimal color value to a string representation.
+		 * @param p_hex The value <code>0xrrggbb</code> of the color.
+		 * @return The string value like a <code>#rrggbb</code>
+		 * 
+		 */
+		public static function toHTMLString(p_hex:uint):String {
+			return "#" + (p_hex.toString(16)).toUpperCase();
+		}
 		
 		/**
 		 * Converts red, green and blue values to Hexadecimal format.  
@@ -112,7 +121,6 @@ package sweatless.utils {
 		public static function getHex(p_r:uint, p_g:uint, p_b:uint):uint{
 			return uint("0x" + (p_r<16 ? "0" : "") + p_r.toString(16) + (p_g<16 ? "0" : "") + p_g.toString(16) + (p_b<16 ? "0" : "") + p_b.toString(16));
 		}
-		
 		
 		/**
 		 * Converts a Hexadecimal color value to red, green and blue values. 

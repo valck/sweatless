@@ -53,6 +53,7 @@ package sweatless.navigation.primitives {
 		public static const READY : String = "ready";
 		public static const SHOWED: String = "showed";
 		public static const HIDDEN: String = "closed";
+		public static const RESIZE : String = "resize";
 		public static const DESTROYED : String = "destroyed";
 		
 		public function Area(){
@@ -100,6 +101,10 @@ package sweatless.navigation.primitives {
 			}
 			
 			return result ? result : "Asset id "+p_id+" and type "+p_type.toUpperCase()+" not found.";
+		}
+		
+		public function resize(evt:Event=null):void{
+			dispatchEvent(new Event(RESIZE));
 		}
 		
 		override public function create(evt:Event=null):void{

@@ -42,6 +42,7 @@
 package sweatless.text {
 
 	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -127,6 +128,27 @@ package sweatless.text {
 		 */
 		public function get length():uint{
 			return _field.length;
+		}
+		
+		/**
+		 * The number of characters in a text field.
+		 */
+		public function get numChars():uint{
+			return _field.length;
+		}
+		
+		/**
+		 * The number of lines in a text field.
+		 */
+		public function get numLines():uint{
+			return _field.numLines;
+		}
+		
+		/**
+		 * Bounds of text field
+		 */
+		public function get bounds():Rectangle{
+			return _field.getBounds(field);
 		}
 		
 		/**
