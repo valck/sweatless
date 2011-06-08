@@ -142,6 +142,22 @@ package sweatless.utils {
 		}
 		
 		/**
+		 * A safe method to remove a <code>DisplayObject</code>. inside a <code>DisplayObjectContainer</code>.
+		 * @param p_target The object to clean.
+		 */
+		public static function safeRemove(p_target:*):void{
+			if(!p_target || !p_target.stage) return;
+			
+			if(p_target is MovieClip) p_target.stop();
+			if(p_target.hasOwnProperty("dispose")) p_target.dispose();
+			if(p_target.hasOwnProperty("destroy")) p_target.destroy();
+			if(p_target.hasOwnProperty("kill")) p_target.kill();
+			if(p_target.hasOwnProperty("unload")) p_target.unload();
+			if(p_target.parent) p_target.parent.removeChild(p_target);
+			p_target = null;
+		}
+		
+		/**
 		 * replace one by another <code>DisplayObject</code>.
 		 * @param p_new The <code>DisplayObject</code> to add.
 		 * @param p_old The <code>DisplayObject</code> to remove.
