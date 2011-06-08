@@ -50,6 +50,7 @@ package sweatless.navigation.primitives {
 		public static const READY : String = "ready";
 		public static const SHOWED : String = "showed";
 		public static const HIDDEN : String = "hidden";
+		public static const RESIZE : String = "resize";
 		public static const DESTROYED : String = "destroyed";
 		
 		private var _progress : Number = 0;
@@ -63,6 +64,7 @@ package sweatless.navigation.primitives {
 
 		override public function create(evt:Event=null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
+			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			dispatchEvent(new Event(READY));
 		}
 				
@@ -74,9 +76,11 @@ package sweatless.navigation.primitives {
 			_progress = p_progress <= 1 ? p_progress : 1;
 		}
 		
+		public function resize(evt:Event=null):void{
+			dispatchEvent(new Event(RESIZE));
+		}
+		
 		public function show():void{
-			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			
 			dispatchEvent(new Event(SHOWED));
 		}
 		
