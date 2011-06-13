@@ -102,6 +102,16 @@ package sweatless.utils {
 		}
 		
 		/**
+		 * A method to remove HTML tags in a String.
+		 * @param p_str The <code>String</code> to remove the HTML tags.
+		 * @return The resulting <code>String</code> object.
+		 * @see String
+		 */
+		public static function removeHTML(p_value:String):String{
+			return p_value.replace(RegExp(/<.*?>/g),"" );
+		}
+		
+		/**
 		 * A method to remove special characters in a String.
 		 * @param p_str The <code>String</code> to remove the special characters.
 		 * @return The resulting <code>String</code> object.
@@ -111,7 +121,6 @@ package sweatless.utils {
 		public static function removeSpecialChars(p_str:String):String{
 			return p_str.replace(/[^a-zA-Z 0-9]+/g,'');
 		}
-		
 		
 		/**
 		 * A method to convert a numeric string to brazillian CPF format. (###.###.###-##)

@@ -126,8 +126,8 @@ package sweatless.utils{
 		 * @see RegExp
 		 */
 		public static function isNumeric(p_value:String):Boolean {
-			var validate:RegExp = /^[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?$/;
-			return validate.test(p_value);
+			var validate:RegExp = /^(0|[1-9][0-9]*)$/;
+			return validate.test(StringUtils.replace(p_value, " ", ""));
 		}
 		/**
 		 * Checks if the string is a strong password value.
