@@ -241,13 +241,8 @@ package sweatless.utils {
 		 * @see String
 		 */
 		public static function addDecimalZero(p_value:Number):String {
-			var result:String = String(p_value);
-
-			if (p_value < 10 && p_value > -1) {
-				result="0" + result;
-			}
-
-			return result;
+			if(p_value < 10) return ("0" + p_value);
+			return String(p_value);
 		}
 
 		/**

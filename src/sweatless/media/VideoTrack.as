@@ -57,6 +57,7 @@ package sweatless.media {
 		
 		public static const CUEPOINT : String = "cuepoint";
 		public static const COMPLETE : String = "complete";
+		public static const METADATA : String = "metadata";
 		
 		private var _width : Number;
 		private var _height : Number;
@@ -140,6 +141,7 @@ package sweatless.media {
 			stream = p_netstream;
 			video.attachNetStream(stream);
 			stream.client.onCuePoint = onCuePoint;
+			stream.client.onMetaData = onMetaData;
 		}
 		
 		public function get track():NetStream{
@@ -166,18 +168,25 @@ package sweatless.media {
 			seek = Number(_cuepoints[p_name].time);
 		}
 		
+		public function set duration(p_duration:Number):void{
+			properties ? properties["duration"] = Number(p_duration) : NaN;
+		}
+		
 		public function get duration():Number{
 			return properties ? Number(properties["duration"]) : NaN;
 		}
 		
 		public function set metadata(p_object:*):void{
+			if(!p_object) return;
+			
 			properties = new Dictionary();
 			
 			for(var prop:String in p_object) {
 				properties[String(prop)] = String(p_object[prop]);
+				if(hasOwnProperty(prop)) this[prop] = p_object[prop];
 			}
-			
-			if(!p_object || !p_object["cuePoints"]) return;
+
+			if(!p_object["cuePoints"]) return;
 			
 			_cuepoints = new Dictionary();
 			
@@ -361,6 +370,12 @@ package sweatless.media {
 			if(!_cuepoints[p_object.name]) _cuepoints[p_object.name] = p_object.time;
 			
 			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
+		}
+		
+		private function onMetaData(p_object:Object):void {			
+			metadata = p_object;
+			
+			dispatchEvent(new CustomEvent(METADATA, p_object));
 		}
 		
 		public function get cuepoints():Array{
