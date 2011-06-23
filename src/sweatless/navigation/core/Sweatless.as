@@ -288,14 +288,14 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		source = new XML(printf(StringUtils.replace(StringUtils.replace(p_data, "{", "%("), "}", ")s"), substitutions));
 		
-		source..fixed.asset == undefined ? add(_lazyTheURL, new Object()) : null;
+		source..files.file == undefined ? add(_lazyTheURL, new Object()) : null;
 		source..tracking.@file != undefined ? add(String(source..tracking.@file), {id:String("tracking")}) : null;
 		source..crossdomain.@file != undefined ? Security.loadPolicyFile(source..crossdomain.@file) : null;
 
 		Sweatless.config.source = source;
 		
 		maxConnectionsPerHost = 666;
-		for each (var asset:XML in source..fixed.asset) {
+		for each (var asset:XML in source..files.file) {
 			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
 		}
 		
