@@ -134,7 +134,7 @@ package sweatless.utils {
 		 * @return the string formatted with the method.
 		 */
 		public static function replaceFontFace(p_str:String, p_newfont:String):String{
-			return p_str.replace(/<font face=\'([a-zA-Z]+)\'/g, "<font face='"+p_newfont+"'");
+			return p_str.replace(/face=\'([a-zA-Z]+)\'/g, "face='"+p_newfont+"'");
 		}
 	}
 }

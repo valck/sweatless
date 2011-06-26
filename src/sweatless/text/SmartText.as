@@ -41,6 +41,7 @@
 
 package sweatless.text {
 
+	import sweatless.utils.HTMLUtils;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
@@ -442,6 +443,10 @@ package sweatless.text {
 		 */
 		public function set text(p_text:String):void{
 			_field.htmlText = p_text;
+			var re :RegExp = /face=\'([a-zA-Z]+)\'/g;
+			if(re.exec(p_text)[1]){
+				HTMLUtils.replaceFontFace(p_text, FontRegister.hasAdded(String(re.exec(p_text)[1])) ? FontRegister.getName(String(re.exec(p_text)[1])) : String(re.exec(p_text)[1]));
+			};
 			update();
 		}
 		
