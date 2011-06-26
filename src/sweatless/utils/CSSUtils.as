@@ -39,15 +39,15 @@
  * 
  */
 
-package sweatless.text {
-
-	import sweatless.utils.StringUtils;
+package sweatless.utils {
 
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
+	import sweatless.text.FontRegister;
 
-	public class CSSFormat{
+
+	public class CSSUtils{
 		public static function getClass(p_sheet:String, p_target:String):Object{
 			return getSheet(p_sheet).getStyle(p_target);
 		}

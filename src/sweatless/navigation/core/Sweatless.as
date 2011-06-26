@@ -59,7 +59,6 @@ package sweatless.navigation.core {
 	public class Sweatless extends Sprite{
 		
 		private var queue : BulkLoaderXMLPlugin;
-		private var layers : Layers;
 		
 		private static var broadcaster : Broadcaster = Broadcaster.getInstance();
 		private static var _config : Configuration;
@@ -68,6 +67,7 @@ package sweatless.navigation.core {
 		private static var _tracking : Tracking;
 		private static var _loadings : Loadings;
 		private static var _navigation : Navigation;
+		private static var _layers : Layers;
 		
 		public static const READY : String = "ready";
 		public static const SHOWED: String = "showed";
@@ -81,7 +81,7 @@ package sweatless.navigation.core {
 			stage.showDefaultContextMenu = false;
 			stage.stageFocusRect = false;
 
-			layers = new Layers(this, "sweatless");
+			_layers = new Layers(this, "sweatless");
 			
 			_loadings = Loadings.instance;
 			_config = Configuration.instance;
@@ -90,9 +90,9 @@ package sweatless.navigation.core {
 			_assets = Assets.instance;
 			_loader = FileLoader.instance;
 			
-			layers.add("navigation");
-			layers.add("loading");
-			layers.add("debug");
+			_layers.add("navigation");
+			_layers.add("loading");
+			_layers.add("debug");
 			
 			addFonts();
 			addLoading();
@@ -130,6 +130,10 @@ package sweatless.navigation.core {
 			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
 		}
 		
+		public static function get layers() : Layers {
+			return _layers;
+		}
+		
 		private function loadConfig():void{
 			config.debug = StringUtils.toBoolean(String(config.getVar("DEBUG")));
 			
@@ -149,8 +153,8 @@ package sweatless.navigation.core {
 		
 		private function addExternalLayers():void{
 			for(var i:uint=0; i<config.layers.length(); i++) {
-				layers.add(config.layers[i]["@id"]);
-				config.layers[i]["@depth"] ? layers.swapDepth(config.layers[i]["@id"], config.layers[i]["@depth"]) : null;
+				_layers.add(config.layers[i]["@id"]);
+				config.layers[i]["@depth"] ? _layers.swapDepth(config.layers[i]["@id"], config.layers[i]["@depth"]) : null;
 			};
 		}
 		
@@ -173,7 +177,7 @@ package sweatless.navigation.core {
 		}
 		
 		public function addFPS():void{
-			DisplayObjectContainer(layers.get("debug")).addChild(new FPS());
+			DisplayObjectContainer(_layers.get("debug")).addChild(new FPS());
 		}
 		
 		public function resize(evt:Event=null):void{
@@ -206,7 +210,7 @@ package sweatless.navigation.core {
 		}
 		
 		public function progress(evt:BulkProgressEvent):void{
-			throw new Error("Please, override this method.");			
+			throw new Error("Please, override this method.");
 		}
 	}
 }

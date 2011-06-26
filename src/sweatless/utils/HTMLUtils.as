@@ -39,14 +39,14 @@
  * 
  */
 
-package sweatless.text {
+package sweatless.utils {
 
-	import sweatless.utils.StringUtils;
+	import sweatless.text.FontRegister;
 
 	/**
-	 * The <code>HTMLFormat</code> class defined each of the following methods returns a copy of the string wrapped inside an HTML tag.
+	 * The <code>HTMLUtils</code> class defined each of the following methods returns a copy of the string wrapped inside an HTML tag.
 	 */
-	public class HTMLFormat{
+	public class HTMLUtils{
 		
 		/**
 		 * Use the bold method to format and display a HTML string in a document.
@@ -124,6 +124,17 @@ package sweatless.text {
 		 */
 		public static function underline(p_str:String):String{
 			return "<u>" + p_str + "</u>";
+		}
+		
+		/**
+		 * Replaces the font-face in HTML string.
+		 * 
+		 * @param p_str the string to be formatted.
+		 * @param p_newfont the font face name to be change.
+		 * @return the string formatted with the method.
+		 */
+		public static function replaceFontFace(p_str:String, p_newfont:String):String{
+			return p_str.replace(/<font face=\'([a-zA-Z]+)\'/g, "<font face='"+p_newfont+"'");
 		}
 	}
 }
