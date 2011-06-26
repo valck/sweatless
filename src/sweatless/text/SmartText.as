@@ -442,11 +442,11 @@ package sweatless.text {
 		 * @see TextField
 		 */
 		public function set text(p_text:String):void{
-			_field.htmlText = p_text;
-			var re :RegExp = /face=\'([a-zA-Z]+)\'/g;
-			if(re.exec(p_text)[1]){
-				HTMLUtils.replaceFontFace(p_text, FontRegister.hasAdded(String(re.exec(p_text)[1])) ? FontRegister.getName(String(re.exec(p_text)[1])) : String(re.exec(p_text)[1]));
-			};
+			var reg : RegExp = / face=\'([a-zA-Z 0-9]+)\'/g;
+			var result : Array = reg.exec(p_text);
+			
+			_field.htmlText = result ? HTMLUtils.replaceFontFace(p_text, FontRegister.hasAdded(result[1]) ? FontRegister.getName(result[1]) : result[1]) : p_text;
+			
 			update();
 		}
 		
