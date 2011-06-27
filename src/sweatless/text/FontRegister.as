@@ -79,14 +79,27 @@ package sweatless.text {
 		}
 		
 		/**
-		 * Returns an <code>Array</code> with the fonts registered.
-		 * @return The resulting <code>Array</code> object.
-		 * @see Array
+		 * Returns an <code>Object</code> with the fonts registered.
+		 * @return The resulting <code>Object</code> [id~font].;
+		 * @see Object
 		 */
-		public static function getAll():Array{
-			var results:Array = new Array();
+		public static function getAll():Object{
+			var results:Object = new Object();
 			for(var key:* in fonts){
-				results.push(fonts[key]);
+				results[key] = fonts[key];
+			}
+			return results;
+		}
+		
+		/**
+		 * Returns an <code>Object</code> with the all fontsNames registered.
+		 * @return The resulting <code>Object</code>.;
+		 * @see Object
+		 */
+		public static function getAllFontNames():Object{
+			var results:Object = new Object();
+			for(var key:* in fonts){
+				results[key] = getName(key);
 			}
 			return results;
 		}

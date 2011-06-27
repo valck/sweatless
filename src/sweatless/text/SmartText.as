@@ -41,7 +41,6 @@
 
 package sweatless.text {
 
-	import sweatless.utils.HTMLUtils;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
@@ -67,8 +66,8 @@ package sweatless.text {
 		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
 		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
-		public static const SMOOTHING_ALIAS : String = "advanced";
-		public static const NORMAL_ALIAS : String = "normal";
+		public static const ALIAS_SMOOTHING : String = "advanced";
+		public static const ALIAS_NORMAL : String = "normal";
 		
 		/**
 		 * The constructor method to create the <code>SmartText</code>.
@@ -442,10 +441,7 @@ package sweatless.text {
 		 * @see TextField
 		 */
 		public function set text(p_text:String):void{
-			var reg : RegExp = / face=\'([a-zA-Z 0-9]+)\'/g;
-			var result : Array = reg.exec(p_text);
-			
-			_field.htmlText = result ? HTMLUtils.replaceFontFace(p_text, FontRegister.hasAdded(result[1]) ? FontRegister.getName(result[1]) : result[1]) : p_text;
+			_field.htmlText = p_text;
 			
 			update();
 		}

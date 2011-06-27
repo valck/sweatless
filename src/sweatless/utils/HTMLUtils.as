@@ -41,6 +41,8 @@
 
 package sweatless.utils {
 
+	import br.com.stimuli.string.printf;
+
 	import sweatless.text.FontRegister;
 
 	/**
@@ -130,11 +132,10 @@ package sweatless.utils {
 		 * Replaces the font-face in HTML string.
 		 * 
 		 * @param p_str the string to be formatted.
-		 * @param p_newfont the font face name to be change.
-		 * @return the string formatted with the method.
+		 * @return the string formatted with the registered fonts in <code>FontRegister</code>the method.
 		 */
-		public static function replaceFontFace(p_str:String, p_newfont:String):String{
-			return p_str.replace(/face=\'([a-zA-Z 0-9]+)\'/g, "face='"+p_newfont+"'");
+		public static function replaceFontFaces(p_str:String):String{
+			return printf(p_str.split(/ face=\'([a-zA-Z 0-9]+)\'/g).join(" face=\'%(").split(" face='%( ").join(")s' "), FontRegister.getAllFontNames());
 		}
 	}
 }
