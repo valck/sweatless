@@ -1,5 +1,7 @@
 package sweatless.navigation.core {
 
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
 	import br.com.stimuli.loading.BulkLoader;
 
 	import sweatless.layout.Layers;
@@ -33,7 +35,7 @@ package sweatless.navigation.core {
 		
 		public function trackpage(p_id:String, p_tag:String=null):void{
 			p_tag = p_tag ? p_tag : String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackpage.(@id==p_id).@tag);
-			type == "analytics" ? tracker.trackPageview(p_tag) : ExternalInterface.available ? ExternalInterface.call("trackPageview", p_tag) : null;
+			type == "analytics" ? tracker.trackPageview(p_tag) : ExternalInterface.available ? ExternalInterface.call("trackPageview", p_tag) : navigateToURL(new URLRequest("javascript:trackPageview('" + p_tag + "');"), "_self");
 		}
 
 		private function addGeneric():void{
