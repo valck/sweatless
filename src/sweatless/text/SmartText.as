@@ -91,9 +91,21 @@ package sweatless.text {
 		}
 		
 		private function update(p_begin:int = -1, p_end:int = -1):void{
-			if(!_css) _field.setTextFormat(_format, p_begin, p_end);
-			_field.embedFonts = _format.font ? true : false;
+			if(!_css && _format) _field.setTextFormat(_format, p_begin, p_end);
 			_field.autoSize = _autosize;
+		}
+		
+		/**
+		 * Specifies whether to render by using embedded font outlines.
+		 * @see FontRegister
+		 */
+		public function set embed(p_value:Boolean):void{
+			_field.embedFonts = p_value;
+			update();
+		}
+
+		public function get embed():Boolean{
+			return _field.embedFonts;
 		}
 		
 		/**
@@ -156,8 +168,7 @@ package sweatless.text {
 		 */
 		override public function set mouseEnabled(p_value:Boolean):void{
 		    super.mouseEnabled = false;
-		    super.mouseChildren = p_value; 
-		    _field.mouseEnabled = p_value;
+		    super.mouseChildren = _field.mouseEnabled = p_value;
 		};
 		
 		override public function get mouseEnabled():Boolean{
@@ -336,8 +347,9 @@ package sweatless.text {
 		 */
 		public function set type(p_value:String):void{
 			_field.type = p_value;
-			p_value == "input" || _css ? _selectable = _field.mouseEnabled = _field.tabEnabled = true : _field.mouseEnabled = _field.tabEnabled = false;
-			_field.selectable = _selectable;
+			
+			selectable = p_value == "input" ? true : _selectable;
+			_field.tabEnabled = p_value == "input" ? true : _field.tabEnabled;
 		}
 		
 		public function get type():String{
@@ -353,7 +365,7 @@ package sweatless.text {
 		}
 		
 		public function set selectable(p_value:Boolean):void{
-			_selectable = _field.selectable = p_value;
+			_selectable = _field.mouseEnabled = _field.selectable = p_value;
 		}
 		
 		/**

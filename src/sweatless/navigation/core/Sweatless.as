@@ -41,6 +41,7 @@
 
 package sweatless.navigation.core {
 
+	import sweatless.events.CustomEvent;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 
@@ -60,7 +61,7 @@ package sweatless.navigation.core {
 		
 		private var queue : BulkLoaderXMLPlugin;
 		
-		private static var broadcaster : Broadcaster = Broadcaster.getInstance();
+		private static var _broadcaster : Broadcaster;
 		private static var _config : Configuration;
 		private static var _assets : Assets;
 		private static var _loader : FileLoader;
@@ -81,6 +82,7 @@ package sweatless.navigation.core {
 			stage.showDefaultContextMenu = false;
 			stage.stageFocusRect = false;
 
+			_broadcaster = Broadcaster.getInstance();
 			_layers = new Layers(this, "sweatless");
 			
 			_loadings = Loadings.instance;
@@ -126,12 +128,17 @@ package sweatless.navigation.core {
 			return _tracking;
 		}
 		
-		public static function navigateTo(p_areaID:String):void{
-			broadcaster.hasEvent("show_"+p_areaID) ? broadcaster.dispatchEvent(new Event(broadcaster.getEvent("show_"+p_areaID))) : null;
-		}
-		
 		public static function get layers() : Layers {
 			return _layers;
+		}
+		
+		public static function get broadcaster() : Broadcaster {
+			return _broadcaster;
+		}
+
+		public static function navigateTo(p_areaID:String):void{
+			_broadcaster.hasEvent("show_"+p_areaID) ? _broadcaster.dispatchEvent(new Event(_broadcaster.getEvent("show_"+p_areaID))) : null;
+			_broadcaster.hasEvent("show_"+p_areaID) ? _broadcaster.dispatchEvent(new CustomEvent(_broadcaster.getEvent("change_menu"), p_areaID)) : null;
 		}
 		
 		private function loadConfig():void{

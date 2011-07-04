@@ -57,7 +57,6 @@ package sweatless.navigation.primitives {
 		public static const DESTROYED : String = "destroyed";
 		
 		public function Area(){
-			tabEnabled = false;
 			tabChildren = false;
 		}
 		
