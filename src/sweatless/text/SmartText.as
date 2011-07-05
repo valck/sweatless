@@ -85,6 +85,7 @@ package sweatless.text {
 			
 			autoSize = "left";
 			selectable = false;
+			embed = true;
 			type = "dynamic";
 			
 			update();

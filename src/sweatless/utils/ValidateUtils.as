@@ -49,7 +49,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a url value.
+		 * Checks if the string is a url value like http://www.sweatless.as
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -63,7 +63,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a email value.
+		 * Checks if the string is a email value like xxx@xxxx.xxx
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -77,7 +77,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a cpf value.
+		 * Checks if the string is a cpf value xxx.xxx.xxx-xx
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -91,7 +91,7 @@ package sweatless.utils{
 		
 		
 		/**
-		 * Checks if the string is a date value.
+		 * Checks if the string is a date value like xx/xx/xxxx
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -105,7 +105,7 @@ package sweatless.utils{
 		
 
 		/**
-		 * Checks if the string is a alphanumeric value.
+		 * Checks if the string is a alphanumeric value like a~Z/0~9.
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
@@ -119,7 +119,7 @@ package sweatless.utils{
 		
 		/**
 		 * Checks if the string is a numeric value.
-		 * @param p_value The <code>String</code> to validate.
+		 * @param p_value The <code>String</code> to validate like 0~9.
 		 * @return The resulting <code>Boolean</code> object.
 		 * @see String
 		 * @see Boolean

@@ -123,6 +123,16 @@ package sweatless.utils{
 		public static function percentToValue(p_percent:Number, p_min:Number, p_max:Number):Number{
 			return ((p_max - p_min) * p_percent) + p_min;
 		}
+
+		 /**
+		  * Returns bytes to formatted MB's string.
+		  * @param p_bytes
+		  * @return <code>String</code>
+		  *
+		  */
+		public static function getBytesAsMegabytes(p_bytes:Number):String{
+			return (Math.floor(((p_bytes / 1024 / 1024) * 100)) / 100)+" MB";
+		}
 		
 		/**
 		 * Generates a random number between two numbers.
