@@ -73,7 +73,7 @@ package sweatless.graphics{
 		 * 
 		 */
 		override protected function addGraphic():void{
-			graphics.drawRoundRectComplex(0, 0, width, height, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner);
+			topLeftCorner || topRightCorner || bottomLeftCorner || bottomRightCorner ? graphics.drawRoundRectComplex(0, 0, width, height, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner) : graphics.drawRect(0, 0, width, height);
 		}
 		
 		/**
