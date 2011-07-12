@@ -202,6 +202,10 @@ package sweatless.navigation.core {
 			if (queue.itemsTotal > 0 && queue.isFinished){
 				loaded(null);
 			}else{
+				queue.addEventListener(BulkLoader.ERROR, onError);
+				queue.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
+				queue.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
+				
 				var id : *;
 				for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
 				for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
@@ -211,10 +215,6 @@ package sweatless.navigation.core {
 				
 				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
 				queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache});
-				
-				queue.addEventListener(BulkLoader.ERROR, onError);
-				queue.addEventListener(BulkProgressEvent.PROGRESS, onProgress);
-				queue.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;

@@ -346,6 +346,10 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var swfs : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "swf");		
 		var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 		
+		queue.addEventListener(BulkLoader.ERROR, onError);
+		queue.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+		queue.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+		
 		var id : *;
 		for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
 		for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
@@ -355,10 +359,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
 		queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
-		
-		queue.addEventListener(BulkLoader.ERROR, onError);
-		queue.addEventListener(BulkProgressEvent.PROGRESS, _onProgress);
-		queue.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
 		queue.start();
 		prepared();
