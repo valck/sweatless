@@ -69,9 +69,8 @@ package sweatless.utils {
 			}
 			
 			for each (var property:XML in description.accessor){
-				property.@access == "readwrite" && property.@access == "write-only" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
+				property.@access == "readwrite" || property.@access == "write-only" ? p_clone.hasOwnProperty(property.@name) ? p_clone[property.@name] = p_target[property.@name] : null : null;  
 			}
-			
 			return p_clone;
 		}
 		
