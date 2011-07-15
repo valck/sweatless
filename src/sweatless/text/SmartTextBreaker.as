@@ -50,9 +50,9 @@ package sweatless.text {
 
 	public class SmartTextBreaker {
 		
-		public static const BREAK_CHARACTERS : String = "break_characters";
-		public static const BREAK_WORDS : String = "break_words";
-		public static const BREAK_LINES : String = "break_lines";
+		public static const CHARACTERS : String = "characters";
+		public static const WORDS : String = "words";
+		public static const LINES : String = "lines";
 		
 		public static const FIRST_TO_LAST : String = "first_to_last";
 		public static const LAST_TO_FIRST : String = "last_to_first";
@@ -65,8 +65,7 @@ package sweatless.text {
 		private var _source : SmartText;
 		private var _chars : Array;
 		
-
-		public function SmartTextBreaker(p_source : SmartText, p_type : String = BREAK_CHARACTERS, p_direction:String=FIRST_TO_LAST) {
+		public function SmartTextBreaker(p_source:SmartText, p_type:String=CHARACTERS, p_direction:String=FIRST_TO_LAST) {
 			super();
 
 			_chars = new Array();
@@ -84,10 +83,10 @@ package sweatless.text {
 			
 			var index : uint = 0;
 			
-			for (var line : uint = 0; line<_source.field.numLines; line++) {
-				var lineText : String = _source.field.getLineText(line);
-				var lineOffset : uint = _source.field.getLineOffset(line);
-				var lineMetrics : TextLineMetrics = _source.field.getLineMetrics(line);
+			for (var i : uint = 0; i<_source.field.numLines; i++) {
+				var lineText : String = _source.field.getLineText(i);
+				var lineOffset : uint = _source.field.getLineOffset(i);
+				var lineMetrics : TextLineMetrics = _source.field.getLineMetrics(i);
 
 				if (_source.field.text.length <= lineOffset) continue;
 
@@ -106,19 +105,19 @@ package sweatless.text {
 
 				var split : Array;
 				switch(_type) {
-					case BREAK_CHARACTERS:
+					case CHARACTERS:
 						split = lineText.split("");
 						break;
-					case BREAK_WORDS:
+					case WORDS:
 						split = lineText.split(" ").join(", ,").split(",");
 						break;
-					case BREAK_LINES:
+					case LINES:
 						split = [lineText];
 						break;
 				}
-
-				for (var i : uint = 0; i < split.length; i++) {
-					if (split[i].length == 0) continue;
+				
+				for (var j : uint = 0; j < split.length; j++) {
+					if (split[j].length == 0) continue;
 					
 					var char : Char = new Char();
 					char.antiAliasType = _source.alias;
@@ -130,16 +129,16 @@ package sweatless.text {
 					char.multiline = false;
 					char.wordWrap = false;
 
-					char.text = split[i];
+					char.text = split[j];
 
-					for (var j : uint = 0; j < split[i].length; j++) {
+					for (var k : uint = 0; k < split[j].length; k++) {
 						format = _source.field.getTextFormat(lineOffset, lineOffset + 1);
 						lineOffset += 1;
 						format.align = "left";
-						char.setTextFormat(format, j, j + 1);
+						char.setTextFormat(format, k, k + 1);
 					}
 
-					char.index = i;
+					char.index = j;
 					char.x = char.originalX = position.x;
 					char.y = char.originalY = position.y;
 
@@ -148,7 +147,7 @@ package sweatless.text {
 
 					position.x += char.textWidth;
 
-					if (split[i] != " ") {
+					if (split[j] != " ") {
 						_source.addChild(char);
 						result[index++] = char;
 					}
@@ -160,19 +159,10 @@ package sweatless.text {
 			return result;
 		}
 
-		public function destroy() : void {
+		public function destroy(p_all:Boolean=false) : void {
 			clear();
 
 			visible = false;
-		}
-
-		public function get source() : SmartText {
-			return _source;
-		}
-
-		public function set source(p_field : SmartText) : void {
-			_source = p_field;
-			update();
 		}
 
 		public function get type() : String {
@@ -180,7 +170,7 @@ package sweatless.text {
 		}
 
 		public function set type(p_type : String) : void {
-			p_type = p_type;
+			_type = p_type;
 			update();
 		}
 
@@ -194,11 +184,11 @@ package sweatless.text {
 		}
 
 		public function get visible() : Boolean {
-			return Boolean(!source.field.stage);
+			return Boolean(!_source.field.stage);
 		}
 
 		public function set visible(p_value : Boolean) : void {
-			p_value ? _source.removeChild(_source.field) : _source.addChild(_source.field);
+			p_value ? _source.field.stage ? _source.removeChild(_source.field) : null : _source.addChild(_source.field);
 		}
 
 		public function get chars() : Array {
@@ -206,24 +196,21 @@ package sweatless.text {
 		}
 
 		private function sort(p_array:Array) : Array{
-			var total : int = p_array.length-1;
+			var total : int = p_array.length;
 			var half : uint = Math.floor(total/2);
-			var right : Array;
-			var left : Array;
+			
+			var right : Array = p_array.slice(half, total);
+			var left : Array = p_array.slice(0, half).reverse();
 			
 			switch(_direction) {
 				case LAST_TO_FIRST:
-					p_array.reverse(); 
+					p_array = p_array.reverse();
 					break;
 				case CENTER_TO_EDGES:
-					right = p_array.slice(half, total);
-					left = p_array.slice(0, half).reverse();
 					p_array = ArrayUtils.merge(right, left);
 					break;
 				case EDGES_TO_CENTER:
-					right = p_array.slice(half, total).reverse();
-					left = p_array.slice(0, half);
-					p_array = ArrayUtils.merge(right, left);
+					p_array = ArrayUtils.merge(right, left).reverse();
 					break;
 				case RANDOM:
 					p_array = ArrayUtils.shuffle(p_array);
@@ -266,6 +253,7 @@ internal class Char extends TextField{
 	
 	public function Char(){
 		_position = new Point();
+		selectable = mouseEnabled = false;
 	}
 	
 	public function get index():int{
