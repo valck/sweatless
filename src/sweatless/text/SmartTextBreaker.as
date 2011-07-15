@@ -159,10 +159,15 @@ package sweatless.text {
 			return result;
 		}
 
-		public function destroy(p_all:Boolean=false) : void {
+		public function destroy(p_source:Boolean=false) : void {
 			clear();
-
 			visible = false;
+			
+			if(p_source){
+				_source.destroy();
+				_source.parent.removeChild(_source);
+				_source = null;
+			}
 		}
 
 		public function get type() : String {
