@@ -41,12 +41,12 @@
 
 package sweatless.navigation.core {
 
-	import sweatless.events.CustomEvent;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
 
 	import sweatless.debug.FPS;
 	import sweatless.events.Broadcaster;
+	import sweatless.events.CustomEvent;
 	import sweatless.layout.Layers;
 	import sweatless.utils.StringUtils;
 
