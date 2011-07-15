@@ -98,38 +98,30 @@ package sweatless.utils{
 			}
 			return results;
 		}
-				
+
 		/**
 		 * Returns a new merged <code>Array</code>. 
 		 * @param p_array The <code>Array</code> to be used as reference.
-		 * @return A random valid index.
+		 * @return Returns a new merged <code>Array</code>.
 		 * 
 		 */
 		public static function merge(p_arrayA:Array, p_arrayB:Array):Array {
-			var result : Array = new Array();
-			var a : int = 0;
-			var b : int = 0;
-			
-			while (a < p_arrayA.length && b < p_arrayB.length) {
-				if (p_arrayA[a] < p_arrayB[b]) {
-					result.push(p_arrayA[a]);
-					a++;
-				} else if (p_arrayB[b] < p_arrayA[a]) {
-					result.push(p_arrayB[b]);
-					b++;
-				} else {
-					result.push(p_arrayA[a]);
-					a++;
-					b++;
-				}
-			}
-			
-			while (a < p_arrayA.length) result.push(p_arrayA[a++]);
-			while (b < p_arrayB.length) result.push(p_arrayB[b++]);
-			
-			return result;
-		}
-		
+            var result:Array = new Array();
+            var i:uint = 0;
+            var j:uint = 0;
+            while((i < p_arrayA.length) || (j < p_arrayB.length)) {
+                    if(i < p_arrayA.length){
+                            result.push(p_arrayA[i]);
+                            i+=1;
+                    }
+                    if(j < p_arrayB.length){
+                            result.push(p_arrayB[j]);
+                            j+=1;
+                    }
+            }
+            return result;
+        }
+
 		/**
 		 * Returns a random index inside the range of the <code>Array</code>. 
 		 * @param p_array The <code>Array</code> to be used as reference.
@@ -156,7 +148,7 @@ package sweatless.utils{
 		 * @param p_array The <code>Array</code> to shuffled.
 		 * 
 		 */
-		public static function shuffle(p_array:Array):void {
+		public static function shuffle(p_array:Array):Array {
 			var total : int = p_array.length;
 			var random : int;
 			var temp : *;
@@ -167,6 +159,8 @@ package sweatless.utils{
 				p_array[i] = p_array[random];
 				p_array[random] = temp;
 			}
+			
+			return p_array;
 		}
 		
 	}

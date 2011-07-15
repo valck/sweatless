@@ -41,9 +41,10 @@
 
 package sweatless.text {
 
+	import sweatless.utils.ArrayUtils;
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextLineMetrics;
 
@@ -63,6 +64,7 @@ package sweatless.text {
 		private var _type : String;
 		private var _source : SmartText;
 		private var _chars : Array;
+		
 
 		public function SmartTextBreaker(p_source : SmartText, p_type : String = BREAK_CHARACTERS, p_direction:String=FIRST_TO_LAST) {
 			super();
@@ -79,26 +81,8 @@ package sweatless.text {
 			var result : Array = new Array();
 			var bounds : Rectangle = _source.field.getBounds(_source.field);
 			var position : Point = new Point(0, bounds.y);
-
-			var index : uint = 0;
 			
-			switch(_direction) {
-				case FIRST_TO_LAST:
-					index = 0;
-					break;
-				case LAST_TO_FIRST:
-					index = 0;							
-					break;
-				case CENTER_TO_EDGES:
-					index = 0;
-					break;
-				case EDGES_TO_CENTER:
-					index = 0;
-					break;
-				case RANDOM:
-					index = 0;
-					break;
-			}
+			var index : uint = 0;
 			
 			for (var line : uint = 0; line<_source.field.numLines; line++) {
 				var lineText : String = _source.field.getLineText(line);
@@ -126,7 +110,7 @@ package sweatless.text {
 						split = lineText.split("");
 						break;
 					case BREAK_WORDS:
-						split = lineText.split(" ").join("~#$ ~#$").split("~#$");
+						split = lineText.split(" ").join(", ,").split(",");
 						break;
 					case BREAK_LINES:
 						split = [lineText];
@@ -135,12 +119,12 @@ package sweatless.text {
 
 				for (var i : uint = 0; i < split.length; i++) {
 					if (split[i].length == 0) continue;
-
-					var char : TextField = new TextField();
-					char.antiAliasType = _source.field.antiAliasType;
-					char.embedFonts = _source.field.embedFonts;
-					char.sharpness = _source.field.sharpness;
-					char.thickness = _source.field.thickness;
+					
+					var char : Char = new Char();
+					char.antiAliasType = _source.alias;
+					char.embedFonts = _source.embed;
+					char.sharpness = _source.sharpness;
+					char.thickness = _source.thickness;
 					char.autoSize = "left";
 					char.selectable = false;
 					char.multiline = false;
@@ -155,30 +139,19 @@ package sweatless.text {
 						char.setTextFormat(format, j, j + 1);
 					}
 
-					char.x = position.x;
-					char.y = position.y;
+					char.index = i;
+					char.x = char.originalX = position.x;
+					char.y = char.originalY = position.y;
 
 					var ascent : Number = lineMetrics.ascent - char.getLineMetrics(0).ascent;
 					if (ascent) char.y += ascent;
 
 					position.x += char.textWidth;
 
-					if (split[i] != " ") _source.addChild(char);
-					
-					switch(_direction) {
-							case FIRST_TO_LAST:
-								result[index++] = char;
-								break;
-							case LAST_TO_FIRST:
-								result[index--] = char;							
-								break;
-							case CENTER_TO_EDGES:
-								break;
-							case EDGES_TO_CENTER:
-								break;
-							case RANDOM:
-								break;
-						}
+					if (split[i] != " ") {
+						_source.addChild(char);
+						result[index++] = char;
+					}
 				}
 
 				position.y += lineMetrics.height;
@@ -232,17 +205,45 @@ package sweatless.text {
 			return _chars;
 		}
 
+		private function sort(p_array:Array) : Array{
+			var total : int = p_array.length-1;
+			var half : uint = Math.floor(total/2);
+			var right : Array;
+			var left : Array;
+			
+			switch(_direction) {
+				case LAST_TO_FIRST:
+					p_array.reverse(); 
+					break;
+				case CENTER_TO_EDGES:
+					right = p_array.slice(half, total);
+					left = p_array.slice(0, half).reverse();
+					p_array = ArrayUtils.merge(right, left);
+					break;
+				case EDGES_TO_CENTER:
+					right = p_array.slice(half, total).reverse();
+					left = p_array.slice(0, half);
+					p_array = ArrayUtils.merge(right, left);
+					break;
+				case RANDOM:
+					p_array = ArrayUtils.shuffle(p_array);
+					break;
+			}
+			
+			return p_array;
+		}
+		
 		private function update() : void {
 			clear();
 
-			_source.removeChild(_source.field);
-			_chars = breakApart();
+			visible = true;
+			_chars = sort(breakApart());
 		}
 
 		private function clear() : void {
 			var i : int = _chars.length;
 			while (i--) {
-				var field : TextField = TextField(_chars[i]);
+				var field : Char = Char(_chars[i]);
 				_source.removeChild(field);
 				field = null;
 				_chars.pop();
@@ -251,5 +252,43 @@ package sweatless.text {
 			_chars = null;
 			_chars = new Array();
 		}
+	}
+}
+
+
+import flash.geom.Point;
+import flash.text.TextField;
+
+internal class Char extends TextField{
+	
+	private var _index : int;
+	private var _position : Point;
+	
+	public function Char(){
+		_position = new Point();
+	}
+	
+	public function get index():int{
+		return _index;
+	}
+	
+	public function set index(p_value:int):void{
+		_index = p_value;
+	}
+
+	public function get originalX() : Number {
+		return _position.x;
+	}
+
+	public function set originalX(p_x : Number) : void {
+		_position.x = p_x;
+	}
+
+	public function get originalY() : Number {
+		return _position.y;
+	}
+
+	public function set originalY(p_y : Number) : void {
+		_position.y = p_y;
 	}
 }
