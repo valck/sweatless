@@ -41,8 +41,6 @@
 
 package sweatless.text {
 
-	import sweatless.utils.StringUtils;
-
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
@@ -456,7 +454,7 @@ package sweatless.text {
 		 * @see TextField
 		 */
 		public function set text(p_text:String):void{
-			_field.htmlText = StringUtils.replace(p_text, "<br>", "\n");
+			_field.htmlText = p_text.split("<br>").join("\n").split("<BR>").join("\n");
 			
 			update();
 		}
