@@ -83,7 +83,7 @@ package sweatless.utils{
 		 * 
 		 */
 		public static function isFullName(p_value:String):Boolean{
-			var validate : RegExp = new RegExp(/\w{2,}( \w+)+/);
+			var validate : RegExp = new RegExp(/\S{2,}( \S+)+/);
 			return validate.test(p_value);
 		}
 		
