@@ -77,6 +77,18 @@ package sweatless.utils{
 		
 		
 		/**
+		 * Checks if the string is a full name value like xx x
+		 * @param p_value The <code>String</code> to validate.
+		 * @return The resulting <code>Boolean</code> object.
+		 * 
+		 */
+		public static function isFullName(p_value:String):Boolean{
+			var validate : RegExp = new RegExp(/\w{2,}( \w+)+/);
+			return validate.test(p_value);
+		}
+		
+		
+		/**
 		 * Checks if the string is a cpf value xxx.xxx.xxx-xx
 		 * @param p_value The <code>String</code> to validate.
 		 * @return The resulting <code>Boolean</code> object.
