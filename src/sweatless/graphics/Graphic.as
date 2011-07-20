@@ -61,14 +61,19 @@ package sweatless.graphics {
 		private var _stroke : Boolean;
 
 		private var _strokeSize : Number = 1;
-		private var _strokeAlpha : Number = 1;
-		private var _strokeColor : uint = 0x000000;
+		private var _strokeColors : Array = new Array(0x000000);
+		private var _strokeAlphas : Array;
+		private var _strokeRatios : Array;
+		private var _strokeRotation : Number = 0;
+		private var _strokeTx : Number = 0;
+		private var _strokeTy : Number = 0;
 		private var _strokeMode : String = "normal";
+		private var _strokeCaps : String = "none";
+		private var _strokeJoints : String = "bevel";
 		
 		private var _fillColors : Array = new Array(0xff0000, 0x00ff00, 0x0000ff);
 		private var _fillAlphas : Array;
 		private var _fillRatios : Array;
-		
 		private var _fillRotation : Number = 0;
 		private var _fillTx : Number = 0;
 		private var _fillTy : Number = 0;
@@ -113,14 +118,18 @@ package sweatless.graphics {
 			
 			if(!texture){
 				matrix.createGradientBox(p_width, p_height, _fillRotation, _fillTx, _fillTy);
-				graphics.beginGradientFill(_type, _fillColors, _fillAlphas ? _fillAlphas : autoAlpha, _fillRatios ? _fillRatios : autoRatio, matrix, _method);
+				graphics.beginGradientFill(_type, _fillColors, _fillAlphas ? _fillAlphas : autoAlpha(_fillColors), _fillRatios ? _fillRatios : autoRatio(_fillColors), matrix, _method);
 			}else{
 				matrix.rotate(_fillRotation);
 				matrix.translate(_fillTx, _fillTy);
 				graphics.beginBitmapFill(_texture, matrix, _repeat, true);
 			}
 			
-			_stroke ? graphics.lineStyle(_strokeSize, _strokeColor, _strokeAlpha, true, _strokeMode): null;
+			if(_stroke){
+				matrix.createGradientBox(p_width, p_height, _strokeRotation, _strokeTx, _strokeTy);
+				graphics.lineStyle(_strokeSize, 0, 0, true, _strokeMode, _strokeCaps, _strokeJoints);
+				graphics.lineGradientStyle(_type, _strokeColors, _strokeAlphas ? _strokeAlphas : autoAlpha(_strokeColors), _strokeRatios ? _strokeRatios : autoRatio(_strokeColors), matrix, _method);
+			}
 			
 			addGraphic();
 			
@@ -129,7 +138,7 @@ package sweatless.graphics {
 
 		/**
 		 *
-		 * Adds a vector graphic. 
+		 * Adds a vector graphic.
 		 * Note: Please override this method. 
 		 * 
 		 */
@@ -137,21 +146,21 @@ package sweatless.graphics {
 			
 		}
 		
-		private function get autoAlpha():Array{
+		private function autoAlpha(p_colors:Array):Array{
 			var alphaArray : Array = new Array();
 			
-			for(var i:int=0; i<_fillColors.length; i++) {
+			for(var i:int=0; i<p_colors.length; i++) {
 				alphaArray.push(1);
 			}
 			
 			return alphaArray;
 		}
 		
-		private function get autoRatio():Array{
+		private function autoRatio(p_colors:Array):Array{
 			var ratioArray : Array = new Array();
 
-			for(var i:int=0; i<_fillColors.length; i++) {
-				ratioArray.push((i/(_fillColors.length-1)*255));
+			for(var i:int=0; i<p_colors.length; i++) {
+				ratioArray.push((i/(p_colors.length-1)*255));
 			}
 			
 			return ratioArray;
@@ -159,26 +168,10 @@ package sweatless.graphics {
 		
 		/**
 		 *
-		 * Shows or not the stroke in the graphic.
+		 * Sets/Get a value from the line scale mode that specifies which scale mode to use: none, normal, horizontal and vertical.
 		 * 
 		 * @return 
-		 * 
-		 */
-		public function get stroke():Boolean{
-			return _stroke;
-		}
-		
-		public function set stroke(p_value:Boolean):void{
-			_stroke = p_value;
-			update();
-		}
-		
-		/**
-		 *
-		 * Sets/Get a value from the <code>LineScaleMode</code> class that specifies which scale mode to use: (<code>LineScaleMode.NONE, LineScaleMode.NORMAL, LineScaleMode.HORIZONTAL and LineScaleMode.VERTICAL</code>)
-		 *   
-		 * @return 
-		 * @default LineScaleMode.NORMAL
+		 * @default "normal"
 		 * 
 		 */
 		public function get strokeScaleMode():String{
@@ -187,40 +180,41 @@ package sweatless.graphics {
 		
 		public function set strokeScaleMode(value:String):void{
 			_strokeMode = value;
+			_stroke = true;
 			update();
 		}
 		
 		/**
 		 *
-		 * Sets/Get a hexadecimal color value of the line; for example, red is 0xFF0000, blue is 0x0000FF, and so on. If a value is not indicated, the default is 0x000000 (black). Optional.
+		 * Sets/Get a <code>Array</code> of one or more hexadecimal colors to be used in the stroke; for example, red and blue is [0xFF0000, 0x0000FF].
 		 *   
-		 * @return 
-		 * @default 0x000000
+		 * @param p_value An array of hexadecimal colors to be used in the stroke (for example, red is 0xFF0000, blue is 0x0000FF, and so on).
 		 * 
 		 */
-		public function get strokeColor():uint{
-			return _strokeColor;
+		public function get strokeColors():Array{
+			return _strokeColors;
 		}
 		
-		public function set strokeColor(value:uint):void{
-			_strokeColor = value;
+		public function set strokeColors(value:Array):void{
+			_strokeColors = value;
+			_stroke = true;
 			update();
 		}
 		
 		/**
 		 *
-		 * Sets/Get a number that indicates the alpha value of the color of the line; valid values are 0 to 1. If a value is not indicated, the default is 1 (solid). If the value is less than 0, the default is 0. If the value is greater than 1, the default is 1.
+		 * Sets/Get a <code>Array</code> of one or more alpha values to be used in the stroke; for example, 0 and 1 is [0, 1].
 		 *   
-		 * @return 
-		 * @default 1
+		 * @param p_value An array of alpha values for the corresponding colors in the colors array; valid values are 0 to 1. If the value is less than 0, the default is 0. If the value is greater than 1, the default is 1. 
 		 * 
 		 */
-		public function get strokeAlpha():Number{
-			return _strokeAlpha;
+		public function get strokeAlphas():Array{
+			return _strokeAlphas;
 		}
 		
-		public function set strokeAlpha(value:Number):void{
-			_strokeAlpha = value;
+		public function set strokeAlphas(value:Array):void{
+			_strokeAlphas = value;
+			_stroke = true;
 			update();
 		}
 		
@@ -238,6 +232,112 @@ package sweatless.graphics {
 		
 		public function set strokeSize(value:Number):void{
 			_strokeSize = value;
+			_stroke = true;
+			update();
+		}
+
+		/**
+		 * 
+		 * Sets/Get an enumeration of constant values that specify the caps style to use in drawing lines..
+		 * The method supports three types of caps: none, round, and square. 
+		 * 
+		 * @param p_strokeCaps The caps type.
+		 * @default none
+		 * 
+		 */
+		public function get strokeCaps() : String {
+			return _strokeCaps;
+		}
+
+		public function set strokeCaps(p_strokeCaps : String) : void {
+			_strokeCaps = p_strokeCaps;
+			_stroke = true;
+			update();
+		}
+		
+		/**
+		 * 
+		 * Sets/Get an enumeration of constant values that specify the joint style to use in drawing lines.
+		 * The method supports three types of joints: miter, round, and bevel. 
+		 * 
+		 * @param p_strokeJoints The joint type.
+		 * @default bevel
+		 * 
+		 */
+		public function get strokeJoints() : String{
+			return _strokeJoints;
+		}
+		
+		public function set strokeJoints(p_strokeJoints : String) : void{
+			_strokeJoints = p_strokeJoints;
+			_stroke = true;
+			update();
+		}
+
+		/**
+		 * 
+		 * Sets/Get a rotation transformation in the stroke of graphic. 
+		 * 
+		 * @param p_value The rotation angle in radians.
+		 * 
+		 */
+		public function set strokeRotation(p_value:Number):void{
+			_strokeRotation = NumberUtils.toRadians(p_value);
+			_stroke = true;
+			update();
+		}
+		
+		public function get strokeRotation():Number{
+			return _strokeRotation;
+		}
+		
+		/**
+		 *
+		 * Translates the matrix along the x in the stroke of the graphic.
+		 * 
+		 * @param p_value The amount of movement along the x axis to the right, in pixels.
+		 * 
+		 */
+		public function set strokeTX(p_value:Number):void{
+			_strokeTx = p_value;
+			_stroke = true;
+			update();
+		}
+		
+		public function get strokeTX():Number{
+			return _strokeTx;
+		}
+		
+		/**
+		 *
+		 * Translates the matrix along the y in the stroke of the graphic.
+		 * 
+		 * @param p_value The amount of movement along the y axis to the right, in pixels.
+		 * 
+		 */
+		public function set strokeTY(p_value:Number):void{
+			_strokeTy = p_value;
+			_stroke = true;
+			update();
+		}
+		
+		public function get strokeTY():Number{
+			return _strokeTy;
+		}
+		
+		/**
+		 *
+		 * Shows or not the stroke in the graphic.
+		 * 
+		 * @return 
+		 * 
+		 */
+		public function get stroke():Boolean{
+			return _stroke;
+		}
+		
+		public function set stroke(p_value:Boolean):void{
+			_stroke = p_value;
 			update();
 		}
 
@@ -427,7 +527,7 @@ package sweatless.graphics {
 		 */
 		public function destroy():void{
 			graphics.clear();
-			if(texture) texture.dispose();
+			if (texture) texture.dispose();
 		}
 	}
-}
+}		
