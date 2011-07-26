@@ -374,23 +374,21 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var complete : BulkProgressEvent = new BulkProgressEvent(FINISHED);
 		complete.setInfo(_bytesLoaded, _bytesTotal, _bytesTotalCurrent, _itemsLoaded, _itemsTotal, _weightPercent);
 		
-		if(queue && count == 1){
-			dispatchEvent(complete);
-		}else if(queue && count == 0){
-			count++;
-		}else{
+		if(queue.isFinished && isFinished){
+			
+			queue.removeEventListener(BulkLoader.ERROR, onError);
+			queue.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+			queue.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+			
+			removeEventListener(BulkLoader.ERROR, onError);
+			removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+			removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
+			
 			dispatchEvent(complete);
 		}
 	}
 	
 	private function removeProgress(evt:Event):void{
-		removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
-		
-		if(queue && count == 1){
-			queue.removeEventListener(BulkLoader.ERROR, onError);
-			queue.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);
-			queue.removeEventListener(BulkProgressEvent.PROGRESS, _onProgress);
-		}
 		
 		if(loading){
 			loading.addEventListener(Loading.HIDDEN, _onComplete);
