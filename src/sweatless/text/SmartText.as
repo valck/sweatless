@@ -41,6 +41,7 @@
 
 package sweatless.text {
 
+	import flash.events.Event;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
@@ -80,7 +81,9 @@ package sweatless.text {
 			_format = p_format || new TextFormat();
 			
 			_field = new TextField();
-			
+			_field.mouseWheelEnabled = false;
+			_field.addEventListener(Event.SCROLL, _scroll);
+
 			addChild(_field);
 			
 			autoSize = "left";
@@ -89,6 +92,10 @@ package sweatless.text {
 			type = "dynamic";
 			
 			update();
+		}
+
+		private function _scroll(evt:Event) : void {
+		    _field.scrollH = _field.scrollV = 0;
 		}
 		
 		private function update(p_begin:int = -1, p_end:int = -1):void{
@@ -454,7 +461,7 @@ package sweatless.text {
 		 * @see TextField
 		 */
 		public function set text(p_text:String):void{
-			_field.htmlText = p_text.split("<br>").join("\n").split("<BR>").join("\n");
+			_field.htmlText = p_text.replace("<br>", "\n").replace("<BR>", "\n");
 			
 			update();
 		}
@@ -469,7 +476,8 @@ package sweatless.text {
 		public function destroy():void{
 			_format = null;
 			_css = null;
-			
+
+			_field.removeEventListener(Event.SCROLL, _scroll);
 			removeChild(_field);
 			_field = null;
 		}

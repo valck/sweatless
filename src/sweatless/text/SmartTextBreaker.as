@@ -41,18 +41,13 @@
 
 package sweatless.text {
 
+	import flash.text.TextLineMetrics;
 	import sweatless.utils.ArrayUtils;
 
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
-	import flash.text.TextLineMetrics;
 
 	public class SmartTextBreaker {
-		
-		public static const CHARACTERS : String = "characters";
-		public static const WORDS : String = "words";
-		public static const LINES : String = "lines";
 		
 		public static const FIRST_TO_LAST : String = "first_to_last";
 		public static const LAST_TO_FIRST : String = "last_to_first";
@@ -61,102 +56,144 @@ package sweatless.text {
 		public static const RANDOM : String = "random";
 		
 		private var _direction : String;
-		private var _type : String;
 		private var _source : SmartText;
 		private var _chars : Array;
 		
-		public function SmartTextBreaker(p_source:SmartText, p_type:String=CHARACTERS, p_direction:String=FIRST_TO_LAST) {
-			super();
-
+		public function SmartTextBreaker(p_source:SmartText) {
 			_chars = new Array();
-			_type = p_type;
 			_source = p_source;
-			_direction = p_direction;
-			
-			update();
 		}
 
-		private function breakApart() : Array {
+		public function get characters() : Array {
+			clear();
+			visible = true;
+			
 			var result : Array = new Array();
-			var bounds : Rectangle = _source.field.getBounds(_source.field);
-			var position : Point = new Point(0, bounds.y);
+			var bounds : Rectangle;
+			var metrics : TextLineMetrics;
 			
-			var index : uint = 0;
+			var total : int = _source.length - 1;
+			var i : int = _source.length;
+			while (i-- > 0) {
+				if (escape(_source.text.charAt(Math.abs((i - total)))) == "%0D") continue;
+				
+				var char : Char = new Char();
+				_source.addChild(char);
+				
+				char.antiAliasType = _source.alias;
+				char.embedFonts = _source.embed;
+				char.sharpness = _source.sharpness;
+				char.thickness = _source.thickness;
+				char.text = _source.text.charAt(Math.abs((i - total)));
+				
+				var format : TextFormat = _source.field.getTextFormat(Math.abs((i - total)), Math.abs((i - total)) + 1);
+				char.setTextFormat(format);
+
+				bounds = _source.field.getCharBoundaries(Math.abs((i - total)));
+				metrics = _source.field.getLineMetrics(_source.field.getLineIndexOfChar(Math.abs((i - total))));
+				
+				align(bounds, metrics, format.align);
+					
+				char.x = char.originalX = bounds.x;
+				char.y = char.originalY = bounds.y;
+				
+				result.push(char);
+			}
 			
-			for (var i : uint = 0; i<_source.field.numLines; i++) {
-				var lineText : String = _source.field.getLineText(i);
-				var lineOffset : uint = _source.field.getLineOffset(i);
-				var lineMetrics : TextLineMetrics = _source.field.getLineMetrics(i);
-
-				if (_source.field.text.length <= lineOffset) continue;
-
-				var format : TextFormat = _source.field.getTextFormat(lineOffset, lineOffset + 1);
-				switch(format.align) {
-					case "left":
-						position.x = bounds.x;
-						break;
-					case "right":
-						position.x = bounds.x - 4 + (_source.field.width - lineMetrics.width);
-						break;
-					case "center":
-						position.x = bounds.x - 2 + (_source.field.width - lineMetrics.width) * .5;
-						break;
-				}
-
-				var split : Array;
-				switch(_type) {
-					case CHARACTERS:
-						split = lineText.split("");
-						break;
-					case WORDS:
-						split = lineText.split(" ").join(", ,").split(",");
-						break;
-					case LINES:
-						split = [lineText];
-						break;
+			return sort(result);
+		}
+		
+		public function get words() : Array {
+			clear();
+			visible = true;
+			
+			
+			var result : Array = new Array();
+			var bounds : Rectangle;
+			var metrics : TextLineMetrics;
+			
+			var split : Array = _source.text.split(" ").join("† †").split("†");
+			var index : int = 0;
+			
+			var total : int = split.length - 1;
+			var i : int = split.length;
+			while (i-- > 0) {
+				if(split[Math.abs((i - total))] == String.fromCharCode(13)) continue;
+				
+				var char : Char = new Char();
+				_source.addChild(char);
+				
+				char.antiAliasType = _source.alias;
+				char.embedFonts = _source.embed;
+				char.sharpness = _source.sharpness;
+				char.thickness = _source.thickness;
+				char.text = split[Math.abs((i - total))];
+				
+				for (var j : uint = 0; j<char.text.length; j++) {
+					var format : TextFormat = _source.field.getTextFormat(index+j, (index + j) + 1);
+					char.setTextFormat(format, j, j + 1);
 				}
 				
-				for (var j : uint = 0; j < split.length; j++) {
-					if (split[j].length == 0) continue;
-					
-					var char : Char = new Char();
-					char.antiAliasType = _source.alias;
-					char.embedFonts = _source.embed;
-					char.sharpness = _source.sharpness;
-					char.thickness = _source.thickness;
-					char.autoSize = "left";
-					char.selectable = false;
-					char.multiline = false;
-					char.wordWrap = false;
-
-					char.text = split[j];
-
-					for (var k : uint = 0; k < split[j].length; k++) {
-						format = _source.field.getTextFormat(lineOffset, lineOffset + 1);
-						lineOffset += 1;
-						format.align = "left";
-						char.setTextFormat(format, k, k + 1);
-					}
-
-					char.index = j;
-					char.x = char.originalX = position.x;
-					char.y = char.originalY = position.y;
-
-					var ascent : Number = lineMetrics.ascent - char.getLineMetrics(0).ascent;
-					if (ascent) char.y += ascent;
-
-					position.x += char.textWidth;
-
-					if (split[j] != " ") {
-						_source.addChild(char);
-						result[index++] = char;
-					}
+				bounds = _source.field.getCharBoundaries(index);
+				metrics = _source.field.getLineMetrics(_source.field.getLineIndexOfChar(index));
+				
+				align(bounds, metrics, format.align);
+				
+				char.x = char.originalX = bounds.x;
+				char.y = char.originalY = bounds.y;
+				
+				result.push(char);
+				
+				index += char.text.length;
+			}
+			
+			return sort(result);
+		}
+		
+		public function get lines() : Array {
+			clear();
+			visible = true;
+			
+			
+			var result : Array = new Array();
+			var bounds : Rectangle;
+			var metrics : TextLineMetrics;
+			
+			var index : int = 0;
+			
+			var total : int = _source.numLines - 1;
+			var i : int = _source.numLines;
+			while (i-- > 0) {
+				bounds = _source.field.getCharBoundaries(index);
+				if(!bounds) continue;
+				
+				metrics = _source.field.getLineMetrics(Math.abs((i - total)));
+				
+				var char : Char = new Char();
+				_source.addChild(char);
+				
+				char.antiAliasType = _source.alias;
+				char.embedFonts = _source.embed;
+				char.sharpness = _source.sharpness;
+				char.thickness = _source.thickness;
+				char.text = _source.field.getLineText(Math.abs((i - total)));
+				
+				for (var j : uint = 0; j<char.text.length; j++) {
+					var format : TextFormat = _source.field.getTextFormat(index+j, (index + j) + 1);
+					char.setTextFormat(format, j, j + 1);
 				}
 
-				position.y += lineMetrics.height;
+				align(bounds, metrics, format.align);
+				
+				char.x = char.originalX = bounds.x;
+				char.y = char.originalY = bounds.y;
+				
+				result.push(char);
+				
+				index += char.text.length;
 			}
-
-			return result;
+			
+			return sort(result);	
 		}
 
 		public function destroy(p_source:Boolean=false) : void {
@@ -170,22 +207,12 @@ package sweatless.text {
 			}
 		}
 
-		public function get type() : String {
-			return _type;
-		}
-
-		public function set type(p_type : String) : void {
-			_type = p_type;
-			update();
-		}
-
 		public function get direction() : String {
 			return _direction;
 		}
 
 		public function set direction(p_direction : String) : void {
 			_direction = p_direction;
-			update();
 		}
 
 		public function get visible() : Boolean {
@@ -197,9 +224,26 @@ package sweatless.text {
 		}
 
 		public function get chars() : Array {
-			return _chars;
+			return _source && _source.length>1 ? _chars : null;
 		}
 
+		private function align(p_bounds:Rectangle, p_metrics:TextLineMetrics, p_direction:String) : void{	
+			switch(p_direction) {
+				case "right":
+					p_bounds.x -= (_source.field.width - (p_metrics.x + p_metrics.width));
+					break;
+				case "center":
+					p_bounds.x += (p_metrics.width - p_metrics.width - 2);
+					break;
+				case "left":
+				case "justify":
+					p_bounds.x -= p_metrics.x;
+					break;
+			}
+
+			p_bounds.y -= 2;
+		}
+			
 		private function sort(p_array:Array) : Array{
 			var total : int = p_array.length;
 			var half : uint = Math.floor(total/2);
@@ -225,13 +269,6 @@ package sweatless.text {
 			return p_array;
 		}
 		
-		private function update() : void {
-			clear();
-
-			visible = true;
-			_chars = sort(breakApart());
-		}
-
 		private function clear() : void {
 			var i : int = _chars.length;
 			while (i--) {
@@ -240,7 +277,7 @@ package sweatless.text {
 				field = null;
 				_chars.pop();
 			}
-
+			
 			_chars = null;
 			_chars = new Array();
 		}
@@ -258,7 +295,8 @@ internal class Char extends TextField{
 	
 	public function Char(){
 		_position = new Point();
-		selectable = mouseEnabled = false;
+		wordWrap = multiline = mouseWheelEnabled = selectable = mouseEnabled = false;
+		autoSize = "left";
 	}
 	
 	public function get index():int{
