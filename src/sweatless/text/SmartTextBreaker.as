@@ -55,7 +55,7 @@ package sweatless.text {
 		public static const CENTER_TO_EDGES : String = "center_to_edges";
 		public static const RANDOM : String = "random";
 		
-		private var _direction : String;
+		private var _direction : String = FIRST_TO_LAST;
 		private var _source : SmartText;
 		private var _chars : Array;
 		
@@ -107,7 +107,6 @@ package sweatless.text {
 			clear();
 			visible = true;
 			
-			
 			var result : Array = new Array();
 			var bounds : Rectangle;
 			var metrics : TextLineMetrics;
@@ -153,7 +152,6 @@ package sweatless.text {
 		public function get lines() : Array {
 			clear();
 			visible = true;
-			
 			
 			var result : Array = new Array();
 			var bounds : Rectangle;
@@ -267,7 +265,7 @@ package sweatless.text {
 		
 		private function clear() : void {
 			var i : int = _chars.length;
-			while (i--) {
+			while (i-- > 0) {
 				var field : Char = Char(_chars[i]);
 				_source.removeChild(field);
 				field = null;
@@ -286,7 +284,6 @@ import flash.text.TextField;
 
 internal class Char extends TextField{
 	
-	private var _index : int;
 	private var _position : Point;
 	
 	public function Char(){
@@ -295,14 +292,6 @@ internal class Char extends TextField{
 		autoSize = "left";
 	}
 	
-	public function get index():int{
-		return _index;
-	}
-	
-	public function set index(p_value:int):void{
-		_index = p_value;
-	}
-
 	public function get originalX() : Number {
 		return _position.x;
 	}
