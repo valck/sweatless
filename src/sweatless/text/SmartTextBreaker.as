@@ -41,11 +41,11 @@
 
 package sweatless.text {
 
-	import flash.text.TextLineMetrics;
 	import sweatless.utils.ArrayUtils;
 
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import flash.text.TextLineMetrics;
 
 	public class SmartTextBreaker {
 		
@@ -221,10 +221,6 @@ package sweatless.text {
 
 		public function set visible(p_value : Boolean) : void {
 			p_value ? _source.field.stage ? _source.removeChild(_source.field) : null : _source.addChild(_source.field);
-		}
-
-		public function get chars() : Array {
-			return _source && _source.length>1 ? _chars : null;
 		}
 
 		private function align(p_bounds:Rectangle, p_metrics:TextLineMetrics, p_direction:String) : void{	
