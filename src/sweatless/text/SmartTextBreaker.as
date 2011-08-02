@@ -194,17 +194,6 @@ package sweatless.text {
 			return sort(result);	
 		}
 
-		public function destroy(p_source:Boolean=false) : void {
-			clear();
-			visible = false;
-			
-			if(p_source){
-				_source.destroy();
-				_source.parent.removeChild(_source);
-				_source = null;
-			}
-		}
-
 		public function get direction() : String {
 			return _direction;
 		}
@@ -219,6 +208,17 @@ package sweatless.text {
 
 		public function set visible(p_value : Boolean) : void {
 			p_value ? _source.field.stage ? _source.removeChild(_source.field) : null : _source.addChild(_source.field);
+		}
+
+		public function destroy(p_source:Boolean=false) : void {
+			clear();
+			visible = false;
+			
+			if(p_source){
+				_source.destroy();
+				_source.parent.removeChild(_source);
+				_source = null;
+			}
 		}
 
 		private function align(p_bounds:Rectangle, p_metrics:TextLineMetrics, p_direction:String) : void{	
