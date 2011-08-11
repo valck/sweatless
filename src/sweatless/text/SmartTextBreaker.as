@@ -55,13 +55,14 @@ package sweatless.text {
 		public static const CENTER_TO_EDGES : String = "center_to_edges";
 		public static const RANDOM : String = "random";
 		
-		private var _direction : String = FIRST_TO_LAST;
+		private var _direction : String;
 		private var _source : SmartText;
 		private var _chars : Array;
-		
-		public function SmartTextBreaker(p_source:SmartText) {
+
+		public function SmartTextBreaker(p_source : SmartText, p_direction : String = FIRST_TO_LAST) {
 			_chars = new Array();
 			_source = p_source;
+			_direction = p_direction;
 		}
 
 		public function get characters() : Array {
@@ -100,6 +101,7 @@ package sweatless.text {
 				result.push(char);
 			}
 			
+			_chars = sort(result);
 			return sort(result);
 		}
 		
@@ -117,7 +119,7 @@ package sweatless.text {
 			var total : int = split.length - 1;
 			var i : int = split.length;
 			while (i-- > 0) {
-				if(split[Math.abs((i - total))] == String.fromCharCode(13)) continue;
+				if(split[Math.abs((i - total))] == "\n" || split[Math.abs((i - total))] == String.fromCharCode(13)) continue;
 				
 				var char : Char = new Char();
 				_source.addChild(char);
@@ -146,6 +148,7 @@ package sweatless.text {
 				index += char.text.length;
 			}
 			
+			_chars = sort(result);
 			return sort(result);
 		}
 		
@@ -191,6 +194,7 @@ package sweatless.text {
 				index += char.text.length;
 			}
 			
+			_chars = sort(result);
 			return sort(result);	
 		}
 
@@ -247,7 +251,7 @@ package sweatless.text {
 			
 			switch(_direction) {
 				case LAST_TO_FIRST:
-					p_array = p_array.reverse();
+					p_array.reverse();
 					break;
 				case CENTER_TO_EDGES:
 					p_array = ArrayUtils.merge(right, left);

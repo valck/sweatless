@@ -99,6 +99,7 @@ package sweatless.navigation.core {
 		}
 		
 		public function get source():XML{
+			_source = Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			return _source;
 		}
 		

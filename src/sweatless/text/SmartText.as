@@ -41,6 +41,7 @@
 
 package sweatless.text {
 
+	import sweatless.utils.StringUtils;
 	import flash.events.Event;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -461,7 +462,7 @@ package sweatless.text {
 		 * @see TextField
 		 */
 		public function set text(p_text:String):void{
-			_field.htmlText = p_text.replace("<br>", "\n").replace("<BR>", "\n");
+			_field.htmlText = StringUtils.replace(p_text, "<br>", "\n");
 			
 			update();
 		}

@@ -70,7 +70,7 @@ package sweatless.utils {
 		 * @see String
 		 */
 		public static function replace(p_str:String, p_search:String, p_replace:String):String {
-			return p_str.replace(p_search, p_replace);
+			return p_str.split(p_search).join(p_replace);
 		}
 
 		/**
