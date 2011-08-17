@@ -41,13 +41,14 @@
 
 package sweatless.text {
 
-	import sweatless.utils.StringUtils;
-	import flash.events.Event;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	
+	import sweatless.utils.StringUtils;
 	
 	/**
 	 * The <code>SmartText</code> class have support methods for easier manipulation of
@@ -207,7 +208,7 @@ package sweatless.text {
 		 */
 		public function setTextFormat(p_format:TextFormat, p_begin:int = -1, p_end:int = -1):void{
 			_field.setTextFormat(p_format, p_begin, p_end);
-			
+			_format = new TextFormat();
 			update(p_begin, p_end);
 		}
 		
