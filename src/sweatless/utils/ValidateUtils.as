@@ -71,8 +71,8 @@ package sweatless.utils{
 		 * @see RegExp
 		 */
 		public static function isEmail(p_value:String):Boolean {
-			var validate : RegExp = /([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/gi;
-			return validate.test(p_value);
+			var validate : RegExp = /^.[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/;
+			return validate.test(p_value.toUpperCase());
 		}
 		
 		
