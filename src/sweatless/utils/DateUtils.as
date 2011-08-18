@@ -64,6 +64,15 @@ package sweatless.utils {
 	        return (p_hour.hours > 11) ? "PM" : "AM";
         };
 		
+		/**
+		 * Returns a the current timestamp.
+		 * @return The current <code>int</code> timestamp value.
+		 *
+		 */
+		public static function getTimestamp():int{
+			return new Date().time;
+		}
+		
 		public static function get24hr(p_hour:Date):String{
 			return StringUtils.addDecimalZero(p_hour.hours) + ":" + StringUtils.addDecimalZero(p_hour.minutes) + ":" + StringUtils.addDecimalZero(p_hour.seconds);
 		};

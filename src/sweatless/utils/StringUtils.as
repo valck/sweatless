@@ -305,6 +305,20 @@ package sweatless.utils {
 
 			return p_str == "yes" || p_str == "true" || p_str == "1" ? true : false;
 		}
+		
+		/**
+		 * Returns a random String with the specified length.
+		 * @param length The length of the random string.
+		 * @return The resulting <code>String</code>.
+		 * @see String
+		 */
+		public static function getRandomString(length:uint = 10):String{
+			var randomString:String = "";
+			for(var i:int=0; i<length; i++){
+				randomString += String.fromCharCode(65 + Math.floor(Math.random()*25));
+			}
+			return randomString;
+		}
 
 		private static function trim(p_str:String):String {
 			if (p_str == null) {
@@ -325,6 +339,5 @@ package sweatless.utils {
 		private static function _upperCase(p_char:String, ... args):String {
 			return p_char.toUpperCase();
 		}
-
 	}
 }
