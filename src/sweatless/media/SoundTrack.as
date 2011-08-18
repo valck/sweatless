@@ -41,8 +41,6 @@
 
 package sweatless.media {
 
-	import sweatless.events.CustomEvent;
-
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -53,6 +51,8 @@ package sweatless.media {
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
+	
+	import sweatless.events.CustomEvent;
 
 	public class SoundTrack extends EventDispatcher{
 		
@@ -74,6 +74,7 @@ package sweatless.media {
 		
 		private var count : uint;
 		private var _position : Number;
+		private var _previousposition:Number;
 		private var object : DisplayObject;
 		
 		private var cuePoints : Dictionary;
@@ -172,20 +173,12 @@ package sweatless.media {
 		}
 		
 		private function dispatchCuePoints(evt : TimerEvent):void {
-			var current : Number = Math.floor(channel.position/1000);
-			var currentMinute : Number = Math.floor(current/60);
-			var currentSecond : Number = Math.floor(current-(currentMinute*60));
-			
-			if(isPlayingFrom) {
-				isPlayingFrom = false;
-				return;
-			}
-
 			for(var key:* in cuePoints){
-				if(String(getCuePoint(key).time) == doubleDigitFormat(currentMinute)+":"+doubleDigitFormat(currentSecond)) {
+				if(position >= getCuePoint(key).miliseconds && _previousposition < getCuePoint(key).miliseconds) {
 					dispatchEvent(new CustomEvent(CUEPOINT, cuePoints[key]));
 				}
 			}
+			_previousposition = position;
 
 			//trace(doubleDigitFormat(currentMinute)+":"+doubleDigitFormat(currentSecond));
 		}

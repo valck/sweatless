@@ -43,14 +43,26 @@ package sweatless.media{
 	internal class CuePoint{
 		private var _id : String;
 		private var _time : String;
+		private var _miliseconds:int;
 		
 		public function CuePoint(p_id:String, p_time:String){
 			id = p_id;
 			time = p_time;
+			
+			var splitTime:Array = time.split(":");
+			var hours:int = splitTime.length >= 3 ? int(splitTime[0]) : 0;
+			var minutes:int = splitTime.length >=2 ? int(splitTime[splitTime.length - 2]) : 0;
+			var seconds:Number = splitTime.length >=1 ? Number(splitTime[splitTime.length - 1]) : 0;
+			
+			_miliseconds = ((hours*60 +minutes)*60 + seconds)*1000;
 		}
 		
 		public function get time():String{
 			return _time;
+		}
+		
+		internal function get miliseconds():int{
+			return _miliseconds;
 		}
 		
 		public function set time(p_value:String):void{
