@@ -69,7 +69,7 @@ package sweatless.utils {
 		 * @return The current <code>int</code> timestamp value.
 		 *
 		 */
-		public static function getTimestamp():int{
+		public static function getTimestamp():Number{
 			return new Date().time;
 		}
 		

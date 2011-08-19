@@ -111,7 +111,7 @@ package sweatless.media {
 
 			cuePoints = new Dictionary(true);
 			channel =  new SoundChannel();
-			timer = new Timer(1000);
+			timer = new Timer(200);
 		}
 		
 		public function get track():Sound{
