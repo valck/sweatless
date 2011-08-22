@@ -312,8 +312,16 @@ package sweatless.text {
 			_field.tabIndex = p_value;
 		}
 		
+		override public function set tabIndex(p_value:int):void{
+			tab = p_value;
+		}
+		
 		public function get tab():int{
 			return _field.tabIndex;
+		}
+		
+		override public function get tabIndex():int{
+			return tab;
 		}
 		
 		/**
