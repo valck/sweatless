@@ -102,7 +102,10 @@ package sweatless.text {
 		}
 		
 		private function update(p_begin:int = -1, p_end:int = -1):void{
-			if(!_css && _format) _field.setTextFormat(_format, p_begin, p_end);
+			if(!_css && _format) {
+				_field.setTextFormat(_format, p_begin, p_end);
+				_field.defaultTextFormat = _format;
+			}
 			_field.autoSize = _autosize;
 		}
 		
