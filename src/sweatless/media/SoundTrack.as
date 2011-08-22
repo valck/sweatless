@@ -275,7 +275,7 @@ package sweatless.media {
 			volume = currentVolume;
         }
 		
-		public function pause():void {
+		public function resume():void {
 			if(!sound) return;
 			if(isPlaying) return;
 			
@@ -290,7 +290,7 @@ package sweatless.media {
 			volume = currentVolume;
         }
 		
-		public function resume():void {
+		public function pause():void {
 			if(!sound) return;
 			if(!isPlaying) return;
 			

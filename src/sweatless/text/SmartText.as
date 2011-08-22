@@ -92,6 +92,7 @@ package sweatless.text {
 			selectable = false;
 			embed = true;
 			type = "dynamic";
+			super.tabEnabled = false;
 			
 			update();
 		}
