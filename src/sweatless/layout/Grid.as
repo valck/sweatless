@@ -54,7 +54,7 @@ package sweatless.layout {
 		private var _columns : uint;
 		private var _rows : uint;
 		
-		public function Grid(p_columns:uint, p_rows:uint, p_toLeft:Boolean=true, p_data:Array=null){
+		public function Grid(p_columns:uint, p_rows:uint, p_toRight:Boolean=true, p_data:Array=null){
 			_index = new Array();
 			_matrix = new Dictionary(true);
 			_columns = p_columns;
@@ -67,7 +67,7 @@ package sweatless.layout {
 				var column : uint;
 				var position : Point = new Point();
 
-				if(p_toLeft){
+				if(p_toRight){
 					row = (i%_columns);
 					column = Math.floor(i/_columns);
 					
@@ -91,7 +91,7 @@ package sweatless.layout {
 		}
 
 		public function get index():Array{
-			return _index.sort();
+			return _index;
 		}
 
 		public function get columns():uint{
@@ -138,6 +138,9 @@ package sweatless.layout {
 			return uint(_columns * _rows);
 		}
 		
+		/**
+		 * @TODO
+		 */
 		public function rearrange():void{
 			
 		}

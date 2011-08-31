@@ -39,6 +39,11 @@
  * 
  */
 
+/**
+ * @TODO
+ * check and test all mehods
+ */
+
 package sweatless.text {
 
 	import sweatless.utils.ArrayUtils;
@@ -76,7 +81,7 @@ package sweatless.text {
 			var total : int = _source.length - 1;
 			var i : int = _source.length;
 			while (i-- > 0) {
-				if (escape(_source.text.charAt(Math.abs((i - total)))) == "%0D") continue;
+				if (escape(_source.text.charAt(Math.abs((i - total)))) == "%0D" || !_source.text.charAt(Math.abs((i - total)))) continue;
 				
 				var char : Char = new Char();
 				_source.addChild(char);
