@@ -183,10 +183,10 @@ package sweatless.media {
 			//trace(doubleDigitFormat(currentMinute)+":"+doubleDigitFormat(currentSecond));
 		}
 		
-		private function doubleDigitFormat(p_value:Number):String {
-			if(p_value < 10) return ("0" + p_value);
-			return String(p_value);
-		}
+//		private function doubleDigitFormat(p_value:Number):String {
+//			if(p_value < 10) return ("0" + p_value);
+//			return String(p_value);
+//		}
 		
 		public function playFrom(cue : String):void {
 			var timeStr : String = getCuePoint(cue).time;
