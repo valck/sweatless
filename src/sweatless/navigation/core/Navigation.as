@@ -41,6 +41,7 @@
 
 package sweatless.navigation.core {
 
+	import flash.utils.getDefinitionByName;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
 
@@ -138,7 +139,13 @@ package sweatless.navigation.core {
 				
 				ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 ? setDeeplink() : null;
 				
-				current = Area(queue.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
+				if(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")){
+					current = Area(queue.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
+				}else{
+					var currentAreaClass:Class = getDefinitionByName( Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@class") ) as Class;
+					current = new currentAreaClass();
+				}
+				
 				current.id = Sweatless.config.currentAreaID;
 				
 				DisplayObjectContainer(Layers.getInstance("sweatless").get("navigation")).addChild(current);
@@ -214,7 +221,9 @@ package sweatless.navigation.core {
 				for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 				
 				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-				queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache});
+				if(swf){
+					queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache});
+				}
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;

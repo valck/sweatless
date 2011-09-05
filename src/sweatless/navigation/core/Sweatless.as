@@ -259,13 +259,15 @@ internal class Signature extends EventDispatcher{
 	private var menu : ContextMenu = new ContextMenu();
 	
 	public function Signature(p_scope : InteractiveObject){
-		menu.hideBuiltInItems();
+		if(menu.customItems){
+			menu.hideBuiltInItems();
 		
-		var label : ContextMenuItem = new ContextMenuItem("Build with Sweatless Framework", true);
-		label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
-		menu.customItems.push(label);
+			var label : ContextMenuItem = new ContextMenuItem("Build with Sweatless Framework", true);
+			label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
+			menu.customItems.push(label);
 		
-		p_scope.contextMenu = menu;
+			p_scope.contextMenu = menu;
+		}
 	}
 	
 	private function goto(evt:ContextMenuEvent):void {
@@ -358,10 +360,14 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 		
 		assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-		queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
+		
+		if(swf)
+			queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
 		
 		queue.start();
 		prepared();
+		
+		if(queue.items.length == 0) removeProgress(null);
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
