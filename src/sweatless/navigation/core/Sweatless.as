@@ -380,7 +380,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		var complete : BulkProgressEvent = new BulkProgressEvent(FINISHED);
 		complete.setInfo(_bytesLoaded, _bytesTotal, _bytesTotalCurrent, _itemsLoaded, _itemsTotal, _weightPercent);
 		
-		if(queue.isFinished && isFinished){
+		if((queue.isFinished && isFinished) || queue.items.length == 0){
 			
 			queue.removeEventListener(BulkLoader.ERROR, onError);
 			queue.removeEventListener(BulkProgressEvent.COMPLETE, removeProgress);

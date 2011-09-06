@@ -231,6 +231,8 @@ package sweatless.navigation.core {
 				
 				queue.sortItemsByPriority();
 				queue.start();
+				
+				if(queue.items.length == 0) onLoadComplete(null);
 			}
 		}
 
