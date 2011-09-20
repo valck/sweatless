@@ -221,9 +221,7 @@ package sweatless.navigation.core {
 				for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 				
 				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-				if(swf){
-					queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache});
-				}
+				swf ? queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache}) : null;
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;

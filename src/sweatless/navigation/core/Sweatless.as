@@ -360,14 +360,12 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
 		
 		assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-		
-		if(swf)
-			queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache});
-		
+		swf ? queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache}) : null;
+
 		queue.start();
 		prepared();
 		
-		if(queue.items.length == 0) removeProgress(null);
+		queue.items.length == 0 ? removeProgress(null) : null;
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
