@@ -49,7 +49,7 @@ package sweatless.ui {
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	
-	import sweatless.capabilities.MacMouseWheel;
+	import sweatless.capabilities.MouseWheelEnabler;
 
 	
 
@@ -87,7 +87,7 @@ package sweatless.ui {
 			
 			if(mouseWheelEnabled) wheelScope.addEventListener(MouseEvent.MOUSE_WHEEL, scrollHandler);
 			
-			if(mouseWheelEnabled) MacMouseWheel.init(scrollDragger.stage);
+			if(mouseWheelEnabled) MouseWheelEnabler.init(scrollDragger.stage);
 			
 		}
 		
