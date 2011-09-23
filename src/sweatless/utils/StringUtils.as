@@ -40,6 +40,7 @@
  */
 
 package sweatless.utils {
+	import flash.utils.Dictionary;
 
 	/**
 	 * The <code>StringUtils</code> class have support methods for easier manipulation of
@@ -47,7 +48,9 @@ package sweatless.utils {
 	 * @see String
 	 */
 	public class StringUtils {
-
+		private static var substitionDict:Dictionary;
+		
+		
 		/**
 		 * Check in a search in the string and returns whether it contains the sentence.
 		 * @param p_str The <code>String</code> to validate.
@@ -319,6 +322,19 @@ package sweatless.utils {
 			}
 			return randomString;
 		}
+		
+		public static function replaceSpecialCharacters(p_str:String):String{
+			if(!substitionDict) initDict();
+			
+//			p_str = p_str.toLowerCase();
+			
+			for(var i:String in substitionDict){
+				var pattern:RegExp = new RegExp( i , "g");
+				p_str = p_str.replace(pattern, substitionDict[i]);
+			}
+			
+			return p_str;
+		}
 
 		private static function trim(p_str:String):String {
 			if (p_str == null) {
@@ -326,6 +342,44 @@ package sweatless.utils {
 			}
 
 			return p_str.replace(/^\s+|\s+$/g, "");
+		}
+				
+		static private function initDict():void{
+			substitionDict = new Dictionary();
+			substitionDict["ã"] = "a"; 
+			substitionDict["á"] = "a"; 
+			substitionDict["â"] = "a";
+			substitionDict["ä"] = "a";
+			substitionDict["à"] = "a";
+			
+			substitionDict["é"] = "e"; 
+			substitionDict["ê"] = "e";
+			substitionDict["ë"] = "e";
+			substitionDict["è"] = "e";
+			
+			substitionDict["í"] = "i";
+			substitionDict["î"] = "i";
+			substitionDict["ï"] = "i";
+			substitionDict["ì"] = "i";
+			
+			substitionDict["õ"] = "o"; 
+			substitionDict["ó"] = "o"; 
+			substitionDict["ô"] = "o";
+			substitionDict["ö"] = "o";
+			substitionDict["ò"] = "o";
+			
+			substitionDict["ú"] = "u";
+			substitionDict["û"] = "u";
+			substitionDict["ü"] = "u";
+			substitionDict["ù"] = "u";
+			
+			substitionDict["ç"] = "c"; 
+			
+			substitionDict["ñ"] = "n";
+			
+			for(var i:String in substitionDict){
+				substitionDict[i.toUpperCase()] = String(substitionDict[i]).toUpperCase();
+			}
 		}
 
 		private static function trimLeft(p_str:String):String {
