@@ -118,5 +118,17 @@ package sweatless.utils {
 			p_target.transform.matrix = matrix;
 		}
 		
+		
+		/**
+		 * Resize proportionally a <code>DisplayObject</code>.
+		 * @param p_target The <code>DisplayObject</code> to resizing.
+		 * @param p_maxwidth The <code>Number</code> of the max width property of p_target.
+		 * @param p_maxheight The <code>Number</code> of the max height of p_target.
+		 */
+		public static function resize(p_target : DisplayObject, p_maxwidth : Number=0, p_maxheight : Number=0) : void {
+			p_target.width = p_maxwidth;
+			p_target.height = p_maxheight;
+			p_target.scaleX = p_target.scaleY = Math.max(p_target.scaleX, p_target.scaleY);
+		}
 	}
 }

@@ -70,21 +70,28 @@ package sweatless.utils{
 		}
 		
 		/**
-		 * Removes all duplicated items from an <code>Array</code>. 
-		 * @param p_array The <code>Array</code> where the duplicates should be removed.
+		 * Removes an item by index from an <code>Array</code>. 
+		 * @param p_array The <code>Array</code> that contains the item that should be removed. 
+		 * @param p_index The index to be removed from the <code>Array</code>.
+		 * @return An <code>Array</code> with the removed item.
+		 * @see Array.splice()
 		 */
-		public static function removeDuplicate(p_array:Array):void {
-			var arrTemp:Array = p_array;
-			for (var y : Number = 0; y<arrTemp.length; y++) {
-				for(var x : * in arrTemp[y]){
-					var arrTemp2 : * = arrTemp[y][x];
-					for (var z : Number = (y + 1); z<arrTemp.length; z++) {
-						if (arrTemp2==arrTemp[z][x]) {
-							arrTemp.splice(z, 1);
-						}
-					}
+		public static function removeItemByIndex(p_index:uint, p_array:Array):Array{
+			return p_array.splice(p_index, 1);
+		}
+		
+		/**
+		 * Removes all strings duplicated from an <code>Array</code>. 
+		 * @param p_array The <code>Array</code> where the duplicates string should be removed.
+		 */
+		public static function removeDuplicateStrings(p_array:Array):Array{
+		    var result:Array = p_array.filter(
+				function (a:*, b:int, c:Array):Boolean {
+					a,b,c; 
+					return ((result ? result : result = new Array()).indexOf(a) > -1 ? false : (result.push(a) > 0));
 				}
-			}
+			);
+			return result;
 		}
 		
 		/**

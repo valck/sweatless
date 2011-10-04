@@ -41,7 +41,6 @@
 
 package sweatless.navigation.core {
 
-	import flash.utils.getDefinitionByName;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
 
@@ -50,6 +49,7 @@ package sweatless.navigation.core {
 	import sweatless.layout.Layers;
 	import sweatless.navigation.primitives.Area;
 	import sweatless.navigation.primitives.Loading;
+	import sweatless.utils.DisplayObjectUtils;
 	import sweatless.utils.StringUtils;
 
 	import com.asual.swfaddress.SWFAddress;
@@ -142,7 +142,7 @@ package sweatless.navigation.core {
 				if(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")){
 					current = Area(queue.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
 				}else{
-					var currentAreaClass:Class = getDefinitionByName( Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@class") ) as Class;
+					var currentAreaClass:Class = DisplayObjectUtils.getClass(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@class"));
 					current = new currentAreaClass();
 				}
 				

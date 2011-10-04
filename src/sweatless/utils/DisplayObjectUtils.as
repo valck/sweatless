@@ -41,6 +41,7 @@
 
 package sweatless.utils {
 
+	import flash.utils.getDefinitionByName;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
@@ -74,7 +75,6 @@ package sweatless.utils {
 			return p_clone;
 		}
 		
-		
 		/**
 		 * Duplicates a instance of the <code>DisplayObject</code>.
 		 * @param p_target The <code>DisplayObject</code> object to duplicate.
@@ -105,15 +105,24 @@ package sweatless.utils {
 		}
 		
 		/**
-		 * Get the reference class of a Object.
+		 * Get the reference class from a SWF.
 		 * @param p_source The object.
+		 * @param p_class The <code>String</code> class name.
+		 * @return The resulting <code>Class</code> object.
+		 * @see Class
+		 */
+		public static function getClassFromSWF(p_class:String, p_source:DisplayObject):Class{
+			return Class(p_source.loaderInfo.applicationDomain.getDefinition(p_class));
+		}
+		
+		/**
+		 * Get the reference class.
 		 * @param p_class The class name in <code>String</code>.
 		 * @return The resulting <code>Class</code> object.
 		 * @see Class
 		 */
-		public static function getClass(p_source:*, p_class:String):*{
-			var reference : Class = p_source.loaderInfo.applicationDomain.getDefinition(p_class) as Class;
-			return new reference();
+		public static function getClass(p_class:String):Class{
+			return Class(getDefinitionByName(p_class));
 		}
 		
 		/**
@@ -129,11 +138,7 @@ package sweatless.utils {
 				
 				if(!child) continue;
 				
-				if(child is MovieClip) child.stop();
-				if(child.hasOwnProperty("dispose")) child.dispose();
-				if(child.hasOwnProperty("destroy")) child.destroy();
-				if(child.hasOwnProperty("kill")) child.kill();
-				if(child.hasOwnProperty("unload")) child.unload();
+				remove(child);
 				if(child is DisplayObjectContainer) removeAll(child as DisplayObjectContainer);
 				if(child.parent && child.stage) child.parent.removeChild(child);
 			}
@@ -144,7 +149,7 @@ package sweatless.utils {
 		 * A safe method to remove a <code>DisplayObject</code>. inside a <code>DisplayObjectContainer</code>.
 		 * @param p_target The object to clean.
 		 */
-		public static function safeRemove(p_target:*):void{
+		public static function remove(p_target : *, p_self:Boolean=false) : void {
 			if(!p_target || !p_target.stage) return;
 			
 			if(p_target is MovieClip) p_target.stop();
@@ -152,8 +157,11 @@ package sweatless.utils {
 			if(p_target.hasOwnProperty("destroy")) p_target.destroy();
 			if(p_target.hasOwnProperty("kill")) p_target.kill();
 			if(p_target.hasOwnProperty("unload")) p_target.unload();
-			if(p_target.parent) p_target.parent.removeChild(p_target);
-			p_target = null;
+			
+			if(p_self){
+				if(p_target.parent && p_target.stage) p_target.parent.removeChild(p_target);
+				p_target = null;
+			}
 		}
 		
 		/**

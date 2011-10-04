@@ -41,16 +41,11 @@
 
 package sweatless.capabilities {
 
-	import flash.display.DisplayObject;
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import flash.system.Capabilities;
 	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
 
 	/**
 	 * The <code>MouseWheelEnabler</code> class fixes some browsers bugs on MouseWheel event handling.
@@ -94,6 +89,7 @@ package sweatless.capabilities {
 
 		private function handleExternalMouseEvent(rawDelta:Number, scaledDelta:*):void
 		{
+			rawDelta;
 			var delta:Number;
 			var curTime:uint = getTimer();
 			
