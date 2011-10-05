@@ -84,7 +84,6 @@ package sweatless.text {
 			
 			_field = new TextField();
 			_field.mouseWheelEnabled = false;
-			_field.addEventListener(Event.SCROLL, _scroll);
 
 			addChild(_field);
 			
@@ -97,13 +96,8 @@ package sweatless.text {
 			update();
 		}
 
-		private function _scroll(evt:Event) : void {
-		    _field.scrollH = _field.scrollV = 0;
-		}
-		
-		private function update(p_begin:int = -1, p_end:int = -1):void{
+		private function update():void{
 			if(!_css && _format) {
-				_field.setTextFormat(_format, p_begin, p_end);
 				_field.defaultTextFormat = _format;
 			}
 			_field.autoSize = _autosize;
@@ -213,7 +207,7 @@ package sweatless.text {
 		public function setTextFormat(p_format:TextFormat, p_begin:int = -1, p_end:int = -1):void{
 			_field.setTextFormat(p_format, p_begin, p_end);
 			_format = new TextFormat();
-			update(p_begin, p_end);
+			update();
 		}
 		
 		/**
@@ -233,7 +227,7 @@ package sweatless.text {
 		 */
 		public function set format(p_format:TextFormat):void{
 			_format = p_format;
-			
+			_field.setTextFormat(p_format);
 			update();
 		}
 		
@@ -491,7 +485,6 @@ package sweatless.text {
 			_format = null;
 			_css = null;
 
-			_field.removeEventListener(Event.SCROLL, _scroll);
 			removeChild(_field);
 			_field = null;
 		}
