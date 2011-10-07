@@ -40,7 +40,7 @@
  */
 
 package sweatless.media{
-	internal class CuePoint{
+	public class CuePoint{
 		private var _id : String;
 		private var _time : String;
 		private var _miliseconds:int;
