@@ -41,8 +41,6 @@
 
 package sweatless.media {
 
-	import sweatless.events.CustomEvent;
-
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -52,6 +50,8 @@ package sweatless.media {
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.utils.Dictionary;
+	
+	import sweatless.events.CustomEvent;
 	
 	public class VideoTrack extends Sprite{
 		
@@ -70,7 +70,9 @@ package sweatless.media {
 		private var _looping : Boolean;
 		private var _mute : Boolean;
 		
+		private var _previousposition:Number = 0;
 		private var _cuepoints : Dictionary;
+		private var customCuePoints : Dictionary;
 		private var properties : Dictionary;
 		
 		private var stream : NetStream;
@@ -86,6 +88,7 @@ package sweatless.media {
 		
 		public function VideoTrack(){
 			video = new Video();
+			customCuePoints = new Dictionary();
 			addChild(video);
 		}
 		
@@ -119,6 +122,7 @@ package sweatless.media {
 		
 		public function set isPlaying(p_value:Boolean):void{
 			_playing = p_value;
+			_playing && customCuePoints ? addEventListener(Event.ENTER_FRAME, dispatchCuePoints) : removeEventListener(Event.ENTER_FRAME, dispatchCuePoints);
 		}
 		
 		public function get deblocking():int{
@@ -370,6 +374,47 @@ package sweatless.media {
 			if(!_cuepoints[p_object.name]) _cuepoints[p_object.name] = p_object.time;
 			
 			dispatchEvent(new CustomEvent(CUEPOINT, p_object));
+		}
+		
+		public function addCuePoint(p_id:String, p_time:String):void {
+			if(hasCuePoint(p_id)) throw new Error("The cuepoint "+ p_id +" already exists.");
+			
+			var cuePoint : CuePoint = new CuePoint(p_id, p_time);
+			customCuePoints[p_id] = cuePoint;
+		}
+		
+		public function getCuePoint(p_id:String):CuePoint{
+			if(!hasCuePoint(p_id)) throw new Error("The cuepoint "+ p_id +" don't exists.");
+			return customCuePoints[p_id];
+		}
+		
+		public function hasCuePoint(p_id:String):Boolean{
+			return customCuePoints[p_id] ? true : false;
+		}
+		
+		public function clearCuePoint(p_id:String): void{
+			if(!customCuePoints[p_id]){
+				throw new Error("The cuepoint "+ p_id +" don't exists or already removed.");
+			}else{
+				customCuePoints[p_id] = null;
+				delete customCuePoints[p_id];
+			}
+		}
+		
+		public function clearAllCuePoints():void{
+			for(var key:* in customCuePoints){
+				customCuePoints[key] = null;
+				delete customCuePoints[key];
+			}
+		}
+		
+		private function dispatchCuePoints(evt : Event):void {
+			for(var key:* in customCuePoints){
+				if(seek*1000 >= getCuePoint(key).miliseconds && _previousposition < getCuePoint(key).miliseconds) {
+					dispatchEvent(new CustomEvent(CUEPOINT, customCuePoints[key]));
+				}
+			}
+			_previousposition = seek*1000;
 		}
 		
 		private function onMetaData(p_object:Object):void {			
