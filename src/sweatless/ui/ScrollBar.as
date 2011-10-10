@@ -110,6 +110,7 @@ package sweatless.ui {
 				case MouseEvent.MOUSE_UP:
 					stage.removeEventListener(MouseEvent.MOUSE_UP, scrollHandler);
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE, scrollHandler);
+					refreshScroll();
 					scrollDragger.stopDrag();
 					break;
 				
