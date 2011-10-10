@@ -277,7 +277,9 @@ package sweatless.text {
 		 */
 		public function set lineSpacing(p_value:Number):void{
 			_format.leading = p_value;
-			
+			var tempFormat:TextFormat = new TextFormat();
+			tempFormat.leading = p_value;
+			_field.setTextFormat(tempFormat);
 			update();
 		}
 		
