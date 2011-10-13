@@ -40,6 +40,7 @@
  */
 
 package sweatless.graphics{
+	import flash.geom.Point;
 	
 	/**
 	 * The <code>SmartTriangle</code> is a simple triangle graphic, this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
@@ -47,6 +48,13 @@ package sweatless.graphics{
 	 * @see Graphic
 	 */
 	public class SmartTriangle extends Graphic{
+		
+		public static const UP:String = "up";
+		public static const DOWN:String = "down";
+		public static const LEFT:String = "left";
+		public static const RIGHT:String = "right";
+		
+		private var _direction:String = UP;
 		
 		/**
 		 * The <code>SmartTriangle</code> is a simple triangle graphic, this extends the internal class <code>Graphic</code>, with this you can set the line style, fill and gradient fill, or fill texture easily.
@@ -66,10 +74,27 @@ package sweatless.graphics{
 		 * 
 		 */
 		override protected function addGraphic():void{
-			graphics.moveTo(width/2, 0);
-			graphics.lineTo(width, height);
-			graphics.lineTo(0, height);
-			graphics.lineTo(width/2, 0);
+			var yAxys:int = _direction == UP ? -1 : _direction == DOWN ? 1 : 0;
+			var xAxys:int = _direction == LEFT ? -1 : _direction == RIGHT ? 1 : 0;
+			var edge:Point = new Point((Math.max(0, xAxys) + Math.abs(yAxys)/2)*width, (Math.max(yAxys,0) + Math.abs(xAxys)/2)*height);
+			var point1:Point = new Point((Math.abs(yAxys) + Math.abs(Math.min(0, xAxys)))*width, (Math.abs(Math.min(0, yAxys)) + Math.abs(xAxys)) * height);
+			var point2:Point = new Point(Math.abs(Math.min(0, xAxys))*width,Math.abs(Math.min(0, yAxys))*height);
+			graphics.moveTo(edge.x, edge.y);
+			graphics.lineTo(point1.x, point1.y);
+			graphics.lineTo(point2.x, point2.y);
+			graphics.lineTo(edge.x, edge.y);
 		}
+
+		public function get direction():String
+		{
+			return _direction;
+		}
+
+		public function set direction(value:String):void
+		{
+			_direction = value;
+			update();
+		}
+
 	}
 }
