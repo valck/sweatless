@@ -41,14 +41,13 @@
 
 package sweatless.text {
 
+	import sweatless.utils.StringUtils;
+
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-	
-	import sweatless.utils.StringUtils;
 	
 	/**
 	 * The <code>SmartText</code> class have support methods for easier manipulation of

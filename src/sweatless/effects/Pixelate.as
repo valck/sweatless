@@ -36,7 +36,6 @@
  * http://www.sweatless.as/
  * 
  * @author Valério Oliveira (valck)
- * @todo convert and asdocs
  * 
  */
 
@@ -72,13 +71,13 @@ package sweatless.effects {
 		 * Sets the source to apply the effect and return a new bitmap.
 		 *  
 		 * @param p_scope The source.
-		 * @param p_size The initial size of pixels of the effect.
+		 * @param p_size The initial size of pixels in display.
 		 * @return Bitmap
 		 * 
 		 * @see Bitmap
 		 * 
 		 */
-		public function create(p_source:DisplayObject, p_size:Number=1):Bitmap{
+		public function bitmap(p_source:DisplayObject, p_size:Number=1):Bitmap{
 			source = getBitmapData(p_source);
 			clone = getBitmapData(p_source);
 			
@@ -89,7 +88,7 @@ package sweatless.effects {
 		
 		/**
 		 *
-		 * Sets/Get a size of pixels of the effect.
+		 * Sets/Get a size of pixels in display.
 		 *   
 		 * @return Number
 		 * @default 1
