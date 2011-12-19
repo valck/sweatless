@@ -70,7 +70,7 @@ package sweatless.effects {
 		/**
 		 * Sets the source to apply the effect and return a new bitmap.
 		 *  
-		 * @param p_scope The source.
+		 * @param p_source The source.
 		 * @param p_size The initial size of pixels in display.
 		 * @return Bitmap
 		 * 
@@ -78,13 +78,16 @@ package sweatless.effects {
 		 * 
 		 */
 		public function bitmap(p_source:DisplayObject, p_size:Number=1):Bitmap{
-			source = getBitmapData(p_source);
-			clone = getBitmapData(p_source);
-			
+			drawFrame(p_source);
 			size = p_size;
 
 			return new Bitmap(source);
 		}
+		
+		private function drawFrame(p_source:DisplayObject):void{
+			source = getBitmapData(p_source);
+			clone = getBitmapData(p_source);
+		};
 		
 		/**
 		 *
@@ -131,7 +134,7 @@ package sweatless.effects {
 			return bmp;
 		};
 		
-		protected function render():void{
+		private function render():void{
 			var scale : Number = 1 / _size;
 			var width : int = (scale * source.width) > 0 || (scale * source.width) < 2880 ? NumberUtils.isZero(int(scale * source.width)) ? 1 : (scale * source.width) > 2880 ? 2880 : (scale * source.width) : 1;
 			var height : int = (scale * source.height) > 0 || (scale * source.height) < 2880 ? NumberUtils.isZero(int(scale * source.height)) ? 1 : (scale * source.height) > 2880 ? 2880 : (scale * source.height) : 1;
