@@ -8,7 +8,7 @@ This framework is licensed under [MIT](http://www.opensource.org/licenses/mit-li
 
 ## Current Status
 
-Sorry, but we're documenting all classes of the package, stay tuned...
+It's a release version, but we're documenting some classes of the package, stay tuned...
 
 ## Online Documentation
 [On-line Docs](http://www.sweatless.as/docs)
