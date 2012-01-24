@@ -2,16 +2,16 @@
 
 ##  What is the Sweatless?
 
-Sweatless Framework is an open source project written in ActionScript 3 compatible with Flex and AIR, designed to facilitate the development of flash websites and applications, such as setting up site navigation with deep-links, queue of assets, tracking their classes can also be used separately, like a fonts register, text fields, style-sheets, text formatting, layers management, some utils and a lot more.
+[http://www.sweatless.as][Sweatless Framework] is an open source project written in ActionScript 3 compatible with Flex and AIR, designed to facilitate the development of flash websites and applications, such as setting up site navigation with deep-links, queue of assets, tracking their classes can also be used separately, like a fonts register, text fields, style-sheets, text formatting, layers management, some utils and a lot more.
 
-This framework is licensed under [http://www.opensource.org/licenses/mit-license.php MIT] and [http://creativecommons.org/licenses/by-sa/3.0/legalcode Creative Commons 3.0]  licenses.
+This framework is licensed under [http://www.opensource.org/licenses/mit-license.php] [MIT] and [http://creativecommons.org/licenses/by-sa/3.0/legalcode] [Creative Commons 3.0] licenses.
 
 ## Current Status
 
 Sorry, but we're documenting all classes of the package, stay tuned...
 
 ## Online Documentation
-http://www.sweatless.as/docs
+[http://www.sweatless.as/docs][on-line Docs]
 
 ## Features
 
@@ -36,7 +36,7 @@ http://www.sweatless.as/docs
 8. Effects
 
 ### Dependencies (only for navigation)
-http://github.com/arthur-debert/BulkLoader
-http://github.com/arthur-debert/printf-as3
-http://code.google.com/p/gaforflash
-http://www.asual.com/swfaddress
+[http://github.com/arthur-debert/BulkLoader][BulkLoader]
+[http://github.com/arthur-debert/printf-as3][Printf-AS3]
+[http://code.google.com/p/gaforflash][GA for Flash]
+[http://www.asual.com/swfaddress][SWF Address]
