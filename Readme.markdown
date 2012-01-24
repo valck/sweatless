@@ -15,31 +15,28 @@ Sorry, but we're documenting all classes of the package, stay tuned...
 
 ## Features
 
-### Navigation
-* Configuration file for navigation
-* Memory and garbage collection control
-* Configuration file with custom features
-* Automatic loading of dependencies by area
-* Deep-link
-* Tracking (in case of ga without .js)
-* Layers
-* Easily management of external assets
+* Navigation
+	* Configuration file for navigation
+	* Memory and garbage collection control
+	* Configuration file with custom features
+	* Automatic loading of dependencies by area
+	* Deep-link
+	* Tracking (in case of ga without .js)
+	* Layers
+	* Easily management of external assets
 
-### Utilities classes (working without navigation)
-* Few methods to learn and customize
-* Intuitive syntax
-* All classes can also be used separately of navigation
-* Fonts, style-sheets and text formatting management easily
-* Layers management together or separately of navigation
-* Very useful Utils
-* Broadcaster to management events
-* Effects
+* Utilities classes (working without navigation)
+	* Few methods to learn and customize
+	* Intuitive syntax
+	* All classes can also be used separately of navigation
+	* Fonts, style-sheets and text formatting management easily
+	* Layers management together or separately of navigation
+	* Very useful Utils
+	* Broadcaster to management events
+	* Effects
 
 ### Dependencies (only for navigation)
-[BulkLoader](http://github.com/arthur-debert/BulkLoader)
-
-[Printf-AS3](http://github.com/arthur-debert/printf-as3)
-
-[GA for Flash](http://code.google.com/p/gaforflash)
-
-[SWF Address](http://www.asual.com/swfaddress)
+* [BulkLoader](http://github.com/arthur-debert/BulkLoader)
+* [Printf-AS3](http://github.com/arthur-debert/printf-as3)
+* [GA for Flash](http://code.google.com/p/gaforflash)
+* [SWF Address](http://www.asual.com/swfaddress)
