@@ -36,7 +36,7 @@ Sorry, but we're documenting all classes of the package, stay tuned...
 8. Effects
 
 ### Dependencies (only for navigation)
-[http://github.com/arthur-debert/BulkLoader][BulkLoader]
-[http://github.com/arthur-debert/printf-as3][Printf-AS3]
-[http://code.google.com/p/gaforflash][GA for Flash]
-[http://www.asual.com/swfaddress][SWF Address]
+[http://github.com/arthur-debert/BulkLoader] [BulkLoader]
+[http://github.com/arthur-debert/printf-as3] [Printf-AS3]
+[http://code.google.com/p/gaforflash] [GA for Flash]
+[http://www.asual.com/swfaddress] [SWF Address]
