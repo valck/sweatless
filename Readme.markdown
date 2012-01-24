@@ -16,27 +16,30 @@ Sorry, but we're documenting all classes of the package, stay tuned...
 ## Features
 
 ### Navigation
-1. Configuration file for navigation
-2. Memory and garbage collection control
-3. Configuration file with custom features
-4. Automatic loading of dependencies by area
-5. Deep-link
-6. Tracking (in case of ga without .js)
-7. Layers
-8. Easily management of external assets
+* Configuration file for navigation
+* Memory and garbage collection control
+* Configuration file with custom features
+* Automatic loading of dependencies by area
+* Deep-link
+* Tracking (in case of ga without .js)
+* Layers
+* Easily management of external assets
 
 ### Utilities classes (working without navigation)
-1. Few methods to learn and customize
-2. Intuitive syntax
-3. All classes can also be used separately of navigation
-4. Fonts, style-sheets and text formatting management easily
-5. Layers management together or separately of navigation
-6. Very useful Utils
-7. Broadcaster to management events
-8. Effects
+* Few methods to learn and customize
+* Intuitive syntax
+* All classes can also be used separately of navigation
+* Fonts, style-sheets and text formatting management easily
+* Layers management together or separately of navigation
+* Very useful Utils
+* Broadcaster to management events
+* Effects
 
 ### Dependencies (only for navigation)
 [BulkLoader](http://github.com/arthur-debert/BulkLoader)
+
 [Printf-AS3](http://github.com/arthur-debert/printf-as3)
+
 [GA for Flash](http://code.google.com/p/gaforflash)
+
 [SWF Address](http://www.asual.com/swfaddress)
