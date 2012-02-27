@@ -41,7 +41,10 @@
 
 package sweatless.debug {
 
+	import flash.events.ErrorEvent;
+	import flash.display.Stage3D;
 	import flash.display.Sprite;
+	import flash.display3D.Context3DRenderMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.LocalConnection;
@@ -59,6 +62,7 @@ package sweatless.debug {
 	public class FPS extends Sprite{
 		
 		private var _danger : int;
+		private var driver : String;
 		private var label : TextField;
 		private var lastFrameTime : Number;
 		private var frames : Number = 0;
@@ -94,7 +98,28 @@ package sweatless.debug {
 			
 			lastFrameTime = getTimer();
 			
+			driver = "N/A";
+			
+			var stage3d : Stage3D = stage.stage3Ds[0] || new Stage3D();
+			stage3d.addEventListener(Event.CONTEXT3D_CREATE, create3D);
+			stage3d.addEventListener(ErrorEvent.ERROR, error3D);
+			stage3d.requestContext3D(Context3DRenderMode.AUTO);
+			
 			show(offline);
+		}
+
+		private function error3D(evt : Event) : void {
+			var stage3d : Stage3D = Stage3D(evt.target);
+			stage3d.removeEventListener(ErrorEvent.ERROR, error3D);
+			stage3d.removeEventListener(Event.CONTEXT3D_CREATE, create3D);
+		}
+		
+		private function create3D(evt : Event) : void {
+			var stage3d : Stage3D = Stage3D(evt.target);
+			stage3d.removeEventListener(ErrorEvent.ERROR, error3D);
+			stage3d.removeEventListener(Event.CONTEXT3D_CREATE, create3D);
+
+            driver = stage.stage3Ds[0].context3D.driverInfo.substr(0, stage.stage3Ds[0].context3D.driverInfo.indexOf(" "));
 		}
 		
 		/**
@@ -137,10 +162,10 @@ package sweatless.debug {
 				var memory : String = String(Number(System.totalMemory/1024/1024).toFixed(1)) + "MB";
 				var player : String = Capabilities.isDebugger ? "Debug Player :)" : "Single Player :(";
 				
-				label.htmlText = "<p>" + player + "\n" + Capabilities.version + "\n" + String(frames) + "FPS / " + memory + "</p>";
+				label.htmlText = "<p>" + player + "\n" + "Driver " + String(driver) + "\n" + Capabilities.version + "\n" + String(frames) + " FPS / " + memory + "</p>";
 				
 				graphics.clear();
-				frames>danger ? graphics.beginFill(0xCFFCE0) : graphics.beginFill(0xFFCCCC);
+				frames > danger ? graphics.beginFill(0xCFFCE0) : graphics.beginFill(0xFFCCCC);
 				graphics.drawRect(0, 0, width, height);
 				graphics.endFill();
 				
