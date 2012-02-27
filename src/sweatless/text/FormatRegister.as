@@ -67,6 +67,21 @@ package sweatless.text {
 		}
 		
 		/**
+		 * Return a clone of the <code>TextFormat</code> that has been briefly recorded.
+		 * The original <code>TextFormat</code> remains unchanged.
+		 * @param p_id The <code>TextFormat</code> id (<code>String</code>).
+		 * @return The resulting <code>TextFormat</code> object.
+		 * @see TextFormat
+		 * @see String
+		 */
+		public static function getClone(p_id:String):TextFormat {
+			if(!hasAdded(p_id)) throw new Error("The format "+ p_id +" doesn't exists.");
+			var original:TextFormat = formats[p_id];
+			var clone:TextFormat = new TextFormat(original.font, original.size, original.color, original.bold, original.italic, original.underline, original.url, original.target, original.align, original.leftMargin, original.rightMargin, original.indent, original.leading);
+			return clone;
+		}
+		
+		/**
 		 * Returns an <code>Array</code> with the formats registered.
 		 * @return The resulting <code>Array</code> object.
 		 * @see Array
