@@ -41,7 +41,7 @@
 
 package sweatless.graphics {
 
-	import sweatless.utils.NumberUtils;
+	import sweatless.utils.GeometryUtils;
 
 	import flash.geom.Point;
 	
@@ -81,7 +81,7 @@ package sweatless.graphics {
 				var centerPoint:Point = new Point(width/2, height/2);
 				graphics.moveTo(centerPoint.x, centerPoint.y);
 				for(var i:Number = _initialAngle; i<=_finalAngle; i++) 
-					graphics.lineTo(centerPoint.x + Math.cos(NumberUtils.toRadians(i))*width/2, centerPoint.y + Math.sin(NumberUtils.toRadians(i))*height/2);
+					graphics.lineTo(centerPoint.x + Math.cos(GeometryUtils.toRadians(i))*width/2, centerPoint.y + Math.sin(GeometryUtils.toRadians(i))*height/2);
 				graphics.lineTo(centerPoint.x, centerPoint.y);
 			}
 		}

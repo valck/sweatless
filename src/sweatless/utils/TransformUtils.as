@@ -61,7 +61,7 @@ package sweatless.utils {
 		public static function rotateAroundPoint(object:DisplayObject, point:Point, degrees:Number):void{
 			var distance:Number = Math.sqrt(Math.pow(point.x-object.x, 2) + Math.pow(point.y-object.y, 2));
 			var currentAngle:Number = Math.atan2(object.y - point.y, object.x - point.x);
-			var newAngle:Number = currentAngle + NumberUtils.toRadians(degrees-object.rotation);
+			var newAngle:Number = currentAngle + GeometryUtils.toRadians(degrees-object.rotation);
 			object.x = point.x + Math.cos(newAngle)*distance;
 			object.y = point.y + Math.sin(newAngle)*distance;
 			object.rotation = degrees;

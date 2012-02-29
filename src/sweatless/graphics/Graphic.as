@@ -41,7 +41,7 @@
 
 package sweatless.graphics {
 
-	import sweatless.utils.NumberUtils;
+	import sweatless.utils.GeometryUtils;
 
 	import flash.display.BitmapData;
 	import flash.display.Shape;
@@ -282,7 +282,7 @@ package sweatless.graphics {
 		 * 
 		 */
 		public function set strokeRotation(p_value:Number):void{
-			_strokeRotation = NumberUtils.toRadians(p_value);
+			_strokeRotation = GeometryUtils.toRadians(p_value);
 			_stroke = true;
 			update();
 		}
@@ -349,7 +349,7 @@ package sweatless.graphics {
 		 * 
 		 */
 		public function set fillRotation(p_value:Number):void{
-			_fillRotation = NumberUtils.toRadians(p_value);
+			_fillRotation = GeometryUtils.toRadians(p_value);
 			update();
 		}
 		

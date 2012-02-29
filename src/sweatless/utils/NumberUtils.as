@@ -71,36 +71,6 @@ package sweatless.utils{
 		}
 		
 		/**
-		 * Returns the value in radians of a <code>Number</code>.
-		 * @param p_value The <code>Number</code> to check.
-		 * @return The resulting <code>Number</code> object.
-		 * @see Number
-		 */
-		public static function toRadians(p_value:Number):Number{
-			return p_value / 180 * Math.PI;
-		}
-		
-		/**
-		 * Returns the value in degress of a <code>Number</code>.
-		 * @param p_value The <code>Number</code> to check.
-		 * @return The resulting <code>Number</code> object.
-		 * @see Number
-		 */
-		public static function toDegrees(p_value:Number):Number{
-			return p_value * 180 / Math.PI;
-		}
-		
-		/**
-		 * Returns the value in radians of a degress <code>Number</code>.
-		 * @param p_value The <code>Number</code> to check.
-		 * @return The resulting <code>Number</code> object.
-		 * @see Number
-		 */
-		public static function degreesToRadians(p_value:Number):Number{
-			return (2 * Math.PI * p_value) / 360;
-		}
-		
-		/**
 		 * Returns the value in percent of a <code>Number</code>.
 		 * @param p_value The <code>Number</code> to check.
 		 * @param p_min The <code>Number</code> of lower limit.

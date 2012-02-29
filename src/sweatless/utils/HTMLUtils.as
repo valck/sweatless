@@ -36,6 +36,7 @@
  * http://www.sweatless.as/
  * 
  * @author Valério Oliveira (valck)
+ * @author João Marquesini
  * 
  */
 
@@ -44,6 +45,8 @@ package sweatless.utils {
 	import br.com.stimuli.string.printf;
 
 	import sweatless.text.FontRegister;
+
+	import flash.external.ExternalInterface;
 
 	/**
 	 * The <code>HTMLUtils</code> class defined each of the following methods returns a copy of the string wrapped inside an HTML tag.
@@ -137,5 +140,16 @@ package sweatless.utils {
 		public static function replaceFontFaces(p_str:String):String{
 			return printf(p_str.split(/ face=\'([a-zA-Z 0-9]+)\'/g).join(" face=\'%(").split(" face='%( ").join(")s' "), FontRegister.getAllFontNames());
 		}
+		
+		/**
+		 * Returns the HTML container path.
+		 *  
+		 * @return the string with the HTML container path.
+		 */		
+		public function getDocumentPath():String{
+			var url:String = "";
+			if(ExternalInterface.available) url = ExternalInterface.call("document.URL.toString");
+			return url.substr(0, url.lastIndexOf("/")+1);
+		}		
 	}
 }
