@@ -146,7 +146,7 @@ package sweatless.utils {
 		 *  
 		 * @return the string with the HTML container path.
 		 */		
-		public function getDocumentPath():String{
+		public static function getDocumentPath():String{
 			var url:String = "";
 			if(ExternalInterface.available) url = ExternalInterface.call("document.URL.toString");
 			return url.substr(0, url.lastIndexOf("/")+1);
