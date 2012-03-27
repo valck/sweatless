@@ -42,6 +42,8 @@
 package sweatless.debug {
 
 	import flash.events.ErrorEvent;
+
+	[Version("11")]
 	import flash.display.Stage3D;
 	import flash.display.Sprite;
 	import flash.display3D.Context3DRenderMode;
@@ -100,6 +102,7 @@ package sweatless.debug {
 			
 			driver = "N/A";
 			
+			[Version("11")]
 			var stage3d : Stage3D = stage.stage3Ds[0] || new Stage3D();
 			stage3d.addEventListener(Event.CONTEXT3D_CREATE, create3D);
 			stage3d.addEventListener(ErrorEvent.ERROR, error3D);
@@ -107,13 +110,15 @@ package sweatless.debug {
 			
 			show(offline);
 		}
-
+		
+		[Version("11")]
 		private function error3D(evt : Event) : void {
 			var stage3d : Stage3D = Stage3D(evt.target);
 			stage3d.removeEventListener(ErrorEvent.ERROR, error3D);
 			stage3d.removeEventListener(Event.CONTEXT3D_CREATE, create3D);
 		}
-		
+
+		[Version("11")]
 		private function create3D(evt : Event) : void {
 			var stage3d : Stage3D = Stage3D(evt.target);
 			stage3d.removeEventListener(ErrorEvent.ERROR, error3D);

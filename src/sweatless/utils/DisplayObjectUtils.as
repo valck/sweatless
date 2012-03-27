@@ -180,5 +180,22 @@ package sweatless.utils {
 			p_old = null;
 			return p_new;
 		}
+		
+		/**
+		 * A easy way to send a <code>DisplayObject</code> to front of his parent <code>DisplayObjectContainer</code>.
+		 * @param p_target The object to send.
+		 */
+		public static function sendToFront(p_target:DisplayObject):void{
+		    p_target.parent.setChildIndex(p_target, p_target.parent.numChildren-1);
+		}
+		
+		/**
+		 * A easy way to send a <code>DisplayObject</code> to back of his parent <code>DisplayObjectContainer</code>.
+		 * @param p_target The object to send.
+		 */
+		public static function sendToBack(p_target:DisplayObject):void{
+		    p_target.parent.setChildIndex(p_target, 0);
+		}
+		
 	}
 }
