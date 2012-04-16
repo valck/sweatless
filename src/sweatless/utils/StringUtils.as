@@ -326,8 +326,6 @@ package sweatless.utils {
 		public static function replaceSpecialCharacters(p_str:String):String{
 			if(!substitionDict) initDict();
 			
-//			p_str = p_str.toLowerCase();
-			
 			for(var i:String in substitionDict){
 				var pattern:RegExp = new RegExp( i , "g");
 				p_str = p_str.replace(pattern, substitionDict[i]);
@@ -382,6 +380,16 @@ package sweatless.utils {
 			}
 		}
 
+		public static function removesDuplicatesFromArray( p_list : Array ) : Array{
+			var result:Array = p_list.filter(
+				function (a:*, b:int, c:Array):Boolean {
+					a,b,c; 
+					return ((result ? result : result = new Array()).indexOf(a) > -1 ? false : (result.push(a) > 0));
+				}
+			);
+			return result;
+		}
+		
 		private static function trimLeft(p_str:String):String {
 			if (p_str == null) {
 				return "";

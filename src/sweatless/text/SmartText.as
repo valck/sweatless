@@ -35,7 +35,7 @@
  * 
  * http://www.sweatless.as/
  * 
- * @author Val√©rio Oliveira (valck)
+ * @author Valério Oliveira (valck)
  * 
  */
 
@@ -65,8 +65,8 @@ package sweatless.text {
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ; @";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
 		public static const RESTRICT_NUMBER : String = "0-9";
-		public static const RESTRICT_LOWERCASE : String = "a-z √¢√£√†√°√®√©√™√¨√≠√µ√≤√¥√≥√π√ª√∫√ß";
-		public static const RESTRICT_UPPERCASE : String = "A-Z √Ç√É√Ä√Å√à√â√ä√å√ç√ï√í√î√ì√ô√õ√ö√á";
+		public static const RESTRICT_LOWERCASE : String = "a-z âãàáèéêìíõòôóùûúç";
+		public static const RESTRICT_UPPERCASE : String = "A-Z ÂÃÀÁÈÉÊÌÍÕÒÔÓÙÛÚÇ";
 		
 		public static const ALIAS_SMOOTHING : String = "advanced";
 		public static const ALIAS_NORMAL : String = "normal";
@@ -83,7 +83,8 @@ package sweatless.text {
 			
 			_field = new TextField();
 			_field.mouseWheelEnabled = false;
-
+			_field.scrollH = _field.scrollV = 0;
+			
 			addChild(_field);
 			
 			autoSize = "left";
@@ -95,8 +96,9 @@ package sweatless.text {
 			update();
 		}
 
-		private function update():void{
+		private function update(p_begin:int = -1, p_end:int = -1):void{
 			if(!_css && _format) {
+				_field.setTextFormat(_format, p_begin, p_end);
 				_field.defaultTextFormat = _format;
 			}
 			_field.autoSize = _autosize;
@@ -206,7 +208,7 @@ package sweatless.text {
 		public function setTextFormat(p_format:TextFormat, p_begin:int = -1, p_end:int = -1):void{
 			_field.setTextFormat(p_format, p_begin, p_end);
 			_format = new TextFormat();
-			update();
+			update(p_begin, p_end);
 		}
 		
 		/**
@@ -226,7 +228,7 @@ package sweatless.text {
 		 */
 		public function set format(p_format:TextFormat):void{
 			_format = p_format;
-			_field.setTextFormat(p_format);
+			
 			update();
 		}
 		
@@ -276,9 +278,7 @@ package sweatless.text {
 		 */
 		public function set lineSpacing(p_value:Number):void{
 			_format.leading = p_value;
-			var tempFormat:TextFormat = new TextFormat();
-			tempFormat.leading = p_value;
-			_field.setTextFormat(tempFormat);
+			
 			update();
 		}
 		

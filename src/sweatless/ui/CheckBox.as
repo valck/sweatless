@@ -91,6 +91,11 @@ package sweatless.ui {
 			return clicked;
 		}
 		
+		public function set roundCorners(p_value:uint):void{
+			background.allCorners = p_value;
+			fill.allCorners = p_value;
+		}
+		
 		public function set backgroundColor(p_value:uint):void{
 			background.colors = [p_value, p_value];
 		}
@@ -125,7 +130,12 @@ package sweatless.ui {
 			removeListeners();
 			
 			fill.destroy();
+			removeChild(fill);
+			fill = null;
+			
 			background.destroy();
+			removeChild(background);
+			background = null;
 		}
 	}
 }
