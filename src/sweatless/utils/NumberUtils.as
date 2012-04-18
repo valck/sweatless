@@ -40,6 +40,7 @@
  */
 
 package sweatless.utils{
+	import flash.geom.Point;
 	
 	/**
 	 * The <code>NumberUtils</code> class have support methods for easier manipulation of
@@ -114,6 +115,40 @@ package sweatless.utils{
 		 */
 		public static function rangeRandom(p_low:Number, p_high:Number, p_rounded:Boolean=false):Number{
 			return !p_rounded ? (Math.random() * (p_high - p_low)) + p_low : Math.round(Math.round(Math.random() * (p_high - p_low)) + p_low);
+		}
+		
+		/**
+		 * Getting the distance between two geographical points.
+		 * @param p_from From coordinates <code>Points</code>.
+		 * @param p_high To coordinates <code>Points</code>.
+		 * @param p_units Mean radius of Earth in <code>String</code> (km, meters, feet and miles).
+		 * @return The resulting the coordinates <code>Number</code>.
+		 * @see Number
+		 */
+		public static function distanceBetweenCoordinates(p_from:Point, p_to:Point, p_units : String = "km") : Number {
+			var radius : uint;
+			switch(p_units){
+				case "km":
+					radius = 6371;
+				break;
+				case "meters":
+					radius = 6378000;
+				break;
+				case "feet":
+					radius = 20925525;
+				break;
+				case "miles":
+					radius = 3963;
+				break;
+			}
+			
+			var dLatitude : Number = (p_to.x - p_from.x) * Math.PI / 180;
+			var dLongitude : Number = (p_to.y - p_from.y) * Math.PI / 180;
+			
+			var a : Number = Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) + Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2) * Math.cos(p_from.x * Math.PI / 180) * Math.cos(p_to.x * Math.PI / 180);
+			var c : Number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			
+			return radius * c;
 		}
 	}
 }
