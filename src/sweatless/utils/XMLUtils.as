@@ -73,5 +73,28 @@ package sweatless.utils{
 			return newList;
 			
 		}
+		
+		/**
+		 * Sorts a <code>XMLList</code> based in a random way. 
+		 * @param list The <code>XMLList</code> to be sorted. 
+		 * @return A <code>XMLList</code> ordered by the attribute you selected.
+		 * @see Array.sortOn()
+		 * @see Array.sort()
+		 */
+		public static function shufle(list:XMLList):XMLList {
+			var array:Array = [];
+			for each(var node:XML in list){
+				array.push(node);
+			}
+			array = ArrayUtils.shuffle(array);
+			
+			var newList:XMLList = new XMLList();
+			
+			for(var i:String in array){
+				newList += array[i];
+			}
+			
+			return newList;
+		}
 	}
 }
