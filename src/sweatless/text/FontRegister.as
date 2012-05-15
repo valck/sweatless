@@ -96,10 +96,10 @@ package sweatless.text {
 		 * @return The resulting <code>Object</code>.;
 		 * @see Object
 		 */
-		public static function getAllFontNames():Object{
-			var results:Object = new Object();
+		public static function getAllFontNames():Array{
+			var results:Array = new Array();
 			for(var key:* in fonts){
-				results[key] = getName(key);
+				results.push(getName(key));
 			}
 			return results;
 		}
