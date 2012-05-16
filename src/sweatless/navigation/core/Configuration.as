@@ -50,6 +50,7 @@ package sweatless.navigation.core {
 		private static var _debug : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
+		private static var _currentLanguageID : String;
 		private static var _firstArea : String = "";
 		
 		private static var parameters : Dictionary = new Dictionary();
@@ -96,6 +97,14 @@ package sweatless.navigation.core {
 			_currentAreaID = p_area;
 		}
 		
+		public function get currentLanguageID() : String {
+			return _currentLanguageID;
+		}
+
+		public function set currentLanguageID(p_language : String) : void {
+			_currentLanguageID = p_language;
+		}
+		
 		public function get firstArea():String{
 			return String(source..areas.@first) != "" ? String(source..areas.@first) : _firstArea;
 		}
@@ -122,6 +131,14 @@ package sweatless.navigation.core {
 		
 		public function getService(p_id:String):String{
 			return String(source..services.service.(@id==p_id).@url);
+		}
+		
+		public function get languages():XMLList{
+			return source..languages.language;
+		}
+		
+		public function getLanguage(p_id:String):String{
+			return String(source..languages.language.(@id==p_id).@value);
 		}
 		
 		public function get layers():XMLList{
@@ -202,6 +219,7 @@ package sweatless.navigation.core {
 		public function getAreaByDeeplink(p_deeplink:String):String{
 			for(var key : String in getAllDeeplinks()){
 				if(p_deeplink == getAllDeeplinks()[key]) return key;
+				break;
 			}
 			
 			return firstArea;

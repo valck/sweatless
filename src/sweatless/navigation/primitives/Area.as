@@ -69,37 +69,11 @@ package sweatless.navigation.primitives {
 		}
 		
 		public function getAssetText(p_id:String):String{
-				var result : String = String(assets..text.(@id==p_id));
-				
-				return result ? result : "Text asset id "+p_id+" not found.";
+			return assets ? Sweatless.assets.getString(p_id, "text") : "Assets file is not loaded or asset with id "+p_id+" not found.";
 		}
 		
 		public function getAssetPath(p_id:String, p_type:String):String{
-			var result : String;
-			
-			switch(p_type){
-				case "image":
-					result = String(assets..image.(@id==p_id).@url);
-					break;
-				
-				case "video":
-					result = String(assets..video.(@id==p_id).@url);
-					break;
-				
-				case "audio":
-					result = String(assets..audio.(@id==p_id).@url);
-					break;
-				
-				case "other":
-					result = String(assets..other.(@id==p_id).@url);
-					break;
-				
-				case "swf":
-					result = String(assets..swf.(@id==p_id).@url);
-					break;
-			}
-			
-			return result ? result : "Asset id "+p_id+" and type "+p_type.toUpperCase()+" not found.";
+			return assets || p_type == "text" ? Sweatless.assets.getString(p_id, p_type) : "Assets file is not loaded or asset with id "+p_id+" not found.";
 		}
 		
 		public function resize(evt:Event=null):void{

@@ -41,7 +41,6 @@
 
 package sweatless.navigation.core {
 
-	import flash.utils.Dictionary;
 
 	internal final class Assets{
 		
@@ -66,32 +65,33 @@ package sweatless.navigation.core {
 
 		public function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
+			var language : String = Sweatless.config.getLanguage(Sweatless.config.currentLanguageID);
 			
 			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			
 			switch(p_type){
 				case "text":
-					result = String(_source..text.(@id==p_id));
+					result = String(_source..text.(@id==p_id).language.@id != undefined ? _source..text.(@id==p_id).language.(@id==language) : _source..text.(@id==p_id));
 				break;
 	
 				case "image":
-					result = String(_source..image.(@id==p_id).@url);
+					result = String(_source..image.(@id==p_id).language.@id != undefined ? _source..image.(@id==p_id).language.(@id==language) : _source..image.(@id==p_id));
 				break;
 				
 				case "video":
-					result = String(_source..video.(@id==p_id).@url);
+					result = String(_source..video.(@id==p_id).language.@id != undefined ? _source..video.(@id==p_id).language.(@id==language) : _source..video.(@id==p_id));
 				break;
 				
 				case "audio":
-					result = String(_source..audio.(@id==p_id).@url);
+					result = String(_source..audio.(@id==p_id).language.@id != undefined ? _source..audio.(@id==p_id).language.(@id==language) : _source..audio.(@id==p_id));
 				break;
 
 				case "other":
-					result = String(_source..other.(@id==p_id).@url);
+					result = String(_source..other.(@id==p_id).language.@id != undefined ? _source..other.(@id==p_id).language.(@id==language) : _source..other.(@id==p_id));
 				break;
 
 				case "swf":
-					result = String(_source..swf.(@id==p_id).@url);
+					result = String(_source..swf.(@id==p_id).language.@id != undefined ? _source..swf.(@id==p_id).language.(@id==language) : _source..swf.(@id==p_id));
 				break;
 			}
 			
@@ -102,47 +102,5 @@ package sweatless.navigation.core {
 			_source = Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			return _source;
 		}
-		
-		public function getStringGroup(p_type:String, p_area:XML=null):Dictionary{
-			var result : Dictionary = new Dictionary();
-			var i : uint = 0;
-			
-			p_area = p_area ? p_area : Sweatless.loader.current().getXML("assets");
-			
-			switch(p_type){
-				case "text":
-					for(i=0; i<XMLList(p_area..text).length(); i++){
-						result[String(p_area..text[i].@id)] = String(p_area..text[i].@url);
-					}
-				break;
-				
-				case "image":
-					for(i=0; i<p_area..image.length(); i++){
-						result[String(p_area..image[i].@id)] = String(p_area..image[i].@url);
-					}
-				break;
-				
-				case "video":
-					for(i=0; i<p_area..video.length(); i++){
-						result[String(p_area..video[i].@id)] = String(p_area..video[i].@url);
-					}
-				break;
-				
-				case "audio":
-					for(i=0; i<p_area..audio.length(); i++){
-						result[String(p_area..audio[i].@id)] = String(p_area..audio[i].@url);
-					}
-				break;
-				
-				case "other":
-					for(i=0; i<p_area..other.length(); i++){
-						result[String(p_area..other[i].@id)] = String(p_area..other[i].@url);
-					}
-				break;
-			}
-			
-			return result;
-		}
-
 	}
 }
