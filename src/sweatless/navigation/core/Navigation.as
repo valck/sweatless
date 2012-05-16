@@ -262,13 +262,31 @@ package sweatless.navigation.core {
 		}
 		
 		private function setDeeplink():void{
+			var param : String;
+			
+			if(Sweatless.config.languages.length()>0){
+				Sweatless.config.currentLanguage = Sweatless.config.currentLanguage ? Sweatless.config.currentLanguage : Sweatless.config.defaultLanguage;
+				param = "?" + Sweatless.config.getParamLanguage() + "=" + Sweatless.config.currentLanguage;
+			}
+			
 			SWFAddress.setTitle(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@title"));
-			Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != Sweatless.config.currentAreaID ? SWFAddress.setValue(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@deeplink")) : null;
+			Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != Sweatless.config.currentAreaID ? SWFAddress.setValue(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@deeplink") + param) : null;
 			
 			SWFAddress.getHistory() ? null : SWFAddress.setHistory(true);
 		}
 		
 		private function onChange(evt:SWFAddressEvent):void{
+			if(Sweatless.config.languages.length()>0){
+				var param : String = Sweatless.config.getParamLanguage();
+				var index : uint = SWFAddress.getParameterNames().indexOf(param);
+				
+				if(index != -1 && Sweatless.config.hasLanguage(String(SWFAddress.getParameter(param)))) {
+					Sweatless.config.currentLanguage = String(SWFAddress.getParameter(param)); 
+				}else{
+					Sweatless.config.currentLanguage = Sweatless.config.defaultLanguage;
+				}
+			}
+			
 			Sweatless.config.currentAreaID = Sweatless.config.getAreaByDeeplink(SWFAddress.getPath());
 			if(Sweatless.config.currentAreaID == "") return;
 			

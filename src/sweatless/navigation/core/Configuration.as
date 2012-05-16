@@ -50,8 +50,9 @@ package sweatless.navigation.core {
 		private static var _debug : Boolean;
 		private static var _source : XML;
 		private static var _currentAreaID : String;
-		private static var _currentLanguageID : String;
+		private static var _currentLanguage : String;
 		private static var _firstArea : String = "";
+		private static var _defaultLanguage : String = "";
 		
 		private static var parameters : Dictionary = new Dictionary();
 		
@@ -97,12 +98,20 @@ package sweatless.navigation.core {
 			_currentAreaID = p_area;
 		}
 		
-		public function get currentLanguageID() : String {
-			return _currentLanguageID;
+		public function get currentLanguage() : String {
+			return _currentLanguage;
 		}
 
-		public function set currentLanguageID(p_language : String) : void {
-			_currentLanguageID = p_language;
+		public function set currentLanguage(p_language : String) : void {
+			_currentLanguage = p_language;
+		}
+		
+		public function get defaultLanguage() : String {
+			return source..languages.@default;
+		}
+
+		public function set defaultLanguage(p_language : String) : void {
+			_defaultLanguage = p_language;
 		}
 		
 		public function get firstArea():String{
@@ -137,8 +146,12 @@ package sweatless.navigation.core {
 			return source..languages.language;
 		}
 		
-		public function getLanguage(p_id:String):String{
-			return String(source..languages.language.(@id==p_id).@value);
+		public function hasLanguage(p_id:String):Boolean{
+			return source..languages.language.(@value==p_id) != undefined ? true : false;
+		}
+		
+		public function getParamLanguage():String{
+			return String(source..languages.@param);
 		}
 		
 		public function get layers():XMLList{

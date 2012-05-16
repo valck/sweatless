@@ -65,33 +65,33 @@ package sweatless.navigation.core {
 
 		public function getString(p_id:String, p_type:String, p_area:XML=null):String{
 			var result : String;
-			var language : String = Sweatless.config.getLanguage(Sweatless.config.currentLanguageID);
+			var language : String = Sweatless.config.currentLanguage;
 			
 			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			
 			switch(p_type){
 				case "text":
-					result = String(_source..text.(@id==p_id).language.@id != undefined ? _source..text.(@id==p_id).language.(@id==language) : _source..text.(@id==p_id));
+					result = String(_source..text.(@id==p_id).language.@id != undefined ? _source..text.(@id==p_id).language.(@id==language) : _source..text.(@id==p_id).text());
 				break;
 	
 				case "image":
-					result = String(_source..image.(@id==p_id).language.@id != undefined ? _source..image.(@id==p_id).language.(@id==language) : _source..image.(@id==p_id));
+					result = String(_source..image.(@id==p_id).language.@id != undefined ? _source..image.(@id==p_id).language.(@id==language) : _source..image.(@id==p_id).text());
 				break;
 				
 				case "video":
-					result = String(_source..video.(@id==p_id).language.@id != undefined ? _source..video.(@id==p_id).language.(@id==language) : _source..video.(@id==p_id));
+					result = String(_source..video.(@id==p_id).language.@id != undefined ? _source..video.(@id==p_id).language.(@id==language) : _source..video.(@id==p_id).text());
 				break;
 				
 				case "audio":
-					result = String(_source..audio.(@id==p_id).language.@id != undefined ? _source..audio.(@id==p_id).language.(@id==language) : _source..audio.(@id==p_id));
+					result = String(_source..audio.(@id==p_id).language.@id != undefined ? _source..audio.(@id==p_id).language.(@id==language) : _source..audio.(@id==p_id).text());
 				break;
 
 				case "other":
-					result = String(_source..other.(@id==p_id).language.@id != undefined ? _source..other.(@id==p_id).language.(@id==language) : _source..other.(@id==p_id));
+					result = String(_source..other.(@id==p_id).language.@id != undefined ? _source..other.(@id==p_id).language.(@id==language) : _source..other.(@id==p_id).text());
 				break;
 
 				case "swf":
-					result = String(_source..swf.(@id==p_id).language.@id != undefined ? _source..swf.(@id==p_id).language.(@id==language) : _source..swf.(@id==p_id));
+					result = String(_source..swf.(@id==p_id).language.@id != undefined ? _source..swf.(@id==p_id).language.(@id==language) : _source..swf.(@id==p_id).text());
 				break;
 			}
 			
