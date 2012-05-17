@@ -41,6 +41,8 @@
 
 package sweatless.ui {
 
+	import sweatless.utils.DisplayObjectUtils;
+	import flash.display.DisplayObject;
 	import sweatless.graphics.SmartRectangle;
 
 	import flash.display.Sprite;
@@ -53,6 +55,7 @@ package sweatless.ui {
 		private var background : SmartRectangle;
 		private var clicked : Boolean;
 		
+		private var _item : DisplayObject;
 		private var _width : Number = 0;
 		private var _height : Number = 0;
 		
@@ -62,6 +65,8 @@ package sweatless.ui {
 		
 		private function create(evt:Event):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
+
+			mouseChildren = false;
 			
 			background = new SmartRectangle();
 			addChild(background);
@@ -71,8 +76,21 @@ package sweatless.ui {
 			fill.visible = false;
 		}
 
+		public function set item(p_item : DisplayObject) : void {
+			if(_item) DisplayObjectUtils.remove(_item);
+			
+			_item = p_item;
+			addChild(_item);
+			
+			_item.x = (background.width-_item.width)/2;
+			_item.y = (background.height-_item.height)/2;
+
+			fill.visible = false;
+			_item.visible = false;
+		}
+
 		private function click(evt:MouseEvent):void{
-			clicked = fill.visible = clicked ? false : true;
+			clicked = !_item ? fill.visible : _item.visible = clicked ? false : true;
 		}
 
 		public function addListeners():void{
@@ -87,6 +105,11 @@ package sweatless.ui {
 			removeEventListener(MouseEvent.CLICK, click);
 		}
 
+		public function set stroke(p_value:Boolean):void{
+			background.stroke = p_value;
+			background.strokeSize = 2;
+		}
+		
 		public function get value():Boolean{
 			return clicked;
 		}
@@ -102,6 +125,14 @@ package sweatless.ui {
 		
 		public function set fillColor(p_value:uint):void{
 			fill.colors = [p_value, p_value];
+		}
+		
+		public function set strokeColor(p_value:uint):void{
+			fill.strokeColors = [p_value, p_value];
+		}
+		
+		public function set strokeSize(p_value:uint):void{
+			background.strokeSize = p_value;
 		}
 		
 		override public function set width(p_value:Number):void{
@@ -128,6 +159,8 @@ package sweatless.ui {
 		
 		public function destroy():void{
 			removeListeners();
+			
+			if(_item) DisplayObjectUtils.remove(_item);
 			
 			fill.destroy();
 			removeChild(fill);
