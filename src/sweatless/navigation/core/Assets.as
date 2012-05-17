@@ -101,27 +101,27 @@ package sweatless.navigation.core {
 			
 			switch(p_type){
 				case "text":
-					result = _source..text.(@id==p_id).length();
+					result = _source..text..length();
 				break;
 				
 				case "image":
-					result = _source..image.(@id==p_id).length();
+					result = _source..image..length();
 				break;
 				
 				case "video":
-					result = _source..video.(@id==p_id).length();
+					result = _source..video..length();
 				break;
 				
 				case "audio":
-					result = _source..audio.(@id==p_id).length();
+					result = _source..audio..length();
 				break;
 
 				case "other":
-					result = _source..other.(@id==p_id).length();
+					result = _source..other..length();
 				break;
 
 				case "swf":
-					result = _source..swf.(@id==p_id).length();
+					result = _source..swf..length();
 				break;
 			}
 			
