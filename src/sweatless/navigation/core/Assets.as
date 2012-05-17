@@ -70,34 +70,106 @@ package sweatless.navigation.core {
 			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			
 			switch(p_type){
-				case "text":
-					result = String(_source..text.(@id==p_id).language.@id != undefined ? _source..text.(@id==p_id).language.(@id==language) : _source..text.(@id==p_id).text());
-				break;
-	
 				case "image":
-					result = String(_source..image.(@id==p_id).language.@id != undefined ? _source..image.(@id==p_id).language.(@id==language) : _source..image.(@id==p_id).text());
+					result = String(_source..image.(@id==p_id).language.@id != undefined ? _source..image.(@id==p_id).language.(@id==language).text() : _source..image.(@id==p_id).text());
 				break;
 				
 				case "video":
-					result = String(_source..video.(@id==p_id).language.@id != undefined ? _source..video.(@id==p_id).language.(@id==language) : _source..video.(@id==p_id).text());
+					result = String(_source..video.(@id==p_id).language.@id != undefined ? _source..video.(@id==p_id).language.(@id==language).text() : _source..video.(@id==p_id).text());
 				break;
 				
 				case "audio":
-					result = String(_source..audio.(@id==p_id).language.@id != undefined ? _source..audio.(@id==p_id).language.(@id==language) : _source..audio.(@id==p_id).text());
+					result = String(_source..audio.(@id==p_id).language.@id != undefined ? _source..audio.(@id==p_id).language.(@id==language).text() : _source..audio.(@id==p_id).text());
 				break;
 
 				case "other":
-					result = String(_source..other.(@id==p_id).language.@id != undefined ? _source..other.(@id==p_id).language.(@id==language) : _source..other.(@id==p_id).text());
+					result = String(_source..other.(@id==p_id).language.@id != undefined ? _source..other.(@id==p_id).language.(@id==language).text() : _source..other.(@id==p_id).text());
 				break;
 
 				case "swf":
-					result = String(_source..swf.(@id==p_id).language.@id != undefined ? _source..swf.(@id==p_id).language.(@id==language) : _source..swf.(@id==p_id).text());
+					result = String(_source..swf.(@id==p_id).language.@id != undefined ? _source..swf.(@id==p_id).language.(@id==language).text() : _source..swf.(@id==p_id).text());
 				break;
 			}
 			
 			return _source ? result : "Asset id "+p_id+" and type "+p_type.toUpperCase()+" not found.";
 		}
 		
+		public function getLength(p_type:String=null, p_area:XML=null):uint{
+			var result : uint = 0;
+			
+			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
+			
+			switch(p_type){
+				case "text":
+					result = _source..text.(@id==p_id).length();
+				break;
+				
+				case "image":
+					result = _source..image.(@id==p_id).length();
+				break;
+				
+				case "video":
+					result = _source..video.(@id==p_id).length();
+				break;
+				
+				case "audio":
+					result = _source..audio.(@id==p_id).length();
+				break;
+
+				case "other":
+					result = _source..other.(@id==p_id).length();
+				break;
+
+				case "swf":
+					result = _source..swf.(@id==p_id).length();
+				break;
+			}
+			
+			return result;
+		}
+		public function getTextPagesLength(p_id:String, p_area:XML=null):uint{
+			var result : uint = 0;
+			
+			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
+			
+			if(_source..text.(@id==p_id)..page.@id != undefined){
+				result = _source..text.(@id==p_id)..page.length();
+			}
+			
+			return result;
+		}
+		
+		public function getText(p_id:String, p_page:String=null, p_area:XML=null):String{
+			var language : String = Sweatless.config.currentLanguage;
+			
+			_source = p_area ? p_area : Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
+			
+			var temp : Array = new Array();
+			var result : String;
+			
+			if(_source..text.(@id==p_id)..language.@id != undefined){
+				if(p_page){
+					result = _source..text.(@id==p_id).page.(@id==p_page).language.(@id==language).text();
+//				}else if(_source..text.(@id==p_id)..page.@id != undefined){
+//					result = _source..text.(@id==p_id)..page.(@id==p_page).language.(@id==language).text();
+				}else{
+					_source..text.(@id==p_id)..language.(@id==language).(temp.push(text()));
+					result = temp.toString().split(",").join("\n"); 
+				}
+			}else{
+				if(p_page){
+					result = _source..text.(@id==p_id).page.(@id==p_page).text();
+				}else if(_source..text.(@id==p_id)..page.@id != undefined){
+					_source..text.(@id==p_id)..page.(temp.push(text()));
+					result = temp.toString().split(",").join("\n");
+				}else{
+					_source..text.(@id==p_id).(temp.push(text()));
+					result = temp.toString().split(",").join("\n");
+				}
+			}
+			
+			return _source ? result : "Text id "+p_id+" not found.";
+		}
 		public function get source():XML{
 			_source = Sweatless.loader.current().getXML("assets") ? Sweatless.loader.current().getXML("assets") : null;
 			return _source;
