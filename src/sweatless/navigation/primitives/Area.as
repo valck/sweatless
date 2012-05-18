@@ -68,7 +68,7 @@ package sweatless.navigation.primitives {
 			return Sweatless.loader.current();
 		}
 		
-		public function getAssetText(p_id:String, p_page:String=null):String{
+		public function getText(p_id:String, p_page:String=null):String{
 			return assets ? Sweatless.assets.getText(p_id, p_page) : "Assets file is not loaded or asset with id "+p_id+" not found.";
 		}
 		
