@@ -48,7 +48,8 @@ package sweatless.navigation.core {
 		private static var _config : Configuration;
 		private static var _started : Boolean;
 		private static var _debug : Boolean;
-		private static var _source : XML;
+		private static var _sourceConfig : XML;
+		private static var _sourceButtons : XML;
 		private static var _currentAreaID : String;
 		private static var _currentLanguage : String;
 		private static var _firstArea : String = "";
@@ -83,11 +84,11 @@ package sweatless.navigation.core {
 		}
 		
 		public function set source(p_file:XML):void{
-			_source = p_file;
+			_sourceConfig = p_file;
 		}
 		
 		public function get source():XML{
-			return _source;
+			return _sourceConfig;
 		}
 		
 		public function get currentAreaID():String{
@@ -163,7 +164,11 @@ package sweatless.navigation.core {
 		}
 		
 		public function get buttons():XMLList{
-			return source..buttons.group;
+			return _sourceButtons..group;
+		}
+		
+		public function setButtonsSource(p_source:XML):void{
+			_sourceButtons = p_source;
 		}
 		
 		public function getInArea(p_id:String, p_attribute:String):String{
@@ -252,10 +257,10 @@ package sweatless.navigation.core {
 			var all : Boolean = p_type == "*" ? true : false;
 			var buttons : Array = new Array();
 			
-			for(var a:uint=0; a<uint(all ? source..button.length() : source..group.(@type==p_type).button.length()); a++){
+			for(var a:uint=0; a<uint(all ? _sourceButtons..button.length() : _sourceButtons..group.(@type==p_type).button.length()); a++){
 				var attributes : Object = new Object();
-				for(var b:uint=0; b<uint(all ? source..button[a].@*.length() : source..group.(@type==p_type).button[a].@*.length()); b++){
-					all ? attributes[String(source..button[a].@*[b].name())] = String(source..button[a].@*[b]) : attributes[String(source..group.(@type==p_type)..button[a].@*[b].name())] = String(source..group.(@type==p_type)..button[a].@*[b]);
+				for(var b:uint=0; b<uint(all ? _sourceButtons..button[a].@*.length() : _sourceButtons..group.(@type==p_type).button[a].@*.length()); b++){
+					all ? attributes[String(_sourceButtons..button[a].@*[b].name())] = String(_sourceButtons..button[a].@*[b]) : attributes[String(_sourceButtons..group.(@type==p_type)..button[a].@*[b].name())] = String(_sourceButtons..group.(@type==p_type)..button[a].@*[b]);
 				}
 				
 				buttons.push(attributes);

@@ -46,6 +46,7 @@
 
 package sweatless.text {
 
+	import flash.utils.setInterval;
 	import sweatless.utils.ArrayUtils;
 
 	import flash.geom.Rectangle;
@@ -98,10 +99,12 @@ package sweatless.text {
 				bounds = _source.field.getCharBoundaries(Math.abs((i - total)));
 				metrics = _source.field.getLineMetrics(_source.field.getLineIndexOfChar(Math.abs((i - total))));
 				
-				align(bounds, metrics, format.align);
+				trace((bounds));
+				
+				bounds ? align(bounds, metrics, format.align) : null;
 					
-				char.x = char.originalX = bounds.x;
-				char.y = char.originalY = bounds.y;
+				char.x = char.originalX = bounds ? bounds.x : null;
+				char.y = char.originalY = bounds ? bounds.y : null;
 				
 				result.push(char);
 			}

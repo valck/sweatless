@@ -73,7 +73,7 @@ package sweatless.navigation.core {
 		public static const READY : String = "ready";
 		public static const SHOWED: String = "showed";
 		
-		public function Sweatless(p_config:String=null){
+		public function Sweatless(p_buttons:String=null, p_config:String=null){
 			new Signature(this);
 			
 			stage.addEventListener(Event.RESIZE, resize);
@@ -100,6 +100,7 @@ package sweatless.navigation.core {
 			addLoading();
 			
 			config.setVar("CONFIG", p_config);
+			config.setVar("BUTTONS", p_buttons);
 			
 			for(var i:String in loaderInfo.parameters){
 				config.setVar(i, loaderInfo.parameters[i]);
@@ -154,8 +155,11 @@ package sweatless.navigation.core {
 		
 		private function configLoaded(evt:Event):void{
 			queue.removeEventListener(LazyBulkLoader.LAZY_COMPLETE, configLoaded);
-			
 			addExternalLayers();
+		}
+
+		private function addButtons():void{
+			config.setButtonsSource(queue.getXML(String(config.getVar("BUTTONS"))));
 		}
 		
 		private function addExternalLayers():void{
@@ -168,6 +172,8 @@ package sweatless.navigation.core {
 		private function removeLoadListeners(evt:Event):void{
 			queue.removeEventListener(BulkLoaderXMLPlugin.PROGRESS, progress);
 			queue.removeEventListener(BulkLoaderXMLPlugin.FINISHED, removeLoadListeners);
+			
+			addButtons();
 			
 			_navigation.addConfig();
 			
@@ -189,13 +195,6 @@ package sweatless.navigation.core {
 		
 		public function resize(evt:Event=null):void{
 			scrollRect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-		}
-		/*
-		 * 
-		 * @depracated
-		 * 
-		 */
-		public function build():void{
 		}
 		
 		public function create(evt:Event=null):void{
@@ -311,6 +310,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		for each (var asset:XML in source..files.file) {
 			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
 		}
+		add(String(Sweatless.config.getVar("BUTTONS")), {id:String(Sweatless.config.getVar("BUTTONS"))});
 		
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 		loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
