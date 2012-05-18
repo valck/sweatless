@@ -68,8 +68,8 @@ package sweatless.navigation.primitives {
 			return Sweatless.loader.current();
 		}
 		
-		public function getAssetText(p_id:String):String{
-			return assets ? Sweatless.assets.getString(p_id, "text") : "Assets file is not loaded or asset with id "+p_id+" not found.";
+		public function getAssetText(p_id:String, p_page:String=null):String{
+			return assets ? Sweatless.assets.getText(p_id, p_page) : "Assets file is not loaded or asset with id "+p_id+" not found.";
 		}
 		
 		public function getAssetPath(p_id:String, p_type:String):String{
