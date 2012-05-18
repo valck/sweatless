@@ -129,7 +129,7 @@ package sweatless.utils {
 		 * A heavy method to remove all itens inside a <code>Object</code>.
 		 * @param p_target The object to clean.
 		 */
-		public static function removeAll(p_target:*):void{
+		public static function removeAll(p_target:*, p_self:Boolean=false):void{
 			if(!p_target) return;
 			
 			var child:Object;
@@ -143,6 +143,8 @@ package sweatless.utils {
 				if(child.parent && child.stage) child.parent.removeChild(child);
 			}
 			child = null;
+			
+			p_self ? remove(p_target, true) : null;
 		}
 		
 		/**
