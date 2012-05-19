@@ -108,7 +108,7 @@ package sweatless.navigation.core {
 		}
 		
 		public function get defaultLanguage() : String {
-			return String(source..languages.@default);
+			return _defaultLanguage ? _defaultLanguage : String(source..languages.@default);
 		}
 
 		public function set defaultLanguage(p_language : String) : void {
