@@ -316,6 +316,8 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
 		loading ? loading.show() : null;
 		
+		if(Sweatless.config.languages.length()>0) Sweatless.config.currentLanguage = Sweatless.config.currentLanguage ? Sweatless.config.currentLanguage : Sweatless.config.defaultLanguage ? Sweatless.config.defaultLanguage : null;
+		
 		if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
 			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
 		}else if(Sweatless.config.firstArea){

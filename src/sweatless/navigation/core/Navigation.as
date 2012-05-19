@@ -109,6 +109,8 @@ package sweatless.navigation.core {
 		
 		public function start():void {
 			if(Sweatless.config.started) throw new Error("Navigation already initialized.");
+
+			if(Sweatless.config.languages.length()>0) Sweatless.config.currentLanguage = Sweatless.config.currentLanguage ? Sweatless.config.currentLanguage : Sweatless.config.defaultLanguage ? Sweatless.config.defaultLanguage : null;
 			
 			if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0){
 				 SWFAddress.addEventListener(SWFAddressEvent.EXTERNAL_CHANGE, onChange);
@@ -264,10 +266,7 @@ package sweatless.navigation.core {
 		private function setDeeplink():void{
 			var param : String;
 			
-			if(Sweatless.config.languages.length()>0){
-				Sweatless.config.currentLanguage = Sweatless.config.currentLanguage ? Sweatless.config.currentLanguage : Sweatless.config.defaultLanguage;
-				param = "?" + Sweatless.config.getParamLanguage() + "=" + Sweatless.config.currentLanguage;
-			}
+			if(Sweatless.config.languages.length()>0) param = "?" + Sweatless.config.getParamLanguage() + "=" + Sweatless.config.currentLanguage;
 			
 			SWFAddress.setTitle(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@title"));
 			Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != Sweatless.config.currentAreaID ? SWFAddress.setValue(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@deeplink") + param) : null;

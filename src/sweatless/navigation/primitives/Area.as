@@ -52,7 +52,7 @@ package sweatless.navigation.primitives {
 		
 		public static const READY : String = "ready";
 		public static const SHOWED: String = "showed";
-		public static const HIDDEN: String = "closed";
+		public static const HIDDEN: String = "hidden";
 		public static const RESIZE : String = "resize";
 		public static const DESTROYED : String = "destroyed";
 		
