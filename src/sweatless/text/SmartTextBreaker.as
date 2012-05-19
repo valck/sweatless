@@ -46,7 +46,6 @@
 
 package sweatless.text {
 
-	import flash.utils.setInterval;
 	import sweatless.utils.ArrayUtils;
 
 	import flash.geom.Rectangle;
