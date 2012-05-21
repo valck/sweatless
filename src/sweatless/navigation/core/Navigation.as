@@ -295,6 +295,7 @@ package sweatless.navigation.core {
 		
 		private function setID(p_value:String):void{
 			Sweatless.config.currentAreaID = p_value.slice(5);
+			//trace("currentAreaID:", Sweatless.config.currentAreaID);
 		}
 		
 		private function align(p_area:Area, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{

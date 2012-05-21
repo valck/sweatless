@@ -235,9 +235,12 @@ package sweatless.navigation.core {
 		}
 		
 		public function getAreaByDeeplink(p_deeplink:String):String{
-			for(var key : String in getAllDeeplinks()){
-				if(p_deeplink == getAllDeeplinks()[key]) return key;
-				break;
+			var all : Dictionary = getAllDeeplinks();
+			for(var key : String in all){
+				if(p_deeplink == all[key]) {
+					//trace("area:", key, "value:", p_deeplink, "receive:", all[key]);
+					return key;
+				}
 			}
 			
 			return firstArea;
