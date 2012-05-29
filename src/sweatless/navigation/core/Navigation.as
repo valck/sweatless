@@ -143,9 +143,11 @@ package sweatless.navigation.core {
 				
 				if(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")){
 					current = Area(queue.getContent(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf")));
-				}else{
+				}else if(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@class")){
 					var currentAreaClass:Class = DisplayObjectUtils.getClass(Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@class"));
 					current = new currentAreaClass();
+				}else{
+					throw new Error("Navigation without swf or class, please set to run.");
 				}
 				
 				current.id = Sweatless.config.currentAreaID;
@@ -204,8 +206,8 @@ package sweatless.navigation.core {
 			var swfs : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "swf");
 			var others : Dictionary = Sweatless.config.getAreaDependencies(Sweatless.config.currentAreaID, "other");
 			
-			queue = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 666);
-			queue.maxConnectionsPerHost = 666;
+			queue = BulkLoader.getLoader(Sweatless.config.currentAreaID) || new BulkLoader(Sweatless.config.currentAreaID, 12);
+			queue.maxConnectionsPerHost = 12;
 			queue.resumeAll();
 			
 			if (queue.itemsTotal > 0 && queue.isFinished){

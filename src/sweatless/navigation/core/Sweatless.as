@@ -288,7 +288,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	
 	public function BulkLoaderXMLPlugin(url:*, name:String){
 		count = 0;
-		super (url, name, 666);
+		super (url, name, 12);
 	}
 	
 	public override function _lazyParseLoader(p_data:String):void{
@@ -306,7 +306,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 
 		Sweatless.config.source = source;
 		
-		maxConnectionsPerHost = 666;
+		maxConnectionsPerHost = 12;
 		for each (var asset:XML in source..files.file) {
 			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
 		}
@@ -334,8 +334,8 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		Sweatless.config.currentAreaID = evt ? Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) : Sweatless.config.firstArea;
 		
-		queue = new BulkLoader(Sweatless.config.currentAreaID, 666);
-		queue.maxConnectionsPerHost = 666;
+		queue = new BulkLoader(Sweatless.config.currentAreaID, 12);
+		queue.maxConnectionsPerHost = 12;
 		
 		var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 		var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
