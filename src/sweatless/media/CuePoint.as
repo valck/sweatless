@@ -61,7 +61,7 @@ package sweatless.media{
 			return _time;
 		}
 		
-		internal function get miliseconds():int{
+		public function get miliseconds():int{
 			return _miliseconds;
 		}
 		
