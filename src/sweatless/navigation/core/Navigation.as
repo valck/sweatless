@@ -266,7 +266,7 @@ package sweatless.navigation.core {
 		}
 		
 		private function setDeeplink():void{
-			var param : String;
+			var param : String = "";
 			
 			if(Sweatless.config.languages.length()>0) param = "?" + Sweatless.config.getParamLanguage() + "=" + Sweatless.config.currentLanguage;
 			
