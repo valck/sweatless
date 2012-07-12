@@ -367,8 +367,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 
 		queue.start();
 		prepared();
-		
-		//queue.items.length == 0 ? removeProgress(null) : null;
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
