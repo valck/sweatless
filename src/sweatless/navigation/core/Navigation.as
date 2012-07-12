@@ -92,6 +92,7 @@ package sweatless.navigation.core {
 			
 			broadcaster = Broadcaster.getInstance();
 
+			broadcaster.setEvent("change_area");
 			broadcaster.setEvent("change_menu");
 			
 			for(var i:uint=0; i<Sweatless.config.areas.length(); i++){
@@ -168,9 +169,12 @@ package sweatless.navigation.core {
 		private function show(evt:Event):void{
 			current.removeEventListener(Area.READY, show);
 			current.show();
+			broadcaster.dispatchEvent(new Event(broadcaster.getEvent("change_area")));
 		}
 		
 		private function hide(evt:Event):void{
+			if(last && last.id == Sweatless.config.currentAreaID) return;
+			
 			loading && loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).removeChild(loading) : null;
 			queue && queue.isRunning ? queue.pauseAll() : null;
 			
@@ -218,14 +222,14 @@ package sweatless.navigation.core {
 				queue.addEventListener(BulkProgressEvent.COMPLETE, onLoadComplete);
 				
 				var id : *;
-				for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
+				for(id in videos) queue.add(videos[id], {id:id, context:Sweatless.config.context, pausedAtStart:true, preventCache:!cache});
 				for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
 				for(id in audios) queue.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
-				for(id in swfs) queue.add(swfs[id], {id:id, preventCache:!cache});
-				for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
+				for(id in swfs) queue.add(swfs[id], {id:id, context:Sweatless.config.context, preventCache:!cache});
+				for(id in others) queue.add(others[id], {id:id, context:Sweatless.config.context, preventCache:!cache});
 				
-				assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-				swf ? queue.add(swf, {id:"swf", priority:queue.highestPriority, preventCache:!cache}) : null;
+				assets ? queue.add(assets, {id:"assets", context:Sweatless.config.context, preventCache:!cache}) : null;
+				swf ? queue.add(swf, {id:"swf", context:Sweatless.config.context, priority:queue.highestPriority, preventCache:!cache}) : null;
 				
 				loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 				loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
@@ -297,7 +301,6 @@ package sweatless.navigation.core {
 		
 		private function setID(p_value:String):void{
 			Sweatless.config.currentAreaID = p_value.slice(5);
-			//trace("currentAreaID:", Sweatless.config.currentAreaID);
 		}
 		
 		private function align(p_area:Area, p_hanchor:String, p_vanchor:String, p_width:Number=0, p_height:Number=0, p_top:Number=0, p_bottom:Number=0, p_right:Number=0, p_left:Number=0):void{
