@@ -173,7 +173,7 @@ package sweatless.navigation.core {
 		}
 		
 		private function hide(evt:Event):void{
-			if(last && last.id == Sweatless.config.currentAreaID) return;
+			//if(last && last.id == Sweatless.config.currentAreaID) return;
 			
 			loading && loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).removeChild(loading) : null;
 			queue && queue.isRunning ? queue.pauseAll() : null;
