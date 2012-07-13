@@ -300,17 +300,19 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		source = new XML(printf(StringUtils.replace(StringUtils.replace(p_data, "{", "%("), "}", ")s"), substitutions));
 		
-		source..files.file == undefined ? add(_lazyTheURL, new Object()) : null;
-		source..tracking.@file != undefined ? add(String(source..tracking.@file), {id:String("tracking")}) : null;
-		source..crossdomain.@file != undefined ? Security.loadPolicyFile(source..crossdomain.@file) : null;
-
 		Sweatless.config.source = source;
+
+		source..files.file == undefined ? add(_lazyTheURL, new Object()) : null;
+		source..crossdomain.@file != undefined ? Security.loadPolicyFile(source..crossdomain.@file) : null;
+		source..tracking.@file != undefined ? add(String(source..tracking.@file), {id:String("tracking"), context:Sweatless.config.context}) : null;
+
+		Sweatless.config.context = new LoaderContext(Boolean(Sweatless.config.crossdomain), ApplicationDomain.currentDomain);
 		
 		maxConnectionsPerHost = 12;
 		for each (var asset:XML in source..files.file) {
-			add(String(asset.@url), {id:String(asset.@id), pausedAtStart:asset.@paused ? true : false});
+			add(String(asset.@url), {id:String(asset.@id), context:Sweatless.config.context, pausedAtStart:asset.@paused ? true : false});
 		}
-		add(String(Sweatless.config.getVar("BUTTONS")), {id:String(Sweatless.config.getVar("BUTTONS"))});
+		add(String(Sweatless.config.getVar("BUTTONS")), {id:String(Sweatless.config.getVar("BUTTONS")), context:Sweatless.config.context});
 		
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 		loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
@@ -318,7 +320,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		if(Sweatless.config.languages.length()>0) Sweatless.config.currentLanguage = Sweatless.config.currentLanguage ? Sweatless.config.currentLanguage : Sweatless.config.defaultLanguage ? Sweatless.config.defaultLanguage : null;
 		
-		if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0 && Sweatless.config.getAreaByDeeplink(SWFAddress.getPath()) != ""){
+		if(ExternalInterface.available && XMLList(Sweatless.config.areas..@deeplink).length() > 0){
 			SWFAddress.addEventListener(SWFAddressEvent.INIT, ready);
 		}else if(Sweatless.config.firstArea){
 			ready();
@@ -339,7 +341,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		
 		var cache : Boolean = StringUtils.toBoolean(Sweatless.config.getAreaAdditionals(Sweatless.config.currentAreaID, "@cache"));
 		var audioContext : SoundLoaderContext = new SoundLoaderContext(1000, Boolean(Sweatless.config.crossdomain));
-		var imageContext : LoaderContext = new LoaderContext(Boolean(Sweatless.config.crossdomain), ApplicationDomain.currentDomain);
 		
 		var swf : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@swf");
 		var assets : String = Sweatless.config.getInArea(Sweatless.config.currentAreaID, "@assets");
@@ -355,19 +356,17 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		queue.addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 		
 		var id : *;
-		for(id in videos) queue.add(videos[id], {id:id, pausedAtStart:true, preventCache:!cache});
-		for(id in images) queue.add(images[id], {id:id, context:imageContext, preventCache:!cache});
+		for(id in videos) queue.add(videos[id], {id:id, context:Sweatless.config.context, pausedAtStart:true, preventCache:!cache});
+		for(id in images) queue.add(images[id], {id:id, context:Sweatless.config.context, preventCache:!cache});
 		for(id in audios) queue.add(audios[id], {id:id, context:audioContext, preventCache:!cache});
-		for(id in swfs) queue.add(swfs[id], {id:id, preventCache:!cache});		
-		for(id in others) queue.add(others[id], {id:id, preventCache:!cache});
+		for(id in swfs) queue.add(swfs[id], {id:id, context:Sweatless.config.context, preventCache:!cache});		
+		for(id in others) queue.add(others[id], {id:id, context:Sweatless.config.context, preventCache:!cache});
 		
-		assets ? queue.add(assets, {id:"assets", preventCache:!cache}) : null;
-		swf ? queue.add(swf, {id:"swf", priority:highestPriority, preventCache:!cache}) : null;
+		assets ? queue.add(assets, {id:"assets", context:Sweatless.config.context, preventCache:!cache}) : null;
+		swf ? queue.add(swf, {id:"swf", context:Sweatless.config.context, priority:highestPriority, preventCache:!cache}) : null;
 
 		queue.start();
 		prepared();
-		
-		queue.items.length == 0 ? removeProgress(null) : null;
 	}
 	
 	private function onError(evt:ErrorEvent) : void {
@@ -395,7 +394,6 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 	}
 	
 	private function removeProgress(evt:Event):void{
-		
 		if(loading){
 			loading.addEventListener(Loading.HIDDEN, _onComplete);
 			loading.hide();

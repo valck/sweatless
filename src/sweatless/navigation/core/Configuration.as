@@ -41,6 +41,7 @@
 
 package sweatless.navigation.core {
 
+	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	
 	internal final class Configuration {
@@ -50,6 +51,7 @@ package sweatless.navigation.core {
 		private static var _debug : Boolean;
 		private static var _sourceConfig : XML;
 		private static var _sourceButtons : XML;
+		private static var _currentContext : LoaderContext;
 		private static var _currentAreaID : String;
 		private static var _currentLanguage : String;
 		private static var _firstArea : String = "";
@@ -89,6 +91,14 @@ package sweatless.navigation.core {
 		
 		public function get source():XML{
 			return _sourceConfig;
+		}
+
+		public function get context() : LoaderContext{
+			return _currentContext;
+		}
+
+		public function set context(p_value : LoaderContext) : void {
+			_currentContext = p_value;
 		}
 		
 		public function get currentAreaID():String{
