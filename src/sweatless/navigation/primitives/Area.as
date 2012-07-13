@@ -82,6 +82,7 @@ package sweatless.navigation.primitives {
 		
 		override public function create(evt:Event=null):void{
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			stage.addEventListener(Event.RESIZE, resize);
 			dispatchEvent(new Event(READY));
 		}
 		
