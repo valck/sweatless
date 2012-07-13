@@ -78,12 +78,12 @@ trace(so.data);
         }
  
 		/**
-		 * Sets/Get any <code>String</code> value in <code>SharedObject</code>.
+		 * Sets/Get any <code>Object</code> value in <code>SharedObject</code>.
 		 * 
-		 * @param p_value any <code>String</code>.
+		 * @param p_value any <code>Object</code>.
 		 * 
 		 */
-		public function set data(p_value:String):void {
+		public function set data(p_value:Object):void {
             clear();
 
             saved.data.value = p_value;
@@ -107,7 +107,7 @@ trace(so.data);
             }
         }
  
-		public function get data():String{
+		public function get data():Object{
 			if(!saved.data.value) return null;
 			return saved.data.value;
 		}
