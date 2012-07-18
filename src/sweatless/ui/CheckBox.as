@@ -51,8 +51,8 @@ package sweatless.ui {
 
 	public class CheckBox extends Sprite{
 		
-		private var fill : SmartRectangle;
-		private var background : SmartRectangle;
+		protected var fill : SmartRectangle;
+		protected var background : SmartRectangle;
 		private var clicked : Boolean;
 		
 		private var _item : DisplayObject;
@@ -112,6 +112,10 @@ package sweatless.ui {
 		
 		public function get value():Boolean{
 			return clicked;
+		}
+		
+		public function set value(p_value:Boolean):void{
+			clicked = fill.visible = _item ? _item.visible = p_value : p_value;
 		}
 		
 		public function set roundCorners(p_value:uint):void{
