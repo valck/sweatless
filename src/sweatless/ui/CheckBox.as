@@ -128,7 +128,7 @@ package sweatless.ui {
 		}
 		
 		public function set strokeColor(p_value:uint):void{
-			fill.strokeColors = [p_value, p_value];
+			background.strokeColors = [p_value, p_value];
 		}
 		
 		public function set strokeSize(p_value:uint):void{

@@ -98,7 +98,7 @@ package sweatless.text {
 				bounds = _source.field.getCharBoundaries(Math.abs((i - total)));
 				metrics = _source.field.getLineMetrics(_source.field.getLineIndexOfChar(Math.abs((i - total))));
 				
-				trace((bounds));
+				//trace((bounds));
 				
 				bounds ? align(bounds, metrics, format.align) : null;
 					
