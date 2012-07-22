@@ -38,6 +38,14 @@ package sweatless.navigation.core {
 			type == "analytics" ? tracker.trackPageview(p_tag) : ExternalInterface.available ? ExternalInterface.call("trackPageview", p_tag) : navigateToURL(new URLRequest("javascript:trackPageview('" + p_tag + "');"), "_self");
 		}
 
+		public function trackevent(p_id:String, p_category:String=null, p_action:String=null, p_label:String=null, p_value:Number=NaN):void{
+			p_category = p_category ? p_category : String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackevent.(@id==p_id).@category);
+			p_action = p_action ? p_action : String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackevent.(@id==p_id).@action);
+			p_label = p_label ? p_label : String(BulkLoader.getLoader("sweatless").getXML("tracking")..trackevent.(@id==p_id).@label);
+			p_value = p_value ? p_value : Number(BulkLoader.getLoader("sweatless").getXML("tracking")..trackevent.(@id==p_id).@value);
+			type == "analytics" ? tracker.trackEvent(p_category, p_action, p_label, p_value) : ExternalInterface.available ? ExternalInterface.call("trackEvent", p_category, p_action, p_label, p_value) : navigateToURL(new URLRequest("javascript:trackEvent('"+ p_category +"', '"+ p_action +"', '"+ p_label +"', '"+ p_value +"');"), "_self");
+		}
+
 		private function addGeneric():void{
 			type = "generic"; 
 		}
