@@ -64,6 +64,7 @@ package sweatless.navigation.primitives {
 
 		override public function create(evt:Event=null):void{
 			removeEventListener(Event.ADDED_TO_STAGE, create);
+			stage.addEventListener(Event.RESIZE, resize);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			dispatchEvent(new Event(READY));
 		}
@@ -89,6 +90,7 @@ package sweatless.navigation.primitives {
 		}
 		
 		override public function destroy(evt:Event=null):void{
+			stage.removeEventListener(Event.RESIZE, resize);
 			removeAllEventListeners();
 			dispatchEvent(new Event(DESTROYED));
 		}
