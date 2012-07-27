@@ -35,7 +35,7 @@
  * 
  * http://www.sweatless.as/
  * 
- * @author Valério Oliveira (valck)
+ * @author Valério Oliveira (valckZ)
  * 
  */
 
