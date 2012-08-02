@@ -115,7 +115,12 @@ package sweatless.ui {
 		}
 		
 		public function set value(p_value:Boolean):void{
-			clicked = fill.visible = _item ? _item.visible = p_value : p_value;
+			if(_item){
+				clicked = _item.visible = p_value;
+				fill.visible = false;
+			}else{
+				clicked = fill.visible = p_value;
+			}
 		}
 		
 		public function set roundCorners(p_value:uint):void{
