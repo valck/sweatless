@@ -228,20 +228,27 @@ package sweatless.media{
 			
 			switch(p_quality){
 				case RESOLUTION_QUALITY_240:
+					player.setPlaybackQuality("small");
 					player.setSize(320, 240);
 					break;
 				case RESOLUTION_QUALITY_360:
+					player.setPlaybackQuality("medium");
 					player.setSize(640, 360);
 					break;
 				case RESOLUTION_QUALITY_480:
+					player.setPlaybackQuality("large");
 					player.setSize(853, 480);
 					break;
 				case RESOLUTION_QUALITY_720:
+					player.setPlaybackQuality("hd720");
 					player.setSize(1280, 720);
 					break;
 				case RESOLUTION_QUALITY_1080:
+					player.setPlaybackQuality("hd1080");
 					player.setSize(1920, 1080);
 					break;
+					default:
+					player.setPlaybackQuality("default");
 			}
 			
 			player.setPlaybackQuality(p_quality);
