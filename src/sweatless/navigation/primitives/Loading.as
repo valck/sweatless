@@ -66,7 +66,9 @@ package sweatless.navigation.primitives {
 			removeEventListener(Event.ADDED_TO_STAGE, create);
 			stage.addEventListener(Event.RESIZE, resize);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
 			dispatchEvent(new Event(READY));
+			resize(null);
 		}
 				
 		public function get progress():Number{

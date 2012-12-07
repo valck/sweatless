@@ -35,7 +35,7 @@
  * 
  * http://www.sweatless.as/
  * 
- * @author Valrio Oliveira (valck)
+ * @author Valï¿½rio Oliveira (valck)
  * 
  */
 
@@ -65,8 +65,8 @@ package sweatless.text {
 		public static const RESTRICT_SPECIAL_CHARS : String = ". \\' \\\" \\- ( ) ? ' , _ ! & : ; @";
 		public static const RESTRICT_EMAIL : String = "a-z 0-9 @ _ . \\-";
 		public static const RESTRICT_NUMBER : String = "0-9";
-		public static const RESTRICT_LOWERCASE : String = "a-z ‰‹ˆ‡“’›˜™—œ";
-		public static const RESTRICT_UPPERCASE : String = "A-Z åÌËçéƒæíêÍñïîôóò‚";
+		public static const RESTRICT_LOWERCASE : String = "a-z Ã¥ÃŒÃ‹Ã§Ã©ÂƒÃ¦Ã­ÃªÃÃ±Ã¯Ã®Ã´Ã³Ã²Â‚";
+		public static const RESTRICT_UPPERCASE : String = "A-Z Ã…ÃŒÃ‹Ã‡Ã‰ÂƒÃ†ÃÃŠÃÃ‘ÃÃÃ”Ã“Ã’Â‚";
 		
 		public static const ALIAS_SMOOTHING : String = "advanced";
 		public static const ALIAS_NORMAL : String = "normal";

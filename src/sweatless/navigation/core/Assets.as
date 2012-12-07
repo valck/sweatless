@@ -154,17 +154,18 @@ package sweatless.navigation.core {
 //					result = _source..text.(@id==p_id)..page.(@id==p_page).language.(@id==language).text();
 				}else{
 					_source..text.(@id==p_id)..language.(@id==language).(temp.push(text()));
-					result = temp.toString().split(",").join("\n"); 
+					//result = temp.toString().split(",").join("\n"); 
+					result = String(temp.join("@@@").split("@@@").join("\n")); 
 				}
 			}else{
 				if(p_page){
 					result = _source..text.(@id==p_id).page.(@id==p_page).text();
 				}else if(_source..text.(@id==p_id)..page.@id != undefined){
 					_source..text.(@id==p_id)..page.(temp.push(text()));
-					result = temp.toString().split(",").join("\n");
+					result = String(temp.join("@@@").split("@@@").join("\n"));
 				}else{
 					_source..text.(@id==p_id).(temp.push(text()));
-					result = temp.toString().split(",").join("\n");
+					result = String(temp.join("@@@").split("@@@").join("\n"));
 				}
 			}
 			
