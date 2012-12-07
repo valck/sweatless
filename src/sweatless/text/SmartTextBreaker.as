@@ -258,7 +258,7 @@ package sweatless.text {
 			
 			switch(_direction) {
 				case LAST_TO_FIRST:
-					p_array.reverse();
+					p_array = p_array.reverse();
 					break;
 				case CENTER_TO_EDGES:
 					p_array = ArrayUtils.merge(right, left);

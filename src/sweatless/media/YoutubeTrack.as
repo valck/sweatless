@@ -88,8 +88,11 @@ package sweatless.media{
 		private var currentCuepoints : Dictionary;
 
 		public function YoutubeTrack() : void {
+			Security.allowInsecureDomain("*");
 			Security.allowDomain("www.youtube.com");
-			
+   			Security.allowDomain("http://s.ytimg.com");
+			Security.allowDomain("s.ytimg.com");
+
 			currentCuepoints = new Dictionary();
 			
 			loader = new Loader();
@@ -201,6 +204,8 @@ package sweatless.media{
 				
 		public function set track(p_id:String):void{
 			_id = p_id;
+
+			load(_id);
 		}
 		
 		public function get track() : String {
