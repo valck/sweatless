@@ -312,7 +312,7 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 		for each (var asset:XML in source..files.file) {
 			add(String(asset.@url), {id:String(asset.@id), context:Sweatless.config.context, pausedAtStart:asset.@paused ? true : false});
 		}
-		add(String(Sweatless.config.getVar("BUTTONS")), {id:String(Sweatless.config.getVar("BUTTONS")), context:Sweatless.config.context});
+		if(Sweatless.config.getVar("BUTTONS")) add(String(Sweatless.config.getVar("BUTTONS")), {id:String(Sweatless.config.getVar("BUTTONS")), context:Sweatless.config.context});
 		
 		loading = Sweatless.loadings.exists(Sweatless.config.currentAreaID) ? Sweatless.loadings.get(Sweatless.config.currentAreaID) : Sweatless.loadings.exists("default") ? Sweatless.loadings.get("default") : null; 
 		loading && !loading.stage ? DisplayObjectContainer(Layers.getInstance("sweatless").get("loading")).addChild(loading) : null;
