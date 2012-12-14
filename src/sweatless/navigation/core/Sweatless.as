@@ -328,7 +328,8 @@ dynamic internal class BulkLoaderXMLPlugin extends LazyBulkLoader{
 			prepared();
 		}
 
-		addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
+		// @ToDo Validate this listener, is shooting two "HIDE", breaking of loading asset.
+		//addEventListener(BulkProgressEvent.COMPLETE, removeProgress);
 	}
 	
 	private function ready(evt:Event=null):void{
