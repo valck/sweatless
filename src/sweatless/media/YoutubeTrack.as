@@ -83,6 +83,7 @@ package sweatless.media{
 		private var player : Object;
 		private var loader : Loader;
 		
+		private var forcedEnd : Number;
 		private var cuepointPosition : Number;
 		private var currentVolume : Number;
 		private var currentPosition : Number;
@@ -100,6 +101,10 @@ package sweatless.media{
 			
 			loader = new Loader();
 			addChild(loader);
+			loader.contentLoaderInfo.addEventListener(Event.INIT, create);
+
+			var request : URLRequest = new URLRequest("http://www.youtube.com/apiplayer?version=3");
+			loader.load(request);
 			
 			mouseEnabled = false;
 		}
@@ -119,7 +124,7 @@ package sweatless.media{
 							data.videoId = p_id;
 							data.startSeconds = p_startAt != -1 ? p_startAt : 0;
 							data.suggestedQuality = p_quality ? p_quality : RESOLUTION_QUALITY_AUTO;
-							if(p_endAt != -1) data.endSeconds = p_endAt;
+							if(p_endAt != -1) data.endSeconds = forcedEnd = p_endAt;
 							
 							player.loadVideoById(data);
 						}else{
@@ -314,7 +319,7 @@ package sweatless.media{
 			if(!player) {
 				return 0;
 			}else{
-				return player.getDuration();
+				return forcedEnd ? forcedEnd : player.getDuration();
 			}
 		}
 		
