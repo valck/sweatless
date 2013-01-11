@@ -214,10 +214,10 @@ package sweatless.utils {
 		 * @see Number
 		 * @see String
 		 */
-		public function toTimeFormat(p_miliseconds:Number):String {
+		public static function toTimeFormat(p_miliseconds:Number, p_decimal:Boolean=true):String {
 			var minutes:Number = Math.floor(p_miliseconds / 60);
 			var seconds:Number = Math.floor(p_miliseconds % 60);
-			return String(minutes + ":" + seconds);
+			return String(p_decimal ? addDecimalZero(minutes) + ":" + addDecimalZero(seconds) :  minutes + ":" + seconds);
 		}
 
 		/**

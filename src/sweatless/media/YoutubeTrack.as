@@ -65,6 +65,7 @@ package sweatless.media{
 		private static const ON_READY : String = "onReady";
 		private static const ON_STATE_CHANGE : String = "onStateChange";
 		
+		public static const RESOLUTION_QUALITY_AUTO : String = "default";
 		public static const RESOLUTION_QUALITY_240 : String = "240";
 		public static const RESOLUTION_QUALITY_360 : String = "360";
 		public static const RESOLUTION_QUALITY_480 : String = "480";
@@ -92,7 +93,7 @@ package sweatless.media{
 			Security.allowDomain("www.youtube.com");
    			Security.allowDomain("http://s.ytimg.com");
 			Security.allowDomain("s.ytimg.com");
-
+			
 			currentCuepoints = new Dictionary();
 			
 			loader = new Loader();
@@ -150,6 +151,7 @@ package sweatless.media{
 			}
 			
 			player = loader.content;
+			player.setSize(_width ? _width : 0, _height ? _height : 0);
 			
 			dispatchEvent(new Event(READY));
 		}
@@ -220,6 +222,14 @@ package sweatless.media{
 			}
 		}
 		
+		public function get availableQualityLevels():String{
+			if(!player) {
+				return null;
+			}else{
+				return player.getAvailableQualityLevels();
+			}
+		}
+
 		public function get quality():String{
 			if(!player) {
 				return null;
@@ -251,6 +261,9 @@ package sweatless.media{
 				case RESOLUTION_QUALITY_1080:
 					player.setPlaybackQuality("hd1080");
 					player.setSize(1920, 1080);
+					break;
+				case RESOLUTION_QUALITY_AUTO:
+					player.setPlaybackQuality("default");
 					break;
 					default:
 					player.setPlaybackQuality("default");
