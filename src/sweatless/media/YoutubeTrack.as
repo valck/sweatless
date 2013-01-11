@@ -88,7 +88,9 @@ package sweatless.media{
 		private var currentPosition : Number;
 		private var currentCuepoints : Dictionary;
 
-		public function YoutubeTrack() : void {
+		public function YoutubeTrack(p_type : String = YoutubeTrack.TYPE_CHROMELESS) : void {
+			_type = p_type;
+			
 			Security.allowInsecureDomain("*");
 			Security.allowDomain("www.youtube.com");
    			Security.allowDomain("http://s.ytimg.com");
@@ -99,40 +101,53 @@ package sweatless.media{
 			loader = new Loader();
 			addChild(loader);
 			
-			mouseChildren = false;
 			mouseEnabled = false;
 		}
 
-		public function load(p_id : String = null, p_type : String = YoutubeTrack.TYPE_CHROMELESS) : void {
+		public function load(p_id : String, p_startAt : int = -1, p_endAt : int = -1, p_quality : String = null) : void {
 			_id = p_id;
-			_type = p_type;
 			
 			cuepointPosition = 0;
 			currentVolume = 50;
 			currentPosition = 0;
 			
-			if(loader.content){
-				loader.content.removeEventListener(ON_READY, ready);
-				loader.content.removeEventListener(ON_STATE_CHANGE, state);
-				loader.contentLoaderInfo.removeEventListener(Event.INIT, create);
-				
-				loader.unloadAndStop(true);
-			}
-			
-			loader.contentLoaderInfo.addEventListener(Event.INIT, create);
-			
 			var request : URLRequest;
-			switch(type){
+			switch(_type){
 				case TYPE_CHROMELESS:
-					request = new URLRequest("http://www.youtube.com/apiplayer?video_id="+_id+"&version=3");
+						if(player && loader.content) {
+							var data : Object = new Object();
+							data.videoId = p_id;
+							data.startSeconds = p_startAt != -1 ? p_startAt : 0;
+							data.suggestedQuality = p_quality ? p_quality : RESOLUTION_QUALITY_AUTO;
+							if(p_endAt != -1) data.endSeconds = p_endAt;
+							
+							player.loadVideoById(data);
+						}else{
+							loader.contentLoaderInfo.addEventListener(Event.INIT, create);
+							
+							request = new URLRequest("http://www.youtube.com/apiplayer?video_id="+_id+"&version=3");
+							loader.load(request);
+						};
+						
+						mouseChildren = false;
 					break;
 				case TYPE_EMBEDDED:
+					if(loader.content){
+						loader.content.removeEventListener(ON_READY, ready);
+						loader.content.removeEventListener(ON_STATE_CHANGE, state);
+						loader.contentLoaderInfo.removeEventListener(Event.INIT, create);
+						loader.unloadAndStop(true);
+						loader.unload();
+					}
+					
+					loader.contentLoaderInfo.addEventListener(Event.INIT, create);
+
 					request = new URLRequest("http://www.youtube.com/v/"+_id+"?version=3");
+					loader.load(request);
 					break;
 			}
-			clearAllCuePoints();
 			
-			loader.load(request);
+			clearAllCuePoints();
 		}
 		
 		private function create(event : Event) : void {
@@ -154,6 +169,8 @@ package sweatless.media{
 			player.setSize(_width ? _width : 0, _height ? _height : 0);
 			
 			dispatchEvent(new Event(READY));
+			
+			if(_id && _type == TYPE_CHROMELESS) play();
 		}
 		
 		private function state(evt : Event) : void {
@@ -222,7 +239,7 @@ package sweatless.media{
 			}
 		}
 		
-		public function get availableQualityLevels():String{
+		public function get availableQuality():String{
 			if(!player) {
 				return null;
 			}else{
@@ -244,23 +261,23 @@ package sweatless.media{
 			switch(p_quality){
 				case RESOLUTION_QUALITY_240:
 					player.setPlaybackQuality("small");
-					player.setSize(320, 240);
+					player.setSize(_width ? _width : 320, _height ? _height : 240);
 					break;
 				case RESOLUTION_QUALITY_360:
 					player.setPlaybackQuality("medium");
-					player.setSize(640, 360);
+					player.setSize(_width ? _width : 640, _height ? _height : 360);
 					break;
 				case RESOLUTION_QUALITY_480:
 					player.setPlaybackQuality("large");
-					player.setSize(853, 480);
+					player.setSize(_width ? _width : 853, _height ? _height : 480);
 					break;
 				case RESOLUTION_QUALITY_720:
 					player.setPlaybackQuality("hd720");
-					player.setSize(1280, 720);
+					player.setSize(_width ? _width : 1280, _height ? _height : 720);
 					break;
 				case RESOLUTION_QUALITY_1080:
 					player.setPlaybackQuality("hd1080");
-					player.setSize(1920, 1080);
+					player.setSize(_width ? _width : 1920, _height ? _height : 1080);
 					break;
 				case RESOLUTION_QUALITY_AUTO:
 					player.setPlaybackQuality("default");
@@ -464,7 +481,14 @@ package sweatless.media{
 		}
 		
 		public function destroy():void{
-			loader.content.removeEventListener(ON_STATE_CHANGE, state);
+			if(loader.content){
+				loader.content.removeEventListener(ON_READY, ready);
+				loader.content.removeEventListener(ON_STATE_CHANGE, state);
+				loader.contentLoaderInfo.removeEventListener(Event.INIT, create);
+				loader.unloadAndStop(true);
+				loader.unload();
+			}
+
 			removeEventListener(Event.ENTER_FRAME, dispatchCuePoints);
 			
 			clearAllCuePoints();
@@ -474,7 +498,6 @@ package sweatless.media{
 			player = null;
 			
 			removeChild(loader);
-			loader.unloadAndStop(true);
 			loader = null;
 		}
 	}
