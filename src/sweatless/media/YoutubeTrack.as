@@ -83,7 +83,8 @@ package sweatless.media{
 		private var player : Object;
 		private var loader : Loader;
 		
-		private var forcedEnd : Number;
+		private var endAt : Number;
+		
 		private var cuepointPosition : Number;
 		private var currentVolume : Number;
 		private var currentPosition : Number;
@@ -92,10 +93,16 @@ package sweatless.media{
 		public function YoutubeTrack(p_type : String = YoutubeTrack.TYPE_CHROMELESS) : void {
 			_type = p_type;
 			
+			Security.loadPolicyFile('http://i.ytimg.com/crossdomain.xml');
+			Security.loadPolicyFile('http://gdata.youtube.com/crossdomain.xml');
+			
 			Security.allowInsecureDomain("*");
-			Security.allowDomain("www.youtube.com");
-   			Security.allowDomain("http://s.ytimg.com");
-			Security.allowDomain("s.ytimg.com");
+			Security.allowDomain('gdata.youtube.com');
+			Security.allowDomain('www.youtube.com');
+			Security.allowDomain('youtube.com');
+			Security.allowDomain('s.ytimg.com');
+			Security.allowDomain('i.ytimg.com');
+   			Security.allowDomain('http://s.ytimg.com');
 			
 			currentCuepoints = new Dictionary();
 			
@@ -124,9 +131,10 @@ package sweatless.media{
 							data.videoId = p_id;
 							data.startSeconds = p_startAt != -1 ? p_startAt : 0;
 							data.suggestedQuality = p_quality ? p_quality : RESOLUTION_QUALITY_AUTO;
-							if(p_endAt != -1) data.endSeconds = forcedEnd = p_endAt;
+							if(p_endAt != -1) data.endSeconds = endAt = p_endAt;
 							
 							player.loadVideoById(data);
+							isPlaying = true;
 						}else{
 							loader.contentLoaderInfo.addEventListener(Event.INIT, create);
 							
@@ -319,7 +327,7 @@ package sweatless.media{
 			if(!player) {
 				return 0;
 			}else{
-				return forcedEnd ? forcedEnd : player.getDuration();
+				return endAt ? endAt : player.getDuration();
 			}
 		}
 		
