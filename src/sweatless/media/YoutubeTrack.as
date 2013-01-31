@@ -41,6 +41,7 @@
 
 package sweatless.media{
 
+	import sweatless.graphics.SmartRectangle;
 	import sweatless.events.CustomEvent;
 
 	import flash.display.Loader;
@@ -89,11 +90,14 @@ package sweatless.media{
 		private var currentVolume : Number;
 		private var currentPosition : Number;
 		private var currentCuepoints : Dictionary;
+		
+		private var background : SmartRectangle;
 
 		public function YoutubeTrack(p_type : String = YoutubeTrack.TYPE_CHROMELESS) : void {
 			_type = p_type;
 			
 			Security.loadPolicyFile('http://i.ytimg.com/crossdomain.xml');
+			Security.loadPolicyFile('http://s.ytimg.com/crossdomain.xml');
 			Security.loadPolicyFile('http://gdata.youtube.com/crossdomain.xml');
 			
 			Security.allowInsecureDomain("*");
@@ -102,9 +106,12 @@ package sweatless.media{
 			Security.allowDomain('youtube.com');
 			Security.allowDomain('s.ytimg.com');
 			Security.allowDomain('i.ytimg.com');
-   			Security.allowDomain('http://s.ytimg.com');
 			
 			currentCuepoints = new Dictionary();
+			
+			background = new SmartRectangle();
+			addChild(background);
+			background.colors = [0];
 			
 			loader = new Loader();
 			addChild(loader);
@@ -180,6 +187,9 @@ package sweatless.media{
 			
 			player = loader.content;
 			player.setSize(_width ? _width : 0, _height ? _height : 0);
+			
+			background.width = _width ? _width : 0;
+			background.height = _height ? _height : 0;
 			
 			dispatchEvent(new Event(READY));
 			
@@ -275,25 +285,43 @@ package sweatless.media{
 				case RESOLUTION_QUALITY_240:
 					player.setPlaybackQuality("small");
 					player.setSize(_width ? _width : 320, _height ? _height : 240);
+					
+					background.width = _width ? _width : 320;
+					background.height = _height ? _height : 240;
 					break;
 				case RESOLUTION_QUALITY_360:
 					player.setPlaybackQuality("medium");
 					player.setSize(_width ? _width : 640, _height ? _height : 360);
+					
+					background.width = _width ? _width : 640;
+					background.height = _height ? _height : 360;
 					break;
 				case RESOLUTION_QUALITY_480:
 					player.setPlaybackQuality("large");
 					player.setSize(_width ? _width : 853, _height ? _height : 480);
+
+					background.width = _width ? _width : 853;
+					background.height = _height ? _height : 480;
 					break;
 				case RESOLUTION_QUALITY_720:
 					player.setPlaybackQuality("hd720");
 					player.setSize(_width ? _width : 1280, _height ? _height : 720);
+
+					background.width = _width ? _width : 1280;
+					background.height = _height ? _height : 720;
 					break;
 				case RESOLUTION_QUALITY_1080:
 					player.setPlaybackQuality("hd1080");
 					player.setSize(_width ? _width : 1920, _height ? _height : 1080);
+
+					background.width = _width ? _width : 1920;
+					background.height = _height ? _height : 1080;
 					break;
 				case RESOLUTION_QUALITY_AUTO:
 					player.setPlaybackQuality("default");
+
+					background.width = _width ? _width : player.width;
+					background.height = _height ? _height : player.height;
 					break;
 					default:
 					player.setPlaybackQuality("default");
@@ -477,12 +505,14 @@ package sweatless.media{
 			_width = int(p_value);
 			if(!player) return;
 			player.setSize(_width, _height ? _height : 0);
+			background.width = _width;
 		}
 		
 		override public function set height(p_value:Number):void{
 			_height = int(p_value);
 			if(!player) return;
 			player.setSize(_width ? _width : 0, _height);
+			background.height = _height;
 		}
 		
 		override public function get width():Number{
@@ -506,6 +536,10 @@ package sweatless.media{
 			
 			clearAllCuePoints();
 			stop();
+			
+			background.destroy();
+			removeChild(background);
+			background = null;
 			
 			player.destroy();
 			player = null;
