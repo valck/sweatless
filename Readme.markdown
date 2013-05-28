@@ -2,7 +2,7 @@
 
 ##  What is the Sweatless?
 
-[Sweatless Framework](http://www.sweatless.as) is an open source project written in ActionScript 3 compatible with Flex and AIR, designed to facilitate the development of flash websites and applications, such as setting up site navigation with deep-links, queue of assets, tracking their classes can also be used separately, like a fonts register, text fields, style-sheets, text formatting, layers management, some utils and a lot more.
+[Sweatless Framework](http://valck.in/sweatless/docs) is an open source project written in ActionScript 3 compatible with Flex and AIR, designed to facilitate the development of flash websites and applications, such as setting up site navigation with deep-links, queue of assets, tracking their classes can also be used separately, like a fonts register, text fields, style-sheets, text formatting, layers management, some utils and a lot more.
 
 This framework is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php) and [Creative Commons 3.0](http://creativecommons.org/licenses/by-sa/3.0/legalcode) licenses.
 
@@ -11,7 +11,7 @@ This framework is licensed under [MIT](http://www.opensource.org/licenses/mit-li
 It's a release version, but we're documenting some classes of the package, stay tuned...
 
 ## Online Documentation
-[On-line Docs](http://www.sweatless.as/docs)
+[On-line Docs](http://valck.in/sweatless/docs/)
 
 ## Features
 
