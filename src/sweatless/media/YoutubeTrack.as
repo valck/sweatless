@@ -41,8 +41,8 @@
 
 package sweatless.media{
 
-	import sweatless.graphics.SmartRectangle;
 	import sweatless.events.CustomEvent;
+	import sweatless.graphics.SmartRectangle;
 
 	import flash.display.Loader;
 	import flash.display.Sprite;
@@ -96,16 +96,21 @@ package sweatless.media{
 		public function YoutubeTrack(p_type : String = YoutubeTrack.TYPE_CHROMELESS) : void {
 			_type = p_type;
 			
-			Security.loadPolicyFile('http://i.ytimg.com/crossdomain.xml');
-			Security.loadPolicyFile('http://s.ytimg.com/crossdomain.xml');
-			Security.loadPolicyFile('http://gdata.youtube.com/crossdomain.xml');
 			
-			Security.allowInsecureDomain("*");
-			Security.allowDomain('gdata.youtube.com');
-			Security.allowDomain('www.youtube.com');
-			Security.allowDomain('youtube.com');
-			Security.allowDomain('s.ytimg.com');
-			Security.allowDomain('i.ytimg.com');
+			try{
+				Security.loadPolicyFile('http://i.ytimg.com/crossdomain.xml');
+				Security.loadPolicyFile('http://s.ytimg.com/crossdomain.xml');
+				Security.loadPolicyFile('http://gdata.youtube.com/crossdomain.xml');
+				
+				Security.allowInsecureDomain("*");
+				Security.allowDomain('gdata.youtube.com');
+				Security.allowDomain('www.youtube.com');
+				Security.allowDomain('youtube.com');
+				Security.allowDomain('s.ytimg.com');
+				Security.allowDomain('i.ytimg.com');
+			}catch(err:Error){
+				
+			}
 			
 			currentCuepoints = new Dictionary();
 			

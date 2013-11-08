@@ -145,11 +145,11 @@ package sweatless.utils {
 		 * Returns the HTML container path.
 		 *  
 		 * @return the string with the HTML container path.
-		 */		
-		public static function getDocumentPath():String{
-			var url:String = "";
+		 */
+		public static function getBaseURL(p_domain:Boolean=false):String{
+			var url : String;
 			if(ExternalInterface.available) url = ExternalInterface.call("document.URL.toString");
-			return url.substr(0, url.lastIndexOf("/")+1);
+			return p_domain ? url.replace(/http:\/\/([^\/]+)\/.*/i, "$1") : url;
 		}		
 	}
 }

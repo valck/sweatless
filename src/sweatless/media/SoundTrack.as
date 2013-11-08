@@ -351,22 +351,20 @@ package sweatless.media {
 			var transform : SoundTransform;
 			
 			if(!isMute){
-	            isMute = true;
-
-	            transform = new SoundTransform(0, currentPan);
-	
-	            transform.volume = 0;
-	            channel.soundTransform = transform;
+				isMute = true;
 				
-				currentVolume = transform.volume;
-   			}else{
-	            isMute = false;
-
-	            transform = new SoundTransform(currentVolume, currentPan);
-	
-	            transform.volume = currentVolume;
-	            channel.soundTransform = transform;
-   			}
+				transform = new SoundTransform(0, currentPan);
+				transform.volume = 0;
+				
+				channel.soundTransform = transform;				
+			}else{
+				isMute = false;
+				
+				transform = new SoundTransform(currentVolume, currentPan);
+				transform.volume = currentVolume;
+				
+				channel.soundTransform = transform;
+			}
         }
 
         public function mute():void {

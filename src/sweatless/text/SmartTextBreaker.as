@@ -283,6 +283,7 @@ package sweatless.text {
 				_chars.pop();
 			}
 			
+			_chars.length = 0;
 			_chars = null;
 			_chars = new Array();
 		}
