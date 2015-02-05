@@ -221,7 +221,7 @@ package sweatless.display {
 		 * 
 		 */
 		public function play():void{
-			goto(currentFrame, totalFrames);
+			goTo(currentFrame, totalFrames);
 		}
 
 		/**
@@ -271,7 +271,7 @@ package sweatless.display {
 		public function gotoAndStop(p_frame:Object):void{
 			if(!_source) return;
 
-			goto(p_frame is Number ? int(p_frame) : getFrameNumber(String(p_frame)) -1, p_frame);
+			goTo(p_frame is Number ? int(p_frame) : getFrameNumber(String(p_frame)) -1, p_frame);
 		}
 		
 		/**
@@ -285,7 +285,7 @@ package sweatless.display {
 		public function gotoAndPlay(p_frame:Object):void{
 			if(!_source) return;
 
-			goto(p_frame, totalFrames);
+			goTo(p_frame, totalFrames);
 		}
 
 		/**
@@ -296,7 +296,7 @@ package sweatless.display {
 		 * @param p_end A number representing the end frame number, or a string representing the label of the end frame.
 		 * 
 		 */
-		public function goto(p_start:Object, p_end:Object):void{
+		public function goTo(p_start:Object, p_end:Object):void{
 			if(!_source) return;
 
 			startFrame = p_start is Number ? int(p_start) : getFrameNumber(String(p_start));

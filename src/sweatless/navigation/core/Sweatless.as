@@ -106,7 +106,7 @@ package sweatless.navigation.core {
 				config.setVar(i, loaderInfo.parameters[i]);
 			}
 			
-			loadConfig();
+			if(p_config) loadConfig();
 		}
 		
 		public static function get config():Configuration{
@@ -262,14 +262,14 @@ internal class Signature extends EventDispatcher{
 			menu.hideBuiltInItems();
 		
 			var label : ContextMenuItem = new ContextMenuItem("Build with Sweatless Framework", true);
-			label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goto);
+			label.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, goTo);
 			menu.customItems.push(label);
 		
 			p_scope.contextMenu = menu;
 		}
 	}
 	
-	private function goto(evt:ContextMenuEvent):void {
+	private function goTo(evt:ContextMenuEvent):void {
 		navigateToURL(new URLRequest("http://www.sweatless.as"), "_blank");
 	}
 }
